@@ -1,13 +1,16 @@
 import { ChakraProvider } from "@chakra-ui/react";
+import theme from "./theme";
 import "./App.css";
-import Form from "./components/Form/Form";
+// import Form from "./components/Form/Form";
+import Home from "./components/Home/Home";
 
 function App() {
   return (
     <>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <div>
-          <Form />
+          {/* <Form /> */}
+          <Home />
         </div>
       </ChakraProvider>
     </>
