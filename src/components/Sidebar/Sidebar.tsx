@@ -8,6 +8,7 @@ import {
   CircularProgress,
   CircularProgressLabel,
   HStack,
+  VStack,
 } from "@chakra-ui/react";
 import { CheckIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import { AnimatePresence, motion } from "framer-motion";
@@ -59,7 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
       <Box
         as="aside"
         bg="blue.50"
-        w={{ base: "100%", md: "250px" }}
+        w={{ base: "100%", md: "420px" }}
         h={{ base: "auto", md: "100vh" }}
         p={4}
         borderRight={{ md: "1px" }}
@@ -68,23 +69,51 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         display="flex"
         flexDirection="column"
       >
-        <HStack align="start" spacing={4} mb={6}>
-          <Text fontWeight="bold" fontSize="lg" color="blue.500">
-            Business Information
-          </Text>
-          <CircularProgress
-            value={progressValue}
-            size="50px"
-            color="blue.500"
+        <VStack align="start" spacing={4} mb={6} flexDirection={"row"}>
+          <Box
             display="flex"
             alignItems="center"
             justifyContent="center"
+            bg="brand.primary"
+            borderRadius="md"
+            p={2}
           >
-            <CircularProgressLabel fontSize="12px">
-              {Math.round(progressValue)}%
-            </CircularProgressLabel>
-          </CircularProgress>
-        </HStack>
+            <HStack spacing={2}>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                bg="white"
+                borderRadius="full"
+                boxSize="30px"
+              >
+                <Text fontWeight="bold" color="blue.500">
+                  1
+                </Text>
+              </Box>
+              <Text fontWeight="bold" fontSize="lg" color="white">
+                Business Information
+              </Text>
+            </HStack>
+            <CircularProgress
+              value={progressValue}
+              size="50px"
+              color="blue.500"
+              trackColor="white"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <CircularProgressLabel
+                fontSize="14px"
+                color="white"
+                fontWeight="bold"
+              >
+                {Math.round(progressValue)}%
+              </CircularProgressLabel>
+            </CircularProgress>
+          </Box>
+        </VStack>
         <List spacing={2} pl={6} pt={2}>
           {React.Children.map(children, (child, index) => (
             <ListItem
