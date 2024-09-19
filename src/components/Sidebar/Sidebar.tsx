@@ -13,6 +13,7 @@ import {
 import { CheckIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import FormHeader from "../FormHeader/FormHeader";
+import CircleIcon from "/src/utils/CircleIcon";
 
 // Definición de los tipos de las propiedades del Sidebar
 interface SidebarProps {
@@ -59,13 +60,11 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
       {/* Sidebar */}
       <Box
         as="aside"
-        bg="blue.50"
         w={{ base: "100%", md: "420px" }}
         h={{ base: "auto", md: "100vh" }}
         p={4}
-        borderRight={{ md: "1px" }}
-        borderBottom={{ base: "1px", md: "none" }}
-        borderColor="gray.200"
+        borderRight="1px solid"
+        borderColor="neutral.300"
         display="flex"
         flexDirection="column"
       >
@@ -120,13 +119,15 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
               key={index}
               display="flex"
               alignItems="center"
+              fontWeight={index === selectedPage ? "bold" : "regular"}
               cursor="pointer"
+              color={index <= selectedPage ? "brand.primary" : "neutral.800"}
               onClick={() => setSelectedPage(index)}
             >
               <Icon
-                as={index <= selectedPage ? CheckIcon : SmallCloseIcon}
+                as={index <= selectedPage ? CheckIcon : CircleIcon}
                 boxSize={4}
-                color={index <= selectedPage ? "blue.500" : "gray.400"}
+                color={index <= selectedPage ? "brand.primary" : "neutral.500"}
                 mr={2}
               />
               {React.isValidElement(child)

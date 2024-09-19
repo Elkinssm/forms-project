@@ -65,7 +65,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-      <Text fontWeight="bold" fontSize="lg" mb={4} color="text.highEmphasis">
+      <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
         {title}
       </Text>
       <FormControl mb={4} isInvalid={!!errors.years}>

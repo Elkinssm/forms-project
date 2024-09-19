@@ -14,7 +14,7 @@ function App() {
     <ChakraProvider theme={theme}>
       {/* Pasamos los formularios como children del Sidebar */}
       <Sidebar>
-        <CompanyInformationForm title="Company Information" />
+        <CompanyInformationForm title="Company Information" tu />
         <CorporateAddressForm title="Corporate Address" />
         <ContactInformationForm title="Contact Information" />
         <AdditionalDetailsForm title="Additional Details" />

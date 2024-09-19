@@ -1,5 +1,4 @@
-import React from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, VStack, Heading, Text } from "@chakra-ui/react";
 
 interface FormHeaderProps {
   title: string;
@@ -8,13 +7,13 @@ interface FormHeaderProps {
 
 const FormHeader: React.FC<FormHeaderProps> = ({ title, description }) => {
   return (
-    <Box mb={4}>
-      <Text fontWeight="bold" fontSize="2xl" mb={2}>
-        {title}
-      </Text>
-      <Text fontSize="md" color="gray.600">
-        {description}
-      </Text>
+    <Box backgroundColor="F9FCFF" px="224px" py="32px">
+      <VStack spacing={4} align="center">
+        <Heading as="h1" size="lg" mb={2} textAlign="center">
+          {title}
+        </Heading>
+        <Text textAlign="center">{description}</Text>
+      </VStack>
     </Box>
   );
 };

@@ -55,7 +55,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-      <Text fontWeight="bold" fontSize="lg" mb={4} color="text.highEmphasis">
+      <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
         {title}
       </Text>
       <FormControl mb={4} isInvalid={!!errors.corporate}>
@@ -83,11 +83,11 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
         )}
       </FormControl>
       <Box display="flex" justifyContent="space-between" mt={6}>
-        {onBack && (
+        {/* {onBack && (
           <Button onClick={onBack} colorScheme="gray">
             Back
           </Button>
-        )}
+        )} */}
         <Button type="submit" colorScheme="blue">
           Next
         </Button>
