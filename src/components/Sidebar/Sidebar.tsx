@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from "react";
+import React, { useState, ReactElement, useEffect } from "react";
 import {
   Text,
   List,
@@ -26,18 +26,23 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const [selectedPage, setSelectedPage] = useState<number>(0);
   const [formData, setFormData] = useState<FormData>({});
   const [direction, setDirection] = useState<"next" | "back">("next");
+  const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
   const totalSteps = React.Children.count(children);
+
+  useEffect(() => {
+    setIsFirstRender(false);
+  }, []);
 
   const handleNext = () => {
     if (selectedPage < totalSteps - 1) {
-      setDirection("back");
+      setDirection("next");
       setSelectedPage(selectedPage + 1);
     }
   };
 
   const handleBack = () => {
     if (selectedPage > 0) {
-      setDirection("next");
+      setDirection("back");
       setSelectedPage(selectedPage - 1);
     }
   };
@@ -104,29 +109,35 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
       </Box>
 
       {/* Main Content */}
-      <Box display="flex" flexDirection="column" w={"100%"}>
+      <Box display="flex" flexDirection="column" w={"100%"} position="relative">
         <Box
           flex="0"
           p={6}
           bg="#F9FCFF"
           borderBottom="1px solid"
           borderColor="gray.200"
+          zIndex={1}
+          position="relative"
         >
           <FormHeader
             title="Business information"
             description="Let’s start with your company’s basic information. [We could add here why the company requests this information]"
           />
         </Box>
-        <Box flex="1" p={6} overflowY="auto">
-          <AnimatePresence mode="wait">
+        <Box flex="1" p={6} overflow="hidden" position="relative" zIndex={0}>
+          <AnimatePresence initial={false} mode="wait">
             {React.Children.map(children, (child, index) =>
               index === selectedPage ? (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: direction === "next" ? 50 : -50 }}
+                  initial={
+                    isFirstRender
+                      ? {}
+                      : { opacity: 0, y: direction === "next" ? 50 : -50 }
+                  }
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: direction === "next" ? -50 : 50 }}
-                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                 >
                   {React.cloneElement(child as React.ReactElement, {
                     onNext: handleNext,
