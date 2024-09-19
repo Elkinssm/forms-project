@@ -10,6 +10,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { CheckIcon, SmallCloseIcon } from "@chakra-ui/icons";
+import { AnimatePresence, motion } from "framer-motion";
 import FormHeader from "../FormHeader/FormHeader";
 
 // Definición de los tipos de las propiedades del Sidebar
@@ -24,16 +25,19 @@ interface FormData {
 const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const [selectedPage, setSelectedPage] = useState<number>(0);
   const [formData, setFormData] = useState<FormData>({});
+  const [direction, setDirection] = useState<"next" | "back">("next");
   const totalSteps = React.Children.count(children);
 
   const handleNext = () => {
     if (selectedPage < totalSteps - 1) {
+      setDirection("back");
       setSelectedPage(selectedPage + 1);
     }
   };
 
   const handleBack = () => {
     if (selectedPage > 0) {
+      setDirection("next");
       setSelectedPage(selectedPage - 1);
     }
   };
@@ -45,15 +49,16 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const progressValue = ((selectedPage + 1) / totalSteps) * 100;
 
   return (
-    <Box display="flex">
+    <Box display="flex" flexDirection={{ base: "column", md: "row" }}>
       {/* Sidebar */}
       <Box
         as="aside"
         bg="blue.50"
-        w="250px"
-        h="100vh"
+        w={{ base: "100%", md: "250px" }}
+        h={{ base: "auto", md: "100vh" }}
         p={4}
-        borderRight="1px"
+        borderRight={{ md: "1px" }}
+        borderBottom={{ base: "1px", md: "none" }}
         borderColor="gray.200"
         display="flex"
         flexDirection="column"
@@ -113,17 +118,26 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           />
         </Box>
         <Box flex="1" p={6} overflowY="auto">
-          {React.Children.map(children, (child, index) => {
-            if (index === selectedPage) {
-              return React.cloneElement(child as React.ReactElement, {
-                onNext: handleNext,
-                onBack: handleBack,
-                onDataChange: handleDataChange,
-                formData: formData,
-              });
-            }
-            return null;
-          })}
+          <AnimatePresence mode="wait">
+            {React.Children.map(children, (child, index) =>
+              index === selectedPage ? (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: direction === "next" ? 50 : -50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: direction === "next" ? -50 : 50 }}
+                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                >
+                  {React.cloneElement(child as React.ReactElement, {
+                    onNext: handleNext,
+                    onBack: handleBack,
+                    onDataChange: handleDataChange,
+                    formData: formData,
+                  })}
+                </motion.div>
+              ) : null
+            )}
+          </AnimatePresence>
         </Box>
       </Box>
     </Box>
