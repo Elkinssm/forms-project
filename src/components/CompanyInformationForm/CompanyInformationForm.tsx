@@ -1,47 +1,61 @@
+import React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Box,
-  Button,
   FormControl,
   FormLabel,
   Input,
   Text,
+  Button,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const schema = z.object({
-  corporate: z.string().min(6, {
-    message: "The company name must be at least 6 characters long",
-  }),
-  merchant: z.string().min(6, {
-    message: "The merchant name must be at least 6 characters long",
-  }),
+  corporate: z
+    .string()
+    .min(6, "The company name must be at least 6 characters long"),
+  merchant: z
+    .string()
+    .min(6, "The merchant name must be at least 6 characters long"),
 });
 
 type BusinessDataForm = z.infer<typeof schema>;
 
 interface CompanyInformationFormProps {
   title: string;
+  onNext?: () => void;
+  onBack?: () => void;
+  onDataChange?: (data: BusinessDataForm) => void;
+  formData?: BusinessDataForm;
 }
 
-const CompanyInformationForm = ({ title }: CompanyInformationFormProps) => {
+const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
+  title,
+  onNext,
+  onBack,
+  onDataChange,
+  formData = { corporate: "", merchant: "" },
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(schema),
+    defaultValues: formData,
   });
 
-  const onSubmit = (data: BusinessDataForm) => {
+  const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
     console.log(data);
-    alert(`Corporate: ${data.corporate}, Merchant: ${data.merchant}`);
+    if (onDataChange) onDataChange(data);
+    if (onNext) onNext();
   };
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-      <Text fontWeight="bold" fontSize="lg" mb={4}>
+      <Text fontWeight="bold" fontSize="lg" mb={4} color="text.highEmphasis">
         {title}
       </Text>
       <FormControl mb={4} isInvalid={!!errors.corporate}>
@@ -53,7 +67,7 @@ const CompanyInformationForm = ({ title }: CompanyInformationFormProps) => {
           {...register("corporate")}
         />
         {errors.corporate && (
-          <Text color="red.500">{errors.corporate.message}</Text>
+          <Text color="semantic.error.DEFAULT">{errors.corporate.message}</Text>
         )}
       </FormControl>
       <FormControl mb={4} isInvalid={!!errors.merchant}>
@@ -65,12 +79,19 @@ const CompanyInformationForm = ({ title }: CompanyInformationFormProps) => {
           {...register("merchant")}
         />
         {errors.merchant && (
-          <Text color="red.500">{errors.merchant.message}</Text>
+          <Text color="semantic.error.DEFAULT">{errors.merchant.message}</Text>
         )}
       </FormControl>
-      <Button type="submit" colorScheme="blue" mt={6}>
-        Next
-      </Button>
+      <Box display="flex" justifyContent="space-between" mt={6}>
+        {onBack && (
+          <Button onClick={onBack} colorScheme="gray">
+            Back
+          </Button>
+        )}
+        <Button type="submit" colorScheme="blue">
+          Next
+        </Button>
+      </Box>
     </Box>
   );
 };

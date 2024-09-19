@@ -117,6 +117,59 @@ const theme = extendTheme({
         },
       },
     },
+    Radio: {
+      baseStyle: {
+        control: {
+          _checked: {
+            bg: "transparent",
+            borderColor: "transparent",
+            outline: "2px solid",
+            outlineOffset: "1px",
+            outlineColor: "brand.primary",
+            _before: {
+              content: '""',
+              display: "block",
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              bg: "brand.primary",
+            },
+          },
+          _focus: {
+            borderColor: "transparent",
+            // boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.6)",
+          },
+          _hover: {
+            borderColor: "transparent",
+          },
+          _disabled: {
+            bg: "#000000",
+            borderColor: "neutral.900",
+          },
+        },
+        label: {
+          fontWeight: "bold",
+          color: "text.highEmphasis",
+          _disabled: {
+            color: "text.disabled",
+          },
+        },
+      },
+      sizes: {
+        md: {
+          control: { w: 4, h: 4 },
+          label: { fontSize: "md" },
+        },
+        lg: {
+          control: { w: 5, h: 5 },
+          label: { fontSize: "lg" },
+        },
+      },
+      defaultProps: {
+        size: "md",
+        colorScheme: "brand",
+      },
+    },
   },
 });
 
