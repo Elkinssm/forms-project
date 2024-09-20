@@ -1,13 +1,6 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import {
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  Text,
-  Button,
-} from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -30,20 +23,21 @@ interface ContactInformationFormFormProps {
   onBack?: () => void;
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
+  formRef?: React.RefObject<HTMLFormElement>;
 }
 
 const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
   title,
   onNext,
-  onBack,
   onDataChange,
-  formData = { email: "", phone: 0, federal: "" }, // Default value
+  formData = { email: "", phone: 0, federal: "" },
+  formRef,
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    // reset,
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(schema),
     defaultValues: formData,
@@ -56,7 +50,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
   };
 
   return (
-    <Box as="form" onSubmit={handleSubmit(onSubmit)}>
+    <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
         {title}
       </Text>
@@ -96,16 +90,6 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
           <Text color="semantic.error.DEFAULT">{errors.federal.message}</Text>
         )}
       </FormControl>
-      <Box display="flex" justifyContent="space-between" mt={6}>
-        {onBack && (
-          <Button onClick={onBack} colorScheme="gray">
-            Back
-          </Button>
-        )}
-        <Button type="submit" colorScheme="blue">
-          Next
-        </Button>
-      </Box>
     </Box>
   );
 };

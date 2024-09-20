@@ -6,7 +6,6 @@ import {
   FormLabel,
   Input,
   Text,
-  Button,
   Select,
   HStack,
   useTheme,
@@ -27,21 +26,21 @@ const schema = z.object({
 
 type BusinessDataForm = z.infer<typeof schema>;
 
-
 interface CorporateAddressFormProps {
   title: string;
   onNext?: () => void;
   onBack?: () => void;
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
+  formRef?: React.RefObject<HTMLFormElement>;
 }
 
 const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
   title,
   onNext,
-  onBack,
   onDataChange,
-  formData = { address: "", aditionalInfo: "", city: "", state: "", zip: "" }, 
+  formData = { address: "", aditionalInfo: "", city: "", state: "", zip: "" },
+  formRef,
 }) => {
   const theme = useTheme();
   const {
@@ -54,13 +53,13 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
   });
 
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
-    console.log(data); 
-    if (onDataChange) onDataChange(data); 
-    if (onNext) onNext(); 
+    console.log(data);
+    if (onDataChange) onDataChange(data);
+    if (onNext) onNext();
   };
 
   return (
-    <Box as="form" onSubmit={handleSubmit(onSubmit)}>
+    <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
         {title}
       </Text>
@@ -138,16 +137,6 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           )}
         </FormControl>
       </HStack>
-      <Box display="flex" justifyContent="space-between" mt={6}>
-        {onBack && (
-          <Button onClick={onBack} colorScheme="gray">
-            Back
-          </Button>
-        )}
-        <Button type="submit" colorScheme="blue">
-          Next
-        </Button>
-      </Box>
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, ReactElement, useEffect } from "react";
+import React, { useState, ReactElement, useEffect, useRef } from "react";
 import {
   Text,
   List,
@@ -10,12 +10,12 @@ import {
   HStack,
   VStack,
 } from "@chakra-ui/react";
-import { CheckIcon, SmallCloseIcon } from "@chakra-ui/icons";
+import { CheckIcon } from "@chakra-ui/icons";
 import { AnimatePresence, motion } from "framer-motion";
-import FormHeader from "../FormHeader/FormHeader";
+import FormHeader from "../FormComponents/FormHeader";
 import CircleIcon from "/src/utils/CircleIcon";
+import FormNavigation from "../FormComponents/FormNavigation";
 
-// Definición de los tipos de las propiedades del Sidebar
 interface SidebarProps {
   children: ReactElement[];
 }
@@ -30,6 +30,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const [direction, setDirection] = useState<"next" | "back">("next");
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
   const totalSteps = React.Children.count(children);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     setIsFirstRender(false);
@@ -56,12 +57,12 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const progressValue = ((selectedPage + 1) / totalSteps) * 100;
 
   return (
-    <Box display="flex" flexDirection={{ base: "column", md: "row" }}>
+    <Box display="flex" flexDirection={{ base: "column", md: "row" }} h="100vh">
       {/* Sidebar */}
       <Box
         as="aside"
         w={{ base: "100%", md: "420px" }}
-        h={{ base: "auto", md: "100vh" }}
+        h={{ base: "auto", md: "100vh" }} // Asegurar que el sidebar tenga la altura completa de la pantalla
         p={4}
         borderRight="1px solid"
         borderColor="neutral.300"
@@ -139,7 +140,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
       </Box>
 
       {/* Main Content */}
-      <Box display="flex" flexDirection="column" w={"100%"} position="relative">
+      <Box display="flex" flexDirection="column" w="100%" h="100%">
         <Box
           flex="0"
           p={6}
@@ -147,14 +148,20 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           borderBottom="1px solid"
           borderColor="gray.200"
           zIndex={1}
-          position="relative"
         >
           <FormHeader
             title="Business information"
             description="Let’s start with your company’s basic information. [We could add here why the company requests this information]"
           />
         </Box>
-        <Box flex="1" p={6} overflow="hidden" position="relative" zIndex={0}>
+        <Box
+          flex="1"
+          p={6}
+          overflowY="auto"
+          maxH="calc(100vh - 120px)"
+          position="relative"
+          zIndex={0}
+        >
           <AnimatePresence initial={false} mode="wait">
             {React.Children.map(children, (child, index) =>
               index === selectedPage ? (
@@ -174,11 +181,20 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                     onBack: handleBack,
                     onDataChange: handleDataChange,
                     formData: formData,
+                    formRef: formRef,
                   })}
                 </motion.div>
               ) : null
             )}
           </AnimatePresence>
+        </Box>
+        <Box flex="0" p={4} bg="white" boxShadow="md">
+          <FormNavigation
+            onBack={handleBack}
+            onNext={handleNext}
+            formRef={formRef}
+            showBackButton={selectedPage > 0} 
+          />
         </Box>
       </Box>
     </Box>

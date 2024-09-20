@@ -1,13 +1,6 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import {
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  Text,
-  Button,
-} from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -28,20 +21,20 @@ interface CompanyInformationFormProps {
   onBack?: () => void;
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
+  formRef?: React.RefObject<HTMLFormElement>;
 }
 
 const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
   title,
   onNext,
-  onBack,
   onDataChange,
   formData = { corporate: "", merchant: "" },
+  formRef,
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(schema),
     defaultValues: formData,
@@ -54,7 +47,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
   };
 
   return (
-    <Box as="form" onSubmit={handleSubmit(onSubmit)}>
+    <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
         {title}
       </Text>
@@ -82,16 +75,6 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           <Text color="semantic.error.DEFAULT">{errors.merchant.message}</Text>
         )}
       </FormControl>
-      <Box display="flex" justifyContent="space-between" mt={6}>
-        {/* {onBack && (
-          <Button onClick={onBack} colorScheme="gray">
-            Back
-          </Button>
-        )} */}
-        <Button type="submit" colorScheme="blue">
-          Next
-        </Button>
-      </Box>
     </Box>
   );
 };

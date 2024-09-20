@@ -5,13 +5,13 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Button,
   RadioGroup,
   Radio,
   Stack,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+
 const schema = z.object({
   years: z.preprocess(
     (val) => Number(val),
@@ -35,21 +35,20 @@ interface AdditionalDetailsFormProps {
   onBack?: () => void;
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
+  formRef?: React.RefObject<HTMLFormElement>;
 }
 
 const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
   title,
-
   onNext,
-  onBack,
   onDataChange,
   formData = { years: 0, locations: 0, mailing: "", website: "" },
+  formRef,
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(schema),
     defaultValues: formData,
@@ -60,7 +59,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
     if (onNext) onNext();
   };
   return (
-    <Box as="form" onSubmit={handleSubmit(onSubmit)}>
+    <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <Text fontWeight="bold" fontSize="lg" mb={4} color="text.highEmphasis">
         {title}
       </Text>
@@ -116,16 +115,6 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
           <Text color="semantic.error.DEFAULT">{errors.website.message}</Text>
         )}
       </FormControl>
-      <Box display="flex" justifyContent="space-between" mt={6}>
-        {onBack && (
-          <Button onClick={onBack} colorScheme="gray">
-            Back
-          </Button>
-        )}
-        <Button type="submit" colorScheme="blue">
-          Next
-        </Button>
-      </Box>
     </Box>
   );
 };
