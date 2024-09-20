@@ -5,6 +5,7 @@ const theme = extendTheme({
     brand: {
       primary: "#298ecb",
       secondary: "#263669",
+      ligthBlue: "#F9FCFF",
     },
     semantic: {
       success: {
@@ -55,7 +56,6 @@ const theme = extendTheme({
         field: {
           border: "transparent",
           borderRadius: "8px",
-          borderColor: "red",
           _hover: {
             borderColor: "input.borderHover",
             border: "1px solid",
@@ -170,8 +170,75 @@ const theme = extendTheme({
         colorScheme: "brand",
       },
     },
+    Button: {
+      baseStyle: {
+        fontWeight: "bold",
+        color: "brand.primary",
+        borderRadius: "md",
+        border: "none",
+      },
+      sizes: {
+        sm: {
+          fontSize: "sm",
+          px: 4,
+          py: 2,
+        },
+        md: {
+          fontSize: "md",
+          px: 6,
+          py: 3,
+        },
+        lg: {
+          fontSize: "lg",
+          px: 8,
+          py: 4,
+        },
+      },
+      variants: {
+        solid: {
+          bg: "brand.primary",
+          color: "white",
+          border: "none",
+          _hover: {
+            bg: "brand.secondary",
+            border: "none",
+          },
+          _focus: {
+            outline: "none",
+          },
+        },
+        outline: {
+          borderColor: "brand.primary",
+          border: "2px solid",
+          color: "brand.primary",
+          _hover: {
+            bg: "brand.ligthBlue",
+            borderColor: "semantic.info.light",
+          },
+          _focus: {
+            outline: "none",
+          },
+        },
+        ghost: {
+          color: "blue.500",
+          _hover: {
+            bg: "blue.50",
+          },
+        },
+      },
+      widths: {
+        sm: "100px",
+        md: "150px",
+        lg: "200px",
+        full: "100%",
+      },
+      defaultProps: {
+        size: "md",
+        variant: "solid",
+        border: "none",
+      },
+    },
   },
-  
 });
 
 export default theme;

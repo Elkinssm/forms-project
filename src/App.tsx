@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 import "./App.css";
 
@@ -12,13 +12,15 @@ import Sidebar from "./components/Sidebar/Sidebar";
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      {/* Pasamos los formularios como children del Sidebar */}
-      <Sidebar>
-        <CompanyInformationForm title="Company Information" tu />
-        <CorporateAddressForm title="Corporate Address" />
-        <ContactInformationForm title="Contact Information" />
-        <AdditionalDetailsForm title="Additional Details" />
-      </Sidebar>
+      <Box maxW={"1200px"} mx="auto" overflow={"auto"}>
+        {/* Pasamos los formularios como children del Sidebar */}
+        <Sidebar>
+          <CompanyInformationForm title="Company Information" />
+          <CorporateAddressForm title="Corporate Address" />
+          <ContactInformationForm title="Contact Information" />
+          <AdditionalDetailsForm title="Additional Details" />
+        </Sidebar>
+      </Box>
     </ChakraProvider>
   );
 }

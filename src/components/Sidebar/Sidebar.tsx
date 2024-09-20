@@ -9,6 +9,7 @@ import {
   CircularProgressLabel,
   HStack,
   VStack,
+  Spacer,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import { AnimatePresence, motion } from "framer-motion";
@@ -69,7 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         display="flex"
         flexDirection="column"
       >
-        <VStack align="start" spacing={4} mb={6} flexDirection={"row"}>
+        <VStack align="start" spacing={2} mb={6} flexDirection={"row"}>
           <Box
             display="flex"
             alignItems="center"
@@ -77,6 +78,8 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             bg="brand.primary"
             borderRadius="md"
             p={2}
+            height={14}
+            w={300}
           >
             <HStack spacing={2}>
               <Box
@@ -95,10 +98,11 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                 Business Information
               </Text>
             </HStack>
+            <Spacer />
             <CircularProgress
               value={progressValue}
               size="50px"
-              color="blue.500"
+              color="neutral.500"
               trackColor="white"
               display="flex"
               alignItems="center"
@@ -145,6 +149,8 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           flex="0"
           p={6}
           bg="#F9FCFF"
+          display="flex"
+          justifyContent="center"
           borderBottom="1px solid"
           borderColor="gray.200"
           zIndex={1}
@@ -155,12 +161,15 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           />
         </Box>
         <Box
+          // maxWidth={"200px"}
+          // bg={{ base: "red", md: "green", lg: "salmon" }}
           flex="1"
           p={6}
           overflowY="auto"
           maxH="calc(100vh - 120px)"
           position="relative"
           zIndex={0}
+          // maxWidth={{ base: "600px" , md: "800px", lg: "1300px" }}
         >
           <AnimatePresence initial={false} mode="wait">
             {React.Children.map(children, (child, index) =>
@@ -193,7 +202,8 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             onBack={handleBack}
             onNext={handleNext}
             formRef={formRef}
-            showBackButton={selectedPage > 0} 
+            showBackButton={selectedPage > 0}
+            buttonSize={selectedPage === 0 ? "full" : "sm"}
           />
         </Box>
       </Box>

@@ -7,12 +7,14 @@ interface FormHeaderProps {
 
 const FormHeader: React.FC<FormHeaderProps> = ({ title, description }) => {
   return (
-    <Box backgroundColor="F9FCFF" px="224px" py="32px">
+    <Box backgroundColor="brand.ligthBlue" maxWidth={"500px"}>
       <VStack spacing={4} align="center">
-        <Heading as="h1" size="lg" mb={2} textAlign="center">
+        <Heading as="h1" size="md" mb={2} textAlign="center">
           {title}
         </Heading>
-        <Text textAlign="center">{description}</Text>
+        <Text size={"sm"} textAlign="center">
+          {description}
+        </Text>
       </VStack>
     </Box>
   );
