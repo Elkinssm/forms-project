@@ -1,11 +1,10 @@
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
-  Box,
   FormControl,
   FormLabel,
   Input,
-  Text,
   Button,
   RadioGroup,
   Radio,
@@ -13,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 const schema = z.object({
   years: z.preprocess(
     (val) => Number(val),
@@ -29,7 +27,6 @@ const schema = z.object({
   ),
   website: z.string().url("Invalid website URL"),
 });
-
 type BusinessDataForm = z.infer<typeof schema>;
 
 interface AdditionalDetailsFormProps {
@@ -42,6 +39,7 @@ interface AdditionalDetailsFormProps {
 
 const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
   title,
+
   onNext,
   onBack,
   onDataChange,
@@ -56,16 +54,14 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
     resolver: zodResolver(schema),
     defaultValues: formData,
   });
-
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
     console.log(data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
-
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-      <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
+      <Text fontWeight="bold" fontSize="lg" mb={4} color="text.highEmphasis">
         {title}
       </Text>
       <FormControl mb={4} isInvalid={!!errors.years}>
@@ -92,7 +88,6 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
           <Text color="semantic.error.DEFAULT">{errors.locations.message}</Text>
         )}
       </FormControl>
-
       <FormControl mb={4} isInvalid={!!errors.mailing}>
         <FormLabel>Mailing Address</FormLabel>
         <RadioGroup>
@@ -109,7 +104,6 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
           <Text color="semantic.error.DEFAULT">{errors.mailing.message}</Text>
         )}
       </FormControl>
-
       <FormControl mb={4} isInvalid={!!errors.website}>
         <FormLabel htmlFor="merchant">Website</FormLabel>
         <Input
@@ -122,7 +116,6 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
           <Text color="semantic.error.DEFAULT">{errors.website.message}</Text>
         )}
       </FormControl>
-
       <Box display="flex" justifyContent="space-between" mt={6}>
         {onBack && (
           <Button onClick={onBack} colorScheme="gray">
