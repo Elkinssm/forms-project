@@ -203,7 +203,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             onNext={handleNext}
             formRef={formRef}
             showBackButton={selectedPage > 0}
-            buttonSize={selectedPage === 0 ? "full" : "sm"}
+            isFirstPage={selectedPage === 0}
           />
         </Box>
       </Box>
