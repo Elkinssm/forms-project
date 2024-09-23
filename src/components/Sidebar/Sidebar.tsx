@@ -14,7 +14,7 @@ import {
 import { CheckIcon } from "@chakra-ui/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import FormHeader from "../FormComponents/FormHeader";
-import CircleIcon from "/src/utils/CircleIcon";
+import CircleIcon from "../../utils/CircleIcon";
 import FormNavigation from "../FormComponents/FormNavigation";
 
 interface SidebarProps {
@@ -102,14 +102,14 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             <CircularProgress
               value={progressValue}
               size="50px"
-              color="neutral.500"
-              trackColor="white"
+              color="white"
+              trackColor="neutral.500"
               display="flex"
               alignItems="center"
               justifyContent="center"
             >
               <CircularProgressLabel
-                fontSize="14px"
+                fontSize="12px"
                 color="white"
                 fontWeight="bold"
               >
