@@ -107,6 +107,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
               display="flex"
               alignItems="center"
               justifyContent="center"
+              thickness="5px"
             >
               <CircularProgressLabel
                 fontSize="12px"
