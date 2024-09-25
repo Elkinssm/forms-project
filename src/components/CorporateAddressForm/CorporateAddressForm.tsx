@@ -19,10 +19,11 @@ const schema = z.object({
   corpLegalAddress: z.string().min(5, { message: "Corp/Legal Address is required" }),
   corpLegalCity: z.string().min(1, { message: "City is required" }),
 
-  state: z.string().min(1, { message: "State is required" }),
-  zip: z
-    .string()
-    .min(5, { message: "ZIP code must be at least 5 characters long" }),
+  corpLegalState: z.string().min(1, { message: "State is required" }),
+  corpLegalZip: z.string().min(5, { message: "ZIP code must be at least 5 characters long" }),
+  corpLegalPhone: z.string().min(10, "The phone number must be at least 10 characters long"),
+  corpLegalEmail: z.string().email("A valid email is required"),
+
 });
 
 type BusinessDataForm = z.infer<typeof schema>;
@@ -40,7 +41,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
   title,
   onNext,
   onDataChange,
-  formData = { corpLegalName: "", corpLegalAddress: "", corpLegalCity: "", state: "", zip: "" },
+  formData = { corpLegalName: "", corpLegalAddress: "", corpLegalCity: "", corpLegalState: "", corpLegalZip: "", corpLegalPhone: "", corpLegalEmail: "" },
   formRef,
 }) => {
   const theme = useTheme();
@@ -78,6 +79,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalName.message}</Text>
         )}
       </FormControl>
+
       <FormControl mb={4} isInvalid={!!errors.corpLegalAddress}>
         <FormLabel htmlFor="corpLegalAddress" color={theme.colors.gray[700]}>
           Corp/Legal Address
@@ -93,11 +95,9 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
         )}
       </FormControl>
 
-
-
       <FormControl mb={4} isInvalid={!!errors.corpLegalCity}>
         <FormLabel htmlFor="corpLegalCity" color={theme.colors.gray[700]}>
-          City
+          Corp/Legal City
         </FormLabel>
         <Select id="corpLegalCity" placeholder="Select city" {...register("corpLegalCity")}>
           <option value="New York">New York</option>
@@ -108,33 +108,66 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalCity.message}</Text>
         )}
       </FormControl>
+
       <HStack spacing={4} mb={4}>
-        <FormControl isInvalid={!!errors.state}>
-          <FormLabel htmlFor="state" color={theme.colors.gray[700]}>
-            State
+        <FormControl isInvalid={!!errors.corpLegalState}>
+          <FormLabel htmlFor="corpLegalState" color={theme.colors.gray[700]}>
+            Corp/Legal State
           </FormLabel>
-          <Select id="state" placeholder="Select state" {...register("state")}>
+          <Select id="corpLegalState" placeholder="Select state" {...register("corpLegalState")}>
             <option value="NY">New York</option>
             <option value="CA">California</option>
             <option value="IL">Illinois</option>
           </Select>
-          {errors.state && (
-            <Text color={"semantic.error.DEFAULT"}>{errors.state.message}</Text>
+          {errors.corpLegalState && (
+            <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalState.message}</Text>
           )}
         </FormControl>
 
-        <FormControl isInvalid={!!errors.zip}>
-          <FormLabel htmlFor="zip" color={theme.colors.gray[700]}>
-            ZIP Code
+        <FormControl isInvalid={!!errors.corpLegalZip}>
+          <FormLabel htmlFor="corpLegalZip" color={theme.colors.gray[700]}>
+            Corp/Legal ZIP Code
           </FormLabel>
           <Input
-            id="zip"
+            id="corpLegalZip"
             type="text"
             placeholder="Enter your ZIP code"
-            {...register("zip")}
+            {...register("corpLegalZip")}
           />
-          {errors.zip && (
-            <Text color={"semantic.error.DEFAULT"}>{errors.zip.message}</Text>
+          {errors.corpLegalZip && (
+            <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalZip.message}</Text>
+          )}
+        </FormControl>
+      </HStack>
+
+      <HStack spacing={4} mb={4}>
+        <FormControl isInvalid={!!errors.corpLegalPhone}>
+          <FormLabel htmlFor="corpLegalPhone" color={theme.colors.gray[700]}>
+            Corp/Legal Phone
+          </FormLabel>
+          <Input
+            id="corpLegalPhone"
+            type="text"
+            placeholder="Enter your ZIP code"
+            {...register("corpLegalPhone")}
+          />
+          {errors.corpLegalPhone && (
+            <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalPhone.message}</Text>
+          )}
+        </FormControl>
+
+        <FormControl isInvalid={!!errors.corpLegalEmail}>
+          <FormLabel htmlFor="corpLegalEmail" color={theme.colors.gray[700]}>
+            Corp/Legal Email
+          </FormLabel>
+          <Input
+            id="corpLegalEmail"
+            type="text"
+            placeholder="Enter your ZIP code"
+            {...register("corpLegalEmail")}
+          />
+          {errors.corpLegalEmail && (
+            <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalEmail.message}</Text>
           )}
         </FormControl>
       </HStack>
