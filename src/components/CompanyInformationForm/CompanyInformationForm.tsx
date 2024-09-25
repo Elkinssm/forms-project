@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Box, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, HStack, Input, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputMask from "react-input-mask";
@@ -90,23 +90,40 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           <Text color="semantic.error.DEFAULT">{errors.merchName.message}</Text>
         )}
       </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.merchFedTaxId}>
-        <FormLabel htmlFor="merchFedTaxId">FedTaxID</FormLabel>
-        <Input
-          as={InputMask}
-          mask="**-*******"
-          maskChar={null}
-          id="merchFedTaxId"
-          type="text"
-          placeholder="Enter your merchant name"
-          {...register("merchFedTaxId")}
-        />
-        {errors.merchFedTaxId && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.merchFedTaxId.message}
-          </Text>
-        )}
-      </FormControl>
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.merchFedTaxId}>
+          <FormLabel htmlFor="merchFedTaxId">FedTaxID</FormLabel>
+          <Input
+            as={InputMask}
+            mask="**-*******"
+            maskChar={null}
+            id="merchFedTaxId"
+            type="text"
+            placeholder="Enter your merchant name"
+            {...register("merchFedTaxId")}
+          />
+          {errors.merchFedTaxId && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.merchFedTaxId.message}
+            </Text>
+          )}
+        </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.yearsInBusiness}>
+          <FormLabel htmlFor="yearsInBusiness">Years in Business</FormLabel>
+          <Input
+            id="yearsInBusiness"
+            type="number"
+            placeholder="Enter your years in business"
+            {...register("yearsInBusiness")}
+          />
+          {errors.yearsInBusiness && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.yearsInBusiness.message}
+            </Text>
+          )}
+        </FormControl>
+      </HStack>
+
       <FormControl mb={4} isInvalid={!!errors.merchAddress}>
         <FormLabel htmlFor="merchAddress">Location Address</FormLabel>
         <Input
@@ -121,77 +138,69 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           </Text>
         )}
       </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.merchCity}>
-        <FormLabel htmlFor="merchCity">Location City</FormLabel>
-        <Input
-          id="merchCity"
-          type="text"
-          placeholder="Enter your company city"
-          {...register("merchCity")}
-        />
-        {errors.merchCity && (
-          <Text color="semantic.error.DEFAULT">{errors.merchCity.message}</Text>
-        )}
-      </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.merchState}>
-        <FormLabel htmlFor="merchState">Location State</FormLabel>
-        <Input
-          id="merchState"
-          type="text"
-          placeholder="Enter your company state"
-          {...register("merchState")}
-        />
-        {errors.merchState && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.merchState.message}
-          </Text>
-        )}
-      </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.merchZip}>
-        <FormLabel htmlFor="merchZip">Location Zip</FormLabel>
-        <Input
-          as={InputMask}
-          mask={mask}
-          maskChar={null}
-          value={zipValue}
-          id="merchZip"
-          type="text"
-          placeholder="Enter your company zip"
-          {...register("merchZip")}
-          onChange={handleZipChange}
-        />
-        {errors.merchZip && (
-          <Text color="semantic.error.DEFAULT">{errors.merchZip.message}</Text>
-        )}
-      </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.merchPhone}>
-        <FormLabel htmlFor="merchPhone">Location Phone</FormLabel>
-        <Input
-          id="merchPhone"
-          type="text"
-          placeholder="Enter your company phone"
-          {...register("merchPhone")}
-        />
-        {errors.merchPhone && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.merchPhone.message}
-          </Text>
-        )}
-      </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.yearsInBusiness}>
-        <FormLabel htmlFor="yearsInBusiness">Years in Business</FormLabel>
-        <Input
-          id="yearsInBusiness"
-          type="number"
-          placeholder="Enter your years in business"
-          {...register("yearsInBusiness")}
-        />
-        {errors.yearsInBusiness && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.yearsInBusiness.message}
-          </Text>
-        )}
-      </FormControl>
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.merchCity}>
+          <FormLabel htmlFor="merchCity">Location City</FormLabel>
+          <Input
+            id="merchCity"
+            type="text"
+            placeholder="Enter your company city"
+            {...register("merchCity")}
+          />
+          {errors.merchCity && (
+            <Text color="semantic.error.DEFAULT">{errors.merchCity.message}</Text>
+          )}
+        </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.merchState}>
+          <FormLabel htmlFor="merchState">Location State</FormLabel>
+          <Input
+            id="merchState"
+            type="text"
+            placeholder="Enter your company state"
+            {...register("merchState")}
+          />
+          {errors.merchState && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.merchState.message}
+            </Text>
+          )}
+        </FormControl>
+      </HStack>
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.merchZip}>
+          <FormLabel htmlFor="merchZip">Location Zip</FormLabel>
+          <Input
+            as={InputMask}
+            mask={mask}
+            maskChar={null}
+            value={zipValue}
+            id="merchZip"
+            type="text"
+            placeholder="Enter your company zip"
+            {...register("merchZip")}
+            onChange={handleZipChange}
+          />
+          {errors.merchZip && (
+            <Text color="semantic.error.DEFAULT">{errors.merchZip.message}</Text>
+          )}
+        </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.merchPhone}>
+          <FormLabel htmlFor="merchPhone">Location Phone</FormLabel>
+          <Input
+            id="merchPhone"
+            type="text"
+            placeholder="Enter your company phone"
+            {...register("merchPhone")}
+          />
+          {errors.merchPhone && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.merchPhone.message}
+            </Text>
+          )}
+        </FormControl>
+      </HStack>
+
+
     </Box>
   );
 };

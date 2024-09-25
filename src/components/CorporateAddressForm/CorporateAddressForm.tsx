@@ -15,9 +15,10 @@ import { z } from "zod";
 
 
 const schema = z.object({
-  address: z.string().min(5, { message: "Address is required" }),
-  aditionalInfo: z.string().optional(),
-  city: z.string().min(1, { message: "City is required" }),
+  corpLegalName: z.string().min(5, { message: "Corp/Legal name is required" }),
+  corpLegalAddress: z.string().min(5, { message: "Corp/Legal Address is required" }),
+  corpLegalCity: z.string().min(1, { message: "City is required" }),
+
   state: z.string().min(1, { message: "State is required" }),
   zip: z
     .string()
@@ -39,7 +40,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
   title,
   onNext,
   onDataChange,
-  formData = { address: "", aditionalInfo: "", city: "", state: "", zip: "" },
+  formData = { corpLegalName: "", corpLegalAddress: "", corpLegalCity: "", state: "", zip: "" },
   formRef,
 }) => {
   const theme = useTheme();
@@ -63,48 +64,48 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
       <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
         {title}
       </Text>
-      <FormControl mb={4} isInvalid={!!errors.address}>
-        <FormLabel htmlFor="address" color={theme.colors.gray[700]}>
-          Address
+      <FormControl mb={4} isInvalid={!!errors.corpLegalName}>
+        <FormLabel htmlFor="legalName" color={theme.colors.gray[700]}>
+          Corp/Legal Name
+        </FormLabel>
+        <Input
+          id="legalName"
+          type="text"
+          placeholder="Enter your Corp/Legal name"
+          {...register("corpLegalName")}
+        />
+        {errors.corpLegalName && (
+          <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalName.message}</Text>
+        )}
+      </FormControl>
+      <FormControl mb={4} isInvalid={!!errors.corpLegalAddress}>
+        <FormLabel htmlFor="corpLegalAddress" color={theme.colors.gray[700]}>
+          Corp/Legal Address
         </FormLabel>
         <Input
           id="address"
           type="text"
           placeholder="Enter your company address"
-          {...register("address")}
+          {...register("corpLegalAddress")}
         />
-        {errors.address && (
-          <Text color={"semantic.error.DEFAULT"}>{errors.address.message}</Text>
-        )}
-      </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.aditionalInfo}>
-        <FormLabel htmlFor="aditionalInfo" color={theme.colors.gray[700]}>
-          Additional info (Suite, building #)
-        </FormLabel>
-        <Input
-          id="aditionalInfo"
-          type="text"
-          placeholder="Enter the additional info"
-          {...register("aditionalInfo")}
-        />
-        {errors.aditionalInfo && (
-          <Text color={"semantic.error.DEFAULT"}>
-            {errors.aditionalInfo.message}
-          </Text>
+        {errors.corpLegalAddress && (
+          <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalAddress.message}</Text>
         )}
       </FormControl>
 
-      <FormControl mb={4} isInvalid={!!errors.city}>
-        <FormLabel htmlFor="city" color={theme.colors.gray[700]}>
+
+
+      <FormControl mb={4} isInvalid={!!errors.corpLegalCity}>
+        <FormLabel htmlFor="corpLegalCity" color={theme.colors.gray[700]}>
           City
         </FormLabel>
-        <Select id="city" placeholder="Select city" {...register("city")}>
+        <Select id="corpLegalCity" placeholder="Select city" {...register("corpLegalCity")}>
           <option value="New York">New York</option>
           <option value="Los Angeles">Los Angeles</option>
           <option value="Chicago">Chicago</option>
         </Select>
-        {errors.city && (
-          <Text color={"semantic.error.DEFAULT"}>{errors.city.message}</Text>
+        {errors.corpLegalCity && (
+          <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalCity.message}</Text>
         )}
       </FormControl>
       <HStack spacing={4} mb={4}>
