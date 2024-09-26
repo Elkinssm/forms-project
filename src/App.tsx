@@ -10,6 +10,8 @@ import ContactInformationForm from "./components/YourBusiness/ContactInformation
 import AdditionalDetailsForm from "./components/YourBusiness/AdditionalDetailsForm/AdditionalDetailsForm";
 import Sidebar from "./components/Sidebar/Sidebar";
 
+import OwnerInformationForm from "./components/OwnerInformation/OwnerInformationForm";
+
 function App() {
   return (
     <ChakraProvider theme={theme}>
@@ -20,6 +22,7 @@ function App() {
           <CorporateAddressForm title="Corporate Address" />
           <ContactInformationForm title="Contact Information" />
           <AdditionalDetailsForm title="Additional Details" />
+          <OwnerInformationForm title="Owner Information" />
         </Sidebar>
       </Box>
     </ChakraProvider>
