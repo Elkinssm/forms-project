@@ -1,4 +1,4 @@
-import React, { useState, ReactElement, useEffect, useRef } from "react";
+import React, { useState, ReactElement, useRef, useEffect } from "react";
 import {
   Text,
   List,
@@ -17,37 +17,74 @@ import FormHeader from "../FormComponents/FormHeader";
 import CircleIcon from "../../utils/CircleIcon";
 import FormNavigation from "../FormComponents/FormNavigation";
 
-interface SidebarProps {
+interface Section {
+  title: string;
   children: ReactElement[];
+}
+
+interface SidebarProps {
+  sections: Section[];
 }
 
 interface FormData {
   [key: string]: unknown;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ children }) => {
-  const [selectedPage, setSelectedPage] = useState<number>(0);
+const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
+  const [selectedSteps, setSelectedSteps] = useState<number[]>(
+    Array(sections.length).fill(0)
+  );
   const [formData, setFormData] = useState<FormData>({});
   const [direction, setDirection] = useState<"next" | "back">("next");
-  const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
-  const totalSteps = React.Children.count(children);
+  const totalSteps = sections.reduce(
+    (acc, section) => acc + section.children.length,
+    0
+  );
   const formRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
-    setIsFirstRender(false);
-  }, []);
+  const currentSectionIndex = selectedSteps.findIndex(
+    (step, index) => step < sections[index].children.length
+  );
+  const currentStepInSection = selectedSteps[currentSectionIndex];
 
   const handleNext = () => {
-    if (selectedPage < totalSteps - 1) {
+    if (
+      currentStepInSection <
+      sections[currentSectionIndex].children.length - 1
+    ) {
       setDirection("next");
-      setSelectedPage(selectedPage + 1);
+      setSelectedSteps((prev) => {
+        const updatedSteps = [...prev];
+        updatedSteps[currentSectionIndex] += 1;
+        return updatedSteps;
+      });
+    } else if (currentSectionIndex < sections.length - 1) {
+      // Move to the next section
+      setSelectedSteps((prev) => {
+        const updatedSteps = [...prev];
+        updatedSteps[currentSectionIndex] += 1; // Set current section step to last
+        updatedSteps[currentSectionIndex + 1] = 0; // Reset next section step
+        return updatedSteps;
+      });
     }
   };
 
   const handleBack = () => {
-    if (selectedPage > 0) {
+    if (currentStepInSection > 0) {
       setDirection("back");
-      setSelectedPage(selectedPage - 1);
+      setSelectedSteps((prev) => {
+        const updatedSteps = [...prev];
+        updatedSteps[currentSectionIndex] -= 1;
+        return updatedSteps;
+      });
+    } else if (currentSectionIndex > 0) {
+      // Move to the previous section
+      setSelectedSteps((prev) => {
+        const updatedSteps = [...prev];
+        updatedSteps[currentSectionIndex - 1] =
+          sections[currentSectionIndex - 1].children.length - 1; // Go to last step of previous section
+        return updatedSteps;
+      });
     }
   };
 
@@ -55,7 +92,17 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     setFormData((prevData) => ({ ...prevData, ...data }));
   };
 
-  const progressValue = ((selectedPage + 1) / totalSteps) * 100;
+  const progressValue =
+    ((selectedSteps.reduce((acc, step) => acc + step, 0) +
+      currentStepInSection) /
+      totalSteps) *
+    100;
+
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [currentStepInSection, currentSectionIndex]);
 
   return (
     <Box display="flex" flexDirection={{ base: "column", md: "row" }} h="100vh">
@@ -63,14 +110,15 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
       <Box
         as="aside"
         w={{ base: "100%", md: "420px" }}
-        h={{ base: "auto", md: "100vh" }} // Asegurar que el sidebar tenga la altura completa de la pantalla
+        h={{ base: "auto", md: "100vh" }}
         p={4}
         borderRight="1px solid"
         borderColor="neutral.300"
         display="flex"
         flexDirection="column"
       >
-        <VStack align="start" spacing={2} mb={6} flexDirection={"row"}>
+        {/* Header for the active section */}
+        <VStack align="start" spacing={2} mb={6}>
           <Box
             display="flex"
             alignItems="center"
@@ -79,7 +127,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             borderRadius="md"
             p={2}
             height={14}
-            w={300}
+            width="100%"
           >
             <HStack spacing={2}>
               <Box
@@ -91,11 +139,11 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                 boxSize="30px"
               >
                 <Text fontWeight="bold" color="blue.500">
-                  1
+                  {currentStepInSection + 1}
                 </Text>
               </Box>
               <Text fontWeight="bold" fontSize="lg" color="white">
-                Business Information
+                {sections[currentSectionIndex].title}
               </Text>
             </HStack>
             <Spacer />
@@ -119,27 +167,54 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             </CircularProgress>
           </Box>
         </VStack>
+
+        {/* List of sections */}
         <List spacing={2} pl={6} pt={2}>
-          {React.Children.map(children, (child, index) => (
-            <ListItem
-              key={index}
-              display="flex"
-              alignItems="center"
-              fontWeight={index === selectedPage ? "bold" : "regular"}
-              cursor="pointer"
-              color={index <= selectedPage ? "brand.primary" : "neutral.800"}
-              onClick={() => setSelectedPage(index)}
-            >
-              <Icon
-                as={index <= selectedPage ? CheckIcon : CircleIcon}
-                boxSize={4}
-                color={index <= selectedPage ? "brand.primary" : "neutral.500"}
-                mr={2}
-              />
-              {React.isValidElement(child)
-                ? (child as ReactElement<{ title: string }>).props.title
-                : null}
-            </ListItem>
+          {sections.map((section, sectionIndex) => (
+            <React.Fragment key={sectionIndex}>
+              <Text fontWeight="bold" mb={2}>
+                {section.title}
+              </Text>
+              {section.children.map((child, index) => (
+                <ListItem
+                  key={`${sectionIndex}-${index}`}
+                  display="flex"
+                  alignItems="center"
+                  fontWeight={
+                    selectedSteps[sectionIndex] === index ? "bold" : "regular"
+                  }
+                  cursor="pointer"
+                  color={
+                    selectedSteps[sectionIndex] >= index
+                      ? "brand.primary"
+                      : "neutral.800"
+                  }
+                  onClick={() => {
+                    const newSteps = [...selectedSteps];
+                    newSteps[sectionIndex] = index;
+                    setSelectedSteps(newSteps);
+                  }}
+                >
+                  <Icon
+                    as={
+                      selectedSteps[sectionIndex] >= index
+                        ? CheckIcon
+                        : CircleIcon
+                    }
+                    boxSize={4}
+                    color={
+                      selectedSteps[sectionIndex] >= index
+                        ? "brand.primary"
+                        : "neutral.500"
+                    }
+                    mr={2}
+                  />
+                  {React.isValidElement(child)
+                    ? (child as ReactElement<{ title: string }>).props.title
+                    : null}
+                </ListItem>
+              ))}
+            </React.Fragment>
           ))}
         </List>
       </Box>
@@ -157,44 +232,43 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           zIndex={1}
         >
           <FormHeader
-            title="Business information"
-            description="Let’s start with your company’s basic information. [We could add here why the company requests this information]"
+            title="Business Information"
+            description="Let’s start with your company’s basic information."
           />
         </Box>
         <Box
-          // maxWidth={"200px"}
-          // bg={{ base: "red", md: "green", lg: "salmon" }}
           flex="1"
           p={6}
           overflowY="auto"
           maxH="calc(100vh - 120px)"
           position="relative"
           zIndex={0}
-          // maxWidth={{ base: "600px" , md: "800px", lg: "1300px" }}
         >
           <AnimatePresence initial={false} mode="wait">
-            {React.Children.map(children, (child, index) =>
-              index === selectedPage ? (
-                <motion.div
-                  key={index}
-                  initial={
-                    isFirstRender
-                      ? {}
-                      : { opacity: 0, y: direction === "next" ? 50 : -50 }
-                  }
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: direction === "next" ? -50 : 50 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  {React.cloneElement(child as React.ReactElement, {
-                    onNext: handleNext,
-                    onBack: handleBack,
-                    onDataChange: handleDataChange,
-                    formData: formData,
-                    formRef: formRef,
-                  })}
-                </motion.div>
-              ) : null
+            {sections.map((section, sectionIndex) =>
+              section.children.map((child, index) =>
+                selectedSteps[sectionIndex] === index ? (
+                  <motion.div
+                    key={`${sectionIndex}-${index}`}
+                    initial={
+                      direction === "next"
+                        ? { opacity: 0, y: 50 }
+                        : { opacity: 0, y: -50 }
+                    }
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: direction === "next" ? -50 : 50 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    {React.cloneElement(child as React.ReactElement, {
+                      onNext: handleNext,
+                      onBack: handleBack,
+                      onDataChange: handleDataChange,
+                      formData: formData,
+                      formRef: formRef,
+                    })}
+                  </motion.div>
+                ) : null
+              )
             )}
           </AnimatePresence>
         </Box>
@@ -203,8 +277,8 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             onBack={handleBack}
             onNext={handleNext}
             formRef={formRef}
-            showBackButton={selectedPage > 0}
-            isFirstPage={selectedPage === 0}
+            showBackButton={currentStepInSection > 0}
+            isFirstPage={currentStepInSection === 0}
           />
         </Box>
       </Box>
