@@ -40,7 +40,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     title,
     onNext,
     onDataChange,
-    formData = { ownerFirstName: "", ownerMiddleName: "", ownerLastName: "", ownerState: "", ownerSSN: "", ownerPercentOwnership: 1, ownerTitle: "", ownerBirthday: new Date(), ownerEmail:"", ownerAddress:"",  ownerCity:"", ownerZip:"", ownerPhone:"" },
+    formData = { ownerFirstName: "", ownerMiddleName: "", ownerLastName: "", ownerState: "", ownerSSN: "", ownerPercentOwnership: 1, ownerTitle: "", ownerBirthday: new Date(), ownerEmail: "", ownerAddress: "", ownerCity: "", ownerZip: "", ownerPhone: "" },
     formRef,
 }) => {
     const {
@@ -178,7 +178,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                 )}
             </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerAddress}> 
+            <FormControl mb={4} isInvalid={!!errors.ownerAddress}>
                 <FormLabel htmlFor="ownerAddress">Address</FormLabel>
                 <Input
                     id="ownerAddress"
@@ -193,7 +193,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                 )}
             </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerCity}> 
+            <FormControl mb={4} isInvalid={!!errors.ownerCity}>
                 <FormLabel htmlFor="ownerCity">City</FormLabel>
                 <Input
                     id="ownerCity"
@@ -206,7 +206,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                 )}
             </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerZip}>  
+            <FormControl mb={4} isInvalid={!!errors.ownerZip}>
                 <FormLabel htmlFor="ownerZip">Zip</FormLabel>
                 <Input
                     id="ownerZip"

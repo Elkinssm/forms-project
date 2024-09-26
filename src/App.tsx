@@ -8,9 +8,10 @@ import CompanyInformationForm from "./components/YourBusiness/CompanyInformation
 import CorporateAddressForm from "./components/YourBusiness/CorporateAddressForm/CorporateAddressForm";
 import ContactInformationForm from "./components/YourBusiness/ContactInformationForm/ContactInformationForm";
 import AdditionalDetailsForm from "./components/YourBusiness/AdditionalDetailsForm/AdditionalDetailsForm";
+import OwnerInformationForm from "./components/OwnerInformation/OwnerInformationForm";
+import BusinessProfileForm from "./components/BusinessProfile/BusinessProfile";
 import Sidebar from "./components/Sidebar/Sidebar";
 
-import OwnerInformationForm from "./components/OwnerInformation/OwnerInformationForm";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <ContactInformationForm title="Contact Information" />
           <AdditionalDetailsForm title="Additional Details" />
           <OwnerInformationForm title="Owner Information" />
+          <BusinessProfileForm title="Business Profile" />
         </Sidebar>
       </Box>
     </ChakraProvider>
