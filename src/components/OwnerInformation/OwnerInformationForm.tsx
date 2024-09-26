@@ -18,7 +18,7 @@ const schema = z.object({
     ownerPercentOwnership: z.preprocess((val) => Number(val), z.number().int().min(1, "Percent Ownership must be at least 1")),
     ownerTitle: z.string().min(9, "The Title must be at least 9 chars"),
     ownerBirthday: z.coerce.date().refine((data) => data < new Date(), { message: 'Birthday must be in the past' }),
-
+    ownerEmail: z.string().email("A valid email is required"),
     ownerAddress: z.string().min(10, "The address must be at least 10 characters long"),
     ownerCity: z.string().min(3, "The city must be at least 3 characters long"),
     ownerZip: z.string().min(5, "The zip must be at least 5 characters long"),
@@ -40,7 +40,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     title,
     onNext,
     onDataChange,
-    formData = { ownerFirstName: "", ownerMiddleName: "", ownerLastName: "", ownerState: "", ownerSSN: "", ownerPercentOwnership: 1, ownerTitle: "", ownerBirthday: new Date(), ownerAddress:"",  ownerCity:"", ownerZip:"", ownerPhone:"" },
+    formData = { ownerFirstName: "", ownerMiddleName: "", ownerLastName: "", ownerState: "", ownerSSN: "", ownerPercentOwnership: 1, ownerTitle: "", ownerBirthday: new Date(), ownerEmail:"", ownerAddress:"",  ownerCity:"", ownerZip:"", ownerPhone:"" },
     formRef,
 }) => {
     const {
@@ -152,8 +152,21 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                 )}
             </FormControl>
 
+            <FormControl mb={4} isInvalid={!!errors.ownerEmail}>
+                <FormLabel htmlFor="ownerEmail">Email</FormLabel>
+                <Input
+                    id="ownerEmail"
+                    type="text"
+                    placeholder="Enter email"
+                    {...register("ownerEmail")}
+                />
+                {errors.ownerEmail && (
+                    <Text color="semantic.error.DEFAULT">{errors.ownerEmail.message}</Text>
+                )}
+            </FormControl>
+
             <FormControl mb={4} isInvalid={!!errors.ownerBirthday}>
-                <FormLabel htmlFor="ownerBirthday">birthday</FormLabel>
+                <FormLabel htmlFor="ownerBirthday">Birthday</FormLabel>
                 <Input
                     id="ownerBirthday"
                     type="date"
