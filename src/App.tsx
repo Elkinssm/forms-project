@@ -3,10 +3,11 @@ import theme from "./theme";
 import "./App.css";
 
 // Importar los formularios
-import CompanyInformationForm from "./components/CompanyInformationForm/CompanyInformationForm";
-import CorporateAddressForm from "./components/CorporateAddressForm/CorporateAddressForm";
-import ContactInformationForm from "./components/ContactInformationForm/ContactInformationForm";
-import AdditionalDetailsForm from "./components/AdditionalDetailsForm/AdditionalDetailsForm";
+import CompanyInformationForm from "./components/YourBusiness/CompanyInformationForm/CompanyInformationForm";
+
+import CorporateAddressForm from "./components/YourBusiness/CorporateAddressForm/CorporateAddressForm";
+import ContactInformationForm from "./components/YourBusiness/ContactInformationForm/ContactInformationForm";
+import AdditionalDetailsForm from "./components/YourBusiness/AdditionalDetailsForm/AdditionalDetailsForm";
 import Sidebar from "./components/Sidebar/Sidebar";
 
 function App() {
