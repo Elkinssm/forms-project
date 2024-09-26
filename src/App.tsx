@@ -30,15 +30,15 @@ function App() {
           key="additional-details"
           title="Additional Details"
         />,
-        // Agrega más formularios de esta sección si es necesario
+
       ],
     },
-    // Agrega más secciones según sea necesario
+
   ];
 
   return (
     <ChakraProvider theme={theme}>
-      <Box display="flex" overflow="auto">
+      <Box maxW={"1200px"} mx="auto" overflow={"auto"}>
         <Sidebar sections={sections} />
         {/* Agrega el contenido principal aquí si es necesario */}
       </Box>
