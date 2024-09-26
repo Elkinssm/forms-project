@@ -8,6 +8,8 @@ import ContactInformationForm from "./components/YourBusiness/ContactInformation
 import CorporateAddressForm from "./components/YourBusiness/CorporateAddressForm/CorporateAddressForm";
 import BusinessProfileForm from "./components/BusinessProfile/BusinessProfile";
 import OwnerInformationForm from "./components/OwnerInformation/OwnerInformationForm";
+// import NewForm1 from "./components/NewForms/NewForm1"; // Importa tu nuevo formulario
+// import NewForm2 from "./components/NewForms/NewForm2"; // Importa otro nuevo formulario
 import theme from "./theme";
 
 const App = () => {
@@ -43,6 +45,17 @@ const App = () => {
                 path="/business-profile/form1"
                 element={<BusinessProfileForm title="Business Profile" />}
               />
+              {/* Nuevas rutas agregadas */}
+              <Route
+                path="/contact/form3"
+                element={<OwnerInformationForm title="Owner Information" />}
+              />
+              <Route
+                path="/new/form2"
+                element={<OwnerInformationForm title="New Form 2" />}
+              />
+              <Route path="/" element={<div>Home Page</div>} />{" "}
+              {/* Página de inicio o redirección */}
             </Routes>
           </SidebarTest>
         </Box>
