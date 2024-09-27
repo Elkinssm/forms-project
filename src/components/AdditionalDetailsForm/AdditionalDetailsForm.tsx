@@ -13,19 +13,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const schema = z.object({
-  years: z.preprocess(
-    (val) => Number(val),
-    z.number().int().min(1, "Years in business must be at least 1")
-  ),
-  locations: z.preprocess(
+  aditionalDetailsLocations: z.preprocess(
     (val) => Number(val),
     z.number().int().min(1, "Locations must be at least 1")
   ),
-  mailing: z.preprocess(
+  aditionalDetailsMailing: z.preprocess(
     (val) => (val === null ? "" : val),
     z.string().min(1, "Please select an option")
   ),
-  website: z.string().url("Invalid website URL"),
+  aditionalDetailsWebsite: z.string().url("Invalid website URL"),
 });
 type BusinessDataForm = z.infer<typeof schema>;
 
@@ -42,7 +38,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
   title,
   onNext,
   onDataChange,
-  formData = { years: 0, locations: 0, mailing: "", website: "" },
+  formData = { aditionalDetailsLocations: 0, aditionalDetailsMailing: "", aditionalDetailsWebsite: "" },
   formRef,
 }) => {
   const {
@@ -63,56 +59,44 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
       <Text fontWeight="bold" fontSize="lg" mb={4} color="text.highEmphasis">
         {title}
       </Text>
-      <FormControl mb={4} isInvalid={!!errors.years}>
-        <FormLabel htmlFor="corporate">Years in Business</FormLabel>
+      <FormControl mb={4} isInvalid={!!errors.aditionalDetailsLocations}>
+        <FormLabel htmlFor="aditionalDetailsLocations">Number Of Locations</FormLabel>
         <Input
-          id="years"
-          type="number"
-          placeholder="Enter the years in business"
-          {...register("years")}
-        />
-        {errors.years && (
-          <Text color="semantic.error.DEFAULT">{errors.years.message}</Text>
-        )}
-      </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.locations}>
-        <FormLabel htmlFor="merchant"># Of Locations</FormLabel>
-        <Input
-          id="locations"
+          id="aditionalDetailsLocations"
           type="text"
           placeholder="Enter your merchant name"
-          {...register("locations")}
+          {...register("aditionalDetailsLocations")}
         />
-        {errors.locations && (
-          <Text color="semantic.error.DEFAULT">{errors.locations.message}</Text>
+        {errors.aditionalDetailsLocations && (
+          <Text color="semantic.error.DEFAULT">{errors.aditionalDetailsLocations.message}</Text>
         )}
       </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.mailing}>
+      <FormControl mb={4} isInvalid={!!errors.aditionalDetailsMailing}>
         <FormLabel>Mailing Address</FormLabel>
         <RadioGroup>
           <Stack direction="column">
-            <Radio value="option1" {...register("mailing")}>
+            <Radio value="option1" {...register("aditionalDetailsMailing")}>
               DBA
             </Radio>
-            <Radio value="option2" {...register("mailing")}>
+            <Radio value="option2" {...register("aditionalDetailsMailing")}>
               Legal
             </Radio>
           </Stack>
         </RadioGroup>
-        {errors.mailing && (
-          <Text color="semantic.error.DEFAULT">{errors.mailing.message}</Text>
+        {errors.aditionalDetailsMailing && (
+          <Text color="semantic.error.DEFAULT">{errors.aditionalDetailsMailing.message}</Text>
         )}
       </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.website}>
-        <FormLabel htmlFor="merchant">Website</FormLabel>
+      <FormControl mb={4} isInvalid={!!errors.aditionalDetailsWebsite}>
+        <FormLabel htmlFor="aditionalDetailsWebsite">Website address</FormLabel>
         <Input
-          id="website"
+          id="aditionalDetailsWebsite"
           type="text"
           placeholder="Enter your website"
-          {...register("website")}
+          {...register("aditionalDetailsWebsite")}
         />
-        {errors.website && (
-          <Text color="semantic.error.DEFAULT">{errors.website.message}</Text>
+        {errors.aditionalDetailsWebsite && (
+          <Text color="semantic.error.DEFAULT">{errors.aditionalDetailsWebsite.message}</Text>
         )}
       </FormControl>
     </Box>

@@ -5,14 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const schema = z.object({
-  email: z.string().email("The company name must be a valid email").min(6),
-  phone: z.preprocess(
-    (val) => Number(val),
-    z.number().min(1000000000, "Phone number must be at least 10 digits long")
-  ),
-  federal: z
+  contactInformationContact: z.string().min(1,"The contact information must be at least 1 characters long"),
+  contactInformationPrimaryName: z.string().min(6, "The Contact Information Primary Name must be at least 6 characters long"),
+  contactInformationSecondaryName: z
     .string()
-    .min(6, "The federal number must be at least 6 characters long"),
+    .min(6, "The Contact Information Secondary Name must be at least 6 characters long"),
 });
 
 type BusinessDataForm = z.infer<typeof schema>;
@@ -30,7 +27,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
   title,
   onNext,
   onDataChange,
-  formData = { email: "", phone: 0, federal: "" },
+  formData = { contactInformationContact: "", contactInformationPrimaryName: "", contactInformationSecondaryName: "" },
   formRef,
 }) => {
   const {
@@ -54,40 +51,40 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
       <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
         {title}
       </Text>
-      <FormControl mb={4} isInvalid={!!errors.email}>
-        <FormLabel htmlFor="corporate">Email Address</FormLabel>
+      <FormControl mb={4} isInvalid={!!errors.contactInformationContact}>
+        <FormLabel htmlFor="contactInformationContact">Contact</FormLabel>
         <Input
-          id="email"
-          type="email"
-          placeholder="Enter your company email"
-          {...register("email")}
-        />
-        {errors.email && (
-          <Text color="semantic.error.DEFAULT">{errors.email.message}</Text>
-        )}
-      </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.phone}>
-        <FormLabel htmlFor="phone">Phone Number</FormLabel>
-        <Input
-          id="phone"
-          type="number"
-          placeholder="Enter the phone number"
-          {...register("phone")}
-        />
-        {errors.phone && (
-          <Text color="semantic.error.DEFAULT">{errors.phone.message}</Text>
-        )}
-      </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.federal}>
-        <FormLabel htmlFor="federal">Federal Tax ID</FormLabel>
-        <Input
-          id="federal"
+          id="contactInformationContact"
           type="text"
-          placeholder="Enter the Federal Tax ID"
-          {...register("federal")}
+          placeholder="Enter your Contact"
+          {...register("contactInformationContact")}
         />
-        {errors.federal && (
-          <Text color="semantic.error.DEFAULT">{errors.federal.message}</Text>
+        {errors.contactInformationContact && (
+          <Text color="semantic.error.DEFAULT">{errors.contactInformationContact.message}</Text>
+        )}
+      </FormControl>
+      <FormControl mb={4} isInvalid={!!errors.contactInformationPrimaryName}>
+        <FormLabel htmlFor="contactInformationPrimaryName">Prim Contact Name</FormLabel>
+        <Input
+          id="contactInformationPrimaryName"
+          type="text"
+          placeholder="Enter the primary contact name"
+          {...register("contactInformationPrimaryName")}
+        />
+        {errors.contactInformationPrimaryName && (
+          <Text color="semantic.error.DEFAULT">{errors.contactInformationPrimaryName.message}</Text>
+        )}
+      </FormControl>
+      <FormControl mb={4} isInvalid={!!errors.contactInformationSecondaryName}>
+        <FormLabel htmlFor="contactInformationSecondaryName">Seco Contact Name</FormLabel>
+        <Input
+          id="contactInformationSecondaryName"
+          type="text"
+          placeholder="Enter the secondary contact name"
+          {...register("contactInformationSecondaryName")}
+        />
+        {errors.contactInformationSecondaryName && (
+          <Text color="semantic.error.DEFAULT">{errors.contactInformationSecondaryName.message}</Text>
         )}
       </FormControl>
     </Box>
