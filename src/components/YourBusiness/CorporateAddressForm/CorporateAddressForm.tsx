@@ -184,7 +184,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           <Input
             id="corpLegalEmail"
             type="text"
-            placeholder="Enter your your company / legal eMail"
+            placeholder="Enter your your company / legal email"
             {...register("corpLegalEmail")}
           />
           {errors.corpLegalEmail && (
