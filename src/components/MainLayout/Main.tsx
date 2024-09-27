@@ -1,17 +1,17 @@
 // Main.tsx
 import React, { useState, useRef, useEffect } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import CompanyInformation from "../YourBusiness/CompanyInformationForm/CompanyInformationForm";
 import CorporateAddressForm from "../YourBusiness/CorporateAddressForm/CorporateAddressForm";
 import ContactInformationForm from "../YourBusiness/ContactInformationForm/ContactInformationForm";
 import AdditionalDetailsForm from "../YourBusiness/AdditionalDetailsForm/AdditionalDetailsForm";
 import OwnerInformationForm from "../OwnerInformation/OwnerInformationForm";
-import NewForm1 from "../YourBusiness/CompanyInformationForm/CompanyInformationForm";
 import NewForm2 from "../YourBusiness/CompanyInformationForm/CompanyInformationForm";
 import Sidebar from "../Sidebar/Sidebar";
 import Layout from "./Layout";
 import Header from "./Header";
 import Footer from "./Footer";
+import BusinessProfileForm from "../BusinessProfile/BusinessProfile";
 
 const sections = [
   {
@@ -21,15 +21,13 @@ const sections = [
       { name: "Corporate Address", path: "/corporate-address" },
       { name: "Contact Information", path: "/contact-information" },
       { name: "Additional Details", path: "/additional-details" },
-      { name: "Owner Information", path: "/owner-information" },
-      { name: "Business Profile", path: "/business-profile" },
     ],
   },
   {
-    title: "New Section",
+    title: "Owner Information",
     subsections: [
-      { name: "New Form 1", path: "/new-form-1" },
-      { name: "New Form 2", path: "/new-form-2" },
+      { name: "Owner Information", path: "/owner-information" },
+      { name: "Business Profile", path: "/business-profile" },
     ],
   },
 ];
@@ -112,7 +110,7 @@ const Main: React.FC = () => {
       sidebar={
         <Sidebar
           sections={sections}
-          progressBySection={sectionProgress} // Progreso individual por sección
+          progressBySection={sectionProgress}
           onSectionClick={handleSectionClick}
         />
       }
@@ -135,10 +133,7 @@ const Main: React.FC = () => {
       }
     >
       <Routes>
-        <Route
-          path="/"
-          element={<CompanyInformation title="" formRef={formRef} />}
-        />
+        <Route path="/" element={<Navigate to="/company-information" />} />
         <Route
           path="/company-information"
           element={<CompanyInformation title="" formRef={formRef} />}
@@ -180,8 +175,13 @@ const Main: React.FC = () => {
           }
         />
         <Route
-          path="/new-form-1"
-          element={<NewForm1 formRef={formRef} title="NewForm1" />}
+          path="/business-profile"
+          element={
+            <BusinessProfileForm
+              formRef={formRef}
+              title="BusinessProfileForm"
+            />
+          }
         />
         <Route
           path="/new-form-2"
