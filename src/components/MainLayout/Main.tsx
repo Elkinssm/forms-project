@@ -1,17 +1,25 @@
 // Main.tsx
 import React, { useState, useRef, useEffect } from "react";
-import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Box } from "@chakra-ui/react";
 import CompanyInformation from "../YourBusiness/CompanyInformationForm/CompanyInformationForm";
 import CorporateAddressForm from "../YourBusiness/CorporateAddressForm/CorporateAddressForm";
 import ContactInformationForm from "../YourBusiness/ContactInformationForm/ContactInformationForm";
 import AdditionalDetailsForm from "../YourBusiness/AdditionalDetailsForm/AdditionalDetailsForm";
 import OwnerInformationForm from "../OwnerInformation/OwnerInformationForm";
+import BusinessProfileForm from "../BusinessProfile/BusinessProfile";
 import NewForm2 from "../YourBusiness/CompanyInformationForm/CompanyInformationForm";
 import Sidebar from "../Sidebar/Sidebar";
 import Layout from "./Layout";
-import Header from "./Header";
 import Footer from "./Footer";
-import BusinessProfileForm from "../BusinessProfile/BusinessProfile";
+import FormHeader from "../FormComponents/FormHeader";
 
 const sections = [
   {
@@ -33,7 +41,7 @@ const sections = [
 ];
 
 const Main: React.FC = () => {
-  const [currentSection, setCurrentSection] = useState(0);
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [sectionProgress, setSectionProgress] = useState<number[]>(
     sections.map(() => 0) // Inicializa el progreso de cada sección en 0%
   );
@@ -48,27 +56,29 @@ const Main: React.FC = () => {
       (subsection) => subsection.path === location.pathname
     );
     if (currentIndex !== -1) {
-      setCurrentSection(currentIndex);
-
-      // Calcular y actualizar el progreso de la sección correspondiente
-      const sectionIndex = Math.floor(
-        (currentIndex / flatSections.length) * sections.length
+      const sectionIndex = sections.findIndex((section) =>
+        section.subsections.some(
+          (subsection) => subsection.path === location.pathname
+        )
       );
-      updateSectionProgress(sectionIndex, currentIndex);
+      setCurrentSectionIndex(sectionIndex);
+      updateSectionProgress(sectionIndex);
     }
   }, [location.pathname]);
 
-  const updateSectionProgress = (
-    sectionIndex: number,
-    currentIndex: number
-  ) => {
-    const flatSections = sections.flatMap((section) => section.subsections);
+  const updateSectionProgress = (sectionIndex: number) => {
     const section = sections[sectionIndex];
-    const completedSubsections = flatSections.slice(
-      sectionIndex * section.subsections.length,
-      currentIndex + 1
-    ).length;
-    const progress = (completedSubsections / section.subsections.length) * 100;
+    const flatSections = sections.flatMap((section) => section.subsections);
+
+    const visitedCount = section.subsections.reduce((count, subsection) => {
+      if (location.pathname === subsection.path) {
+        return count + 1;
+      }
+      return count;
+    }, 0);
+
+    const progress = (visitedCount / section.subsections.length) * 100;
+
     setSectionProgress((prevProgress) => {
       const newProgress = [...prevProgress];
       newProgress[sectionIndex] = progress;
@@ -77,19 +87,24 @@ const Main: React.FC = () => {
   };
 
   const handleBack = () => {
-    if (currentSection > 0) {
-      setCurrentSection((prevSection) => prevSection - 1);
-      navigateToSection(currentSection - 1);
+    const flatSections = sections.flatMap((section) => section.subsections);
+    const currentIndex = flatSections.findIndex(
+      (subsection) => subsection.path === location.pathname
+    );
+    if (currentIndex > 0) {
+      const prevSectionIndex = currentIndex - 1;
+      navigate(flatSections[prevSectionIndex].path);
     }
   };
 
   const handleNext = () => {
-    if (
-      currentSection <
-      sections.flatMap((section) => section.subsections).length - 1
-    ) {
-      setCurrentSection((prevSection) => prevSection + 1);
-      navigateToSection(currentSection + 1);
+    const flatSections = sections.flatMap((section) => section.subsections);
+    const currentIndex = flatSections.findIndex(
+      (subsection) => subsection.path === location.pathname
+    );
+    if (currentIndex < flatSections.length - 1) {
+      const nextSectionIndex = currentIndex + 1;
+      navigate(flatSections[nextSectionIndex].path);
     }
   };
 
@@ -100,9 +115,8 @@ const Main: React.FC = () => {
     }
   };
 
-  const handleSectionClick = (index: number) => {
-    setCurrentSection(index);
-    navigateToSection(index);
+  const handleSectionClick = (sectionIndex: number) => {
+    navigateToSection(sectionIndex);
   };
 
   return (
@@ -115,79 +129,143 @@ const Main: React.FC = () => {
         />
       }
       header={
-        <Header
-          title={"Business information"}
-          description={
-            "Let’s start with your company’s basic information. [We could add here why the company requests this information]"
-          }
-        />
+        <Box
+          flex="0"
+          p={6}
+          bg="#F9FCFF"
+          display="flex"
+          justifyContent="center"
+          borderBottom="1px solid"
+          borderColor="gray.200"
+          zIndex={1}
+        >
+          <FormHeader
+            title="Business information"
+            description="Let’s start with your company’s basic information. [We could add here why the company requests this information]"
+          />
+        </Box>
       }
       footer={
         <Footer
           onBack={handleBack}
           onNext={handleNext}
           formRef={formRef}
-          showBackButton={currentSection > 0}
-          isFirstPage={currentSection === 0}
+          showBackButton={currentSectionIndex > 0}
+          isFirstPage={currentSectionIndex === 0}
         />
       }
     >
-      <Routes>
-        <Route path="/" element={<Navigate to="/company-information" />} />
-        <Route
-          path="/company-information"
-          element={<CompanyInformation title="" formRef={formRef} />}
-        />
-        <Route
-          path="/corporate-address"
-          element={
-            <CorporateAddressForm
-              formRef={formRef}
-              title="CorporateAddressForm"
-            />
-          }
-        />
-        <Route
-          path="/contact-information"
-          element={
-            <ContactInformationForm
-              formRef={formRef}
-              title="ContactInformationForm"
-            />
-          }
-        />
-        <Route
-          path="/additional-details"
-          element={
-            <AdditionalDetailsForm
-              formRef={formRef}
-              title="AdditionalDetailsForm"
-            />
-          }
-        />
-        <Route
-          path="/owner-information"
-          element={
-            <OwnerInformationForm
-              formRef={formRef}
-              title="OwnerInformationForm"
-            />
-          }
-        />
-        <Route
-          path="/business-profile"
-          element={
-            <BusinessProfileForm
-              formRef={formRef}
-              title="BusinessProfileForm"
-            />
-          }
-        />
-        <Route
-          path="/new-form-2"
-          element={<NewForm2 formRef={formRef} title="NewForm2" />}
-        />
-      </Routes>
+      <AnimatePresence mode="wait">
+        <Routes key={location.pathname} location={location}>
+          <Route path="/" element={<Navigate to="/company-information" />} />
+          <Route
+            path="/company-information"
+            element={
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <CompanyInformation title="" formRef={formRef} />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/corporate-address"
+            element={
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <CorporateAddressForm
+                  formRef={formRef}
+                  title="CorporateAddressForm"
+                />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/contact-information"
+            element={
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ContactInformationForm
+                  formRef={formRef}
+                  title="ContactInformationForm"
+                />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/additional-details"
+            element={
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <AdditionalDetailsForm
+                  formRef={formRef}
+                  title="AdditionalDetailsForm"
+                />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/owner-information"
+            element={
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <OwnerInformationForm
+                  formRef={formRef}
+                  title="OwnerInformationForm"
+                />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/business-profile"
+            element={
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <BusinessProfileForm
+                  formRef={formRef}
+                  title="BusinessProfileForm"
+                />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/new-form-2"
+            element={
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <NewForm2 formRef={formRef} title="NewForm2" />
+              </motion.div>
+            }
+          />
+        </Routes>
+      </AnimatePresence>
     </Layout>
   );
 };
