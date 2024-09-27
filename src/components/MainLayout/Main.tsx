@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+// Main.tsx
+import React, { useState, useRef, useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import CompanyInformation from "../YourBusiness/CompanyInformationForm/CompanyInformationForm";
 import CorporateAddressForm from "../YourBusiness/CorporateAddressForm/CorporateAddressForm";
 import ContactInformationForm from "../YourBusiness/ContactInformationForm/ContactInformationForm";
@@ -35,8 +36,47 @@ const sections = [
 
 const Main: React.FC = () => {
   const [currentSection, setCurrentSection] = useState(0);
+  const [sectionProgress, setSectionProgress] = useState<number[]>(
+    sections.map(() => 0) // Inicializa el progreso de cada sección en 0%
+  );
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
+  const location = useLocation(); // Para conocer la ruta actual
+
+  useEffect(() => {
+    // Actualiza la sección actual según la ruta
+    const flatSections = sections.flatMap((section) => section.subsections);
+    const currentIndex = flatSections.findIndex(
+      (subsection) => subsection.path === location.pathname
+    );
+    if (currentIndex !== -1) {
+      setCurrentSection(currentIndex);
+
+      // Calcular y actualizar el progreso de la sección correspondiente
+      const sectionIndex = Math.floor(
+        (currentIndex / flatSections.length) * sections.length
+      );
+      updateSectionProgress(sectionIndex, currentIndex);
+    }
+  }, [location.pathname]);
+
+  const updateSectionProgress = (
+    sectionIndex: number,
+    currentIndex: number
+  ) => {
+    const flatSections = sections.flatMap((section) => section.subsections);
+    const section = sections[sectionIndex];
+    const completedSubsections = flatSections.slice(
+      sectionIndex * section.subsections.length,
+      currentIndex + 1
+    ).length;
+    const progress = (completedSubsections / section.subsections.length) * 100;
+    setSectionProgress((prevProgress) => {
+      const newProgress = [...prevProgress];
+      newProgress[sectionIndex] = progress;
+      return newProgress;
+    });
+  };
 
   const handleBack = () => {
     if (currentSection > 0) {
@@ -67,58 +107,12 @@ const Main: React.FC = () => {
     navigateToSection(index);
   };
 
-  const renderSectionContent = () => {
-    switch (currentSection) {
-      case 0:
-        return <CompanyInformation title="" formRef={formRef} />;
-      case 1:
-        return (
-          <CorporateAddressForm
-            formRef={formRef}
-            title="CorporateAddressForm"
-          />
-        );
-      case 2:
-        return (
-          <ContactInformationForm
-            formRef={formRef}
-            title="ContactInformationForm"
-          />
-        );
-      case 3:
-        return (
-          <AdditionalDetailsForm
-            formRef={formRef}
-            title="AdditionalDetailsForm"
-          />
-        );
-      case 4:
-        return (
-          <OwnerInformationForm
-            formRef={formRef}
-            title="OwnerInformationForm"
-          />
-        );
-      case 5:
-        return <NewForm1 formRef={formRef} title="NewForm1" />;
-      case 6:
-        return <NewForm2 formRef={formRef} title="NewForm2" />;
-      default:
-        return <CompanyInformation title="" formRef={formRef} />;
-    }
-  };
-
-  const totalSections = sections.flatMap(
-    (section) => section.subsections
-  ).length;
-  const progress = ((currentSection + 1) / totalSections) * 100;
-
   return (
     <Layout
       sidebar={
         <Sidebar
           sections={sections}
-          progress={progress}
+          progressBySection={sectionProgress} // Progreso individual por sección
           onSectionClick={handleSectionClick}
         />
       }
@@ -141,7 +135,10 @@ const Main: React.FC = () => {
       }
     >
       <Routes>
-        <Route path="/" element={renderSectionContent()} />
+        <Route
+          path="/"
+          element={<CompanyInformation title="" formRef={formRef} />}
+        />
         <Route
           path="/company-information"
           element={<CompanyInformation title="" formRef={formRef} />}

@@ -1,3 +1,4 @@
+// Sidebar.tsx
 import React from "react";
 import {
   Box,
@@ -7,13 +8,8 @@ import {
   ListItem,
   CircularProgress,
   CircularProgressLabel,
-  HStack,
-  Spacer,
-  Icon,
 } from "@chakra-ui/react";
-import { CheckIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-import CircleIcon from "../../utils/CircleIcon";
 
 interface Section {
   title: string;
@@ -22,13 +18,13 @@ interface Section {
 
 interface SidebarProps {
   sections: Section[];
-  progress: number;
+  progressBySection: number[]; // Progreso por sección
   onSectionClick: (index: number) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
   sections,
-  progress,
+  progressBySection,
   onSectionClick,
 }) => {
   return (
@@ -44,13 +40,13 @@ const Sidebar: React.FC<SidebarProps> = ({
           >
             <Box display="flex" alignItems="center" mb={2}>
               <CircularProgress
-                value={progress}
+                value={progressBySection[sectionIndex]} // Progreso por sección
                 size="40px"
                 color="green.400"
                 mr={4}
               >
                 <CircularProgressLabel>
-                  {Math.round(progress)}%
+                  {Math.round(progressBySection[sectionIndex])}%
                 </CircularProgressLabel>
               </CircularProgress>
               <Text fontSize="lg" fontWeight="bold">
