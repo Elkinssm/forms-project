@@ -120,153 +120,155 @@ const Main: React.FC = () => {
   };
 
   return (
-    <Layout
-      sidebar={
-        <Sidebar
-          sections={sections}
-          progressBySection={sectionProgress}
-          onSectionClick={handleSectionClick}
-        />
-      }
-      header={
-        <Box
-          flex="0"
-          p={6}
-          bg="#F9FCFF"
-          display="flex"
-          justifyContent="center"
-          borderBottom="1px solid"
-          borderColor="gray.200"
-          zIndex={1}
-        >
-          <FormHeader
-            title="Business information"
-            description="Let’s start with your company’s basic information. [We could add here why the company requests this information]"
+    <Box maxW={"1200px"} mx="auto" overflow={"auto"}>
+      <Layout
+        sidebar={
+          <Sidebar
+            sections={sections}
+            progressBySection={sectionProgress}
+            onSectionClick={handleSectionClick}
           />
-        </Box>
-      }
-      footer={
-        <Footer
-          onBack={handleBack}
-          onNext={handleNext}
-          formRef={formRef}
-          showBackButton={currentSectionIndex > 0}
-          isFirstPage={currentSectionIndex === 0}
-        />
-      }
-    >
-      <AnimatePresence mode="wait">
-        <Routes key={location.pathname} location={location}>
-          <Route path="/" element={<Navigate to="/company-information" />} />
-          <Route
-            path="/company-information"
-            element={
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                transition={{ duration: 0.3 }}
-              >
-                <CompanyInformation title="" formRef={formRef} />
-              </motion.div>
-            }
+        }
+        header={
+          <Box
+            flex="0"
+            p={6}
+            bg="#F9FCFF"
+            display="flex"
+            justifyContent="center"
+            borderBottom="1px solid"
+            borderColor="gray.200"
+            zIndex={1}
+          >
+            <FormHeader
+              title="Business information"
+              description="Let’s start with your company’s basic information. [We could add here why the company requests this information]"
+            />
+          </Box>
+        }
+        footer={
+          <Footer
+            onBack={handleBack}
+            onNext={handleNext}
+            formRef={formRef}
+            showBackButton={currentSectionIndex > 0}
+            isFirstPage={currentSectionIndex === 0}
           />
-          <Route
-            path="/corporate-address"
-            element={
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                transition={{ duration: 0.3 }}
-              >
-                <CorporateAddressForm
-                  formRef={formRef}
-                  title="CorporateAddressForm"
-                />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/contact-information"
-            element={
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                transition={{ duration: 0.3 }}
-              >
-                <ContactInformationForm
-                  formRef={formRef}
-                  title="ContactInformationForm"
-                />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/additional-details"
-            element={
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                transition={{ duration: 0.3 }}
-              >
-                <AdditionalDetailsForm
-                  formRef={formRef}
-                  title="AdditionalDetailsForm"
-                />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/owner-information"
-            element={
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                transition={{ duration: 0.3 }}
-              >
-                <OwnerInformationForm
-                  formRef={formRef}
-                  title="OwnerInformationForm"
-                />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/business-profile"
-            element={
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                transition={{ duration: 0.3 }}
-              >
-                <BusinessProfileForm
-                  formRef={formRef}
-                  title="BusinessProfileForm"
-                />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/new-form-2"
-            element={
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                transition={{ duration: 0.3 }}
-              >
-                <NewForm2 formRef={formRef} title="NewForm2" />
-              </motion.div>
-            }
-          />
-        </Routes>
-      </AnimatePresence>
-    </Layout>
+        }
+      >
+        <AnimatePresence mode="wait">
+          <Routes key={location.pathname} location={location}>
+            <Route path="/" element={<Navigate to="/company-information" />} />
+            <Route
+              path="/company-information"
+              element={
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <CompanyInformation title="" formRef={formRef} />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/corporate-address"
+              element={
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <CorporateAddressForm
+                    formRef={formRef}
+                    title="CorporateAddressForm"
+                  />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/contact-information"
+              element={
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ContactInformationForm
+                    formRef={formRef}
+                    title="ContactInformationForm"
+                  />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/additional-details"
+              element={
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <AdditionalDetailsForm
+                    formRef={formRef}
+                    title="AdditionalDetailsForm"
+                  />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/owner-information"
+              element={
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <OwnerInformationForm
+                    formRef={formRef}
+                    title="OwnerInformationForm"
+                  />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/business-profile"
+              element={
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <BusinessProfileForm
+                    formRef={formRef}
+                    title="BusinessProfileForm"
+                  />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/new-form-2"
+              element={
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <NewForm2 formRef={formRef} title="NewForm2" />
+                </motion.div>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
+      </Layout>
+    </Box>
   );
 };
 
