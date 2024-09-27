@@ -62,14 +62,13 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const currentChild = children[selectedPage];
 
   // Verificar si el currentChild tiene title y description
-  const title =
-    currentChild && currentChild.props.title
-      ? currentChild.props.title
-      : "Default Title";
-  const description =
-    currentChild && currentChild.props.description
-      ? currentChild.props.description
-      : "Default Description";
+  const title = currentChild?.props?.title || "Default Title";
+  const description = currentChild?.props?.description || "Default Description";
+
+  // Añadir logs para depuración
+  console.log("Current Child:", currentChild);
+  console.log("Title:", title);
+  console.log("Description:", description);
 
   return (
     <Box display="flex" flexDirection={{ base: "column", md: "row" }} h="100vh">
@@ -189,6 +188,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                     onDataChange: handleDataChange,
                     formData: formData,
                     formRef: formRef,
+                    // No sobreescribir title o description aquí
                   })}
                 </motion.div>
               ) : null
