@@ -19,8 +19,8 @@ function App() {
       <Box maxW={"1200px"} mx="auto" overflow={"auto"}>
         {/* Pasamos los formularios como children del Sidebar */}
         <Sidebar>
+          <CorporateAddressForm title="Legal Company Name" />
           <CompanyInformationForm title="Company Information" />
-          <CorporateAddressForm title="Corporate Address" />
           <ContactInformationForm title="Contact Information" />
           <AdditionalDetailsForm title="Additional Details" />
           <OwnerInformationForm title="Owner Information" />

@@ -9,9 +9,6 @@ const schema = z.object({
   merchName: z
     .string()
     .min(6, "The location name must be at least 6 characters long"),
-  merchFedTaxId: z
-    .string()
-    .min(6, "The fed tax id must be at least 6 characters long"),
   merchAddress: z.string().min(10, "The address must be at least 10 characters long"),
   merchCity: z.string().min(3, "The city must be at least 3 characters long"),
   merchState: z.string().min(2, "The state must be at least 2 characters long"),
@@ -38,7 +35,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
   title,
   onNext,
   onDataChange,
-  formData = { merchName: "", merchFedTaxId: "" },
+  formData = { merchName: "",  },
   formRef,
 }) => {
   const {
@@ -79,7 +76,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
         <Input
           id="merchName"
           type="text"
-          placeholder="Enter your company name"
+          placeholder="Enter your locaton name"
           {...register("merchName")}
         />
         {errors.merchName && (
@@ -87,23 +84,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
         )}
       </FormControl>
       <HStack spacing={4} mb={4}>
-        <FormControl mb={4} isInvalid={!!errors.merchFedTaxId}>
-          <FormLabel htmlFor="merchFedTaxId">FedTaxID</FormLabel>
-          <Input
-            as={InputMask}
-            mask="**-*******"
-            maskChar={null}
-            id="merchFedTaxId"
-            type="text"
-            placeholder="Enter your merchant name"
-            {...register("merchFedTaxId")}
-          />
-          {errors.merchFedTaxId && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.merchFedTaxId.message}
-            </Text>
-          )}
-        </FormControl>
+        
         <FormControl mb={4} isInvalid={!!errors.yearsInBusiness}>
           <FormLabel htmlFor="yearsInBusiness">Years in Business</FormLabel>
           <Input

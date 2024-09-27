@@ -12,11 +12,14 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
+import InputMask from "react-input-mask";
 
 const schema = z.object({
-  corpLegalName: z.string().min(5, { message: "Corp/Legal name is required" }),
-  corpLegalAddress: z.string().min(5, { message: "Corp/Legal Address is required" }),
+  corpLegalFedTaxId: z
+    .string()
+    .min(6, "The fed tax id must be at least 6 characters long"),
+  corpLegalName: z.string().min(5, { message: "Name is required" }),
+  corpLegalAddress: z.string().min(5, { message: "Address is required" }),
   corpLegalCity: z.string().min(1, { message: "City is required" }),
 
   corpLegalState: z.string().min(1, { message: "State is required" }),
@@ -41,7 +44,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
   title,
   onNext,
   onDataChange,
-  formData = { corpLegalName: "", corpLegalAddress: "", corpLegalCity: "", corpLegalState: "", corpLegalZip: "", corpLegalPhone: "", corpLegalEmail: "" },
+  formData = { corpLegalFedTaxId: "", corpLegalName: "", corpLegalAddress: "", corpLegalCity: "", corpLegalState: "", corpLegalZip: "", corpLegalPhone: "", corpLegalEmail: "" },
   formRef,
 }) => {
   const theme = useTheme();
@@ -65,14 +68,32 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
       <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
         {title}
       </Text>
+      <FormControl mb={4} isInvalid={!!errors.corpLegalFedTaxId}>
+          <FormLabel htmlFor="corpLegalFedTaxId">Federal Tax ID (EIN)</FormLabel>
+          <Input
+            as={InputMask}
+            mask="**-*******"
+            maskChar={null}
+            id="corpLegalFedTaxId"
+            type="text"
+            placeholder="Enter your federal tax ID"
+            {...register("corpLegalFedTaxId")}
+          />
+          {errors.corpLegalFedTaxId && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.corpLegalFedTaxId.message}
+            </Text>
+          )}
+        </FormControl>
+
       <FormControl mb={4} isInvalid={!!errors.corpLegalName}>
         <FormLabel htmlFor="legalName" color={theme.colors.gray[700]}>
-          Corp/Legal Name
+          Corporate / Legal Name
         </FormLabel>
         <Input
           id="legalName"
           type="text"
-          placeholder="Enter your Corp/Legal name"
+          placeholder="Enter your corporate / legal name"
           {...register("corpLegalName")}
         />
         {errors.corpLegalName && (
@@ -82,12 +103,12 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
 
       <FormControl mb={4} isInvalid={!!errors.corpLegalAddress}>
         <FormLabel htmlFor="corpLegalAddress" color={theme.colors.gray[700]}>
-          Corp/Legal Address
+          Corporate / Legal Address
         </FormLabel>
         <Input
           id="address"
           type="text"
-          placeholder="Enter your company address"
+          placeholder="Enter your corporate / legal address"
           {...register("corpLegalAddress")}
         />
         {errors.corpLegalAddress && (
@@ -97,9 +118,9 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
 
       <FormControl mb={4} isInvalid={!!errors.corpLegalCity}>
         <FormLabel htmlFor="corpLegalCity" color={theme.colors.gray[700]}>
-          Corp/Legal City
+          Corporate / Legal City
         </FormLabel>
-        <Select id="corpLegalCity" placeholder="Select city" {...register("corpLegalCity")}>
+        <Select id="corpLegalCity" placeholder="Select your company / legal city" {...register("corpLegalCity")}>
           <option value="New York">New York</option>
           <option value="Los Angeles">Los Angeles</option>
           <option value="Chicago">Chicago</option>
@@ -112,9 +133,9 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
       <HStack spacing={4} mb={4}>
         <FormControl isInvalid={!!errors.corpLegalState}>
           <FormLabel htmlFor="corpLegalState" color={theme.colors.gray[700]}>
-            Corp/Legal State
+            Corporate / Legal State
           </FormLabel>
-          <Select id="corpLegalState" placeholder="Select state" {...register("corpLegalState")}>
+          <Select id="corpLegalState" placeholder="Select your company / legal state" {...register("corpLegalState")}>
             <option value="NY">New York</option>
             <option value="CA">California</option>
             <option value="IL">Illinois</option>
@@ -126,12 +147,12 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
 
         <FormControl isInvalid={!!errors.corpLegalZip}>
           <FormLabel htmlFor="corpLegalZip" color={theme.colors.gray[700]}>
-            Corp/Legal ZIP Code
+            Corporate / Legal ZIP Code
           </FormLabel>
           <Input
             id="corpLegalZip"
             type="text"
-            placeholder="Enter your ZIP code"
+            placeholder="Enter your company / legal ZIP code"
             {...register("corpLegalZip")}
           />
           {errors.corpLegalZip && (
@@ -143,12 +164,12 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
       <HStack spacing={4} mb={4}>
         <FormControl isInvalid={!!errors.corpLegalPhone}>
           <FormLabel htmlFor="corpLegalPhone" color={theme.colors.gray[700]}>
-            Corp/Legal Phone
+            Corporate / Legal Phone
           </FormLabel>
           <Input
             id="corpLegalPhone"
             type="text"
-            placeholder="Enter your ZIP code"
+            placeholder="Enter your Corporate / Legal Phone"
             {...register("corpLegalPhone")}
           />
           {errors.corpLegalPhone && (
@@ -158,12 +179,12 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
 
         <FormControl isInvalid={!!errors.corpLegalEmail}>
           <FormLabel htmlFor="corpLegalEmail" color={theme.colors.gray[700]}>
-            Corp/Legal Email
+            Corporate / Legal email
           </FormLabel>
           <Input
             id="corpLegalEmail"
             type="text"
-            placeholder="Enter your ZIP code"
+            placeholder="Enter your your company / legal email"
             {...register("corpLegalEmail")}
           />
           {errors.corpLegalEmail && (
