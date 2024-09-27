@@ -9,7 +9,7 @@ import ContactInformationForm from "./components/YourBusiness/ContactInformation
 import AdditionalDetailsForm from "./components/YourBusiness/AdditionalDetailsForm/AdditionalDetailsForm";
 import OwnerInformationForm from "./components/OwnerInformation/OwnerInformationForm";
 import BusinessProfileForm from "./components/BusinessProfile/BusinessProfile";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Sidebar from "./components/Sidebar/SidebarAlter";
 import ControllingOfficerForm from "./components/ControllingOfficer/ControllingOfficer";
 import SalesProfileForm from "./components/SalesProfile/SalesProfile";
 
