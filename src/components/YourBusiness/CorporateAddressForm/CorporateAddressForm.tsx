@@ -33,7 +33,7 @@ type BusinessDataForm = z.infer<typeof schema>;
 
 interface CorporateAddressFormProps {
   title: string;
-  description: string;
+  description?: string;
   onNext?: () => void;
   onBack?: () => void;
   onDataChange?: (data: BusinessDataForm) => void;
@@ -42,7 +42,6 @@ interface CorporateAddressFormProps {
 }
 
 const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
-  title,
   onNext,
   onDataChange,
   formData = { corpLegalFedTaxId: "", corpLegalName: "", corpLegalAddress: "", corpLegalCity: "", corpLegalState: "", corpLegalZip: "", corpLegalPhone: "", corpLegalEmail: "" },
@@ -66,9 +65,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
-        {title}
-      </Text>
+
       <FormControl mb={4} isInvalid={!!errors.corpLegalFedTaxId}>
           <FormLabel htmlFor="corpLegalFedTaxId">Federal Tax ID (EIN)</FormLabel>
           <Input

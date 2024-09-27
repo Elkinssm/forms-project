@@ -44,8 +44,6 @@ interface CompanyInformationFormProps {
 }
 
 const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
-  title,
-  description,
   onNext,
   onDataChange,
   formData = { merchName: "" },
@@ -81,9 +79,6 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
-        {title}
-      </Text>
       <FormControl mb={4} isInvalid={!!errors.merchName} isRequired>
         <FormLabel htmlFor="merchName">Location Name</FormLabel>
         <Input

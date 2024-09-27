@@ -49,7 +49,6 @@ interface SalesProfileFormProps {
 }
 
 const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
-  title,
   onNext,
   onDataChange,
   formData = {
@@ -84,9 +83,6 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
   };
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <Text fontWeight="bold" fontSize="lg" mb={4} color="text.highEmphasis">
-        {title}
-      </Text>
 
       <FormControl mb={4} isInvalid={!!errors.salesProfileCurrentlyMCVISA}>
         <FormLabel htmlFor="salesProfileCurrentlyMCVISA">

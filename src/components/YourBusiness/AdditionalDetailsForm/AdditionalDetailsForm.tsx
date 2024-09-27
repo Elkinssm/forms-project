@@ -36,7 +36,6 @@ interface AdditionalDetailsFormProps {
 }
 
 const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
-  title,
   onNext,
   onDataChange,
   formData = { aditionalDetailsLocations: 0, aditionalDetailsMailing: "", aditionalDetailsWebsite: "" },
@@ -57,9 +56,6 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
   };
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <Text fontWeight="bold" fontSize="lg" mb={4} color="text.highEmphasis">
-        {title}
-      </Text>
       <FormControl mb={4} isInvalid={!!errors.aditionalDetailsLocations}>
         <FormLabel htmlFor="aditionalDetailsLocations">Number of Locations</FormLabel>
         <Input

@@ -25,7 +25,6 @@ interface ContactInformationFormFormProps {
 }
 
 const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
-  title,
   onNext,
   onDataChange,
   formData = { contactInformationContact: "", contactInformationPrimaryName: "", contactInformationSecondaryName: "" },
@@ -49,9 +48,6 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <Text fontWeight="bold" fontSize="2xl" mb={4} color="text.highEmphasis">
-        {title}
-      </Text>
       <FormControl mb={4} isInvalid={!!errors.contactInformationContact}>
         <FormLabel htmlFor="contactInformationContact">Contact</FormLabel>
         <Input

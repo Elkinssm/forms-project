@@ -38,7 +38,6 @@ interface OwnerInformationFormProps {
 }
 
 const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
-    title,
     onNext,
     onDataChange,
     formData = { ownerFirstName: "", ownerMiddleName: "", ownerLastName: "", ownerStateID: "", ownerSSN: "", ownerPercentOwnership: 1, ownerTitle: "", ownerBirthday: new Date(), ownerEmail: "", ownerAddress: "", ownerCity: "", ownerZip: "", ownerPhone: "" },
@@ -59,9 +58,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     };
     return (
         <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-            <Text fontWeight="bold" fontSize="lg" mb={4} color="text.highEmphasis">
-                {title}
-            </Text>
             <FormControl mb={4} isInvalid={!!errors.ownerFirstName}>
                 <FormLabel htmlFor="ownerFirstName">First Name</FormLabel>
                 <Input

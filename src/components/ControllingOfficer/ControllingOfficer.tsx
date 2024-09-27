@@ -66,7 +66,6 @@ interface ControllingOfficerFormProps {
 }
 
 const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
-  title,
   onNext,
   onDataChange,
   formData = {
@@ -102,10 +101,6 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
   };
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <Text fontWeight="bold" fontSize="lg" mb={4} color="text.highEmphasis">
-        {title}
-      </Text>
-
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerFirstName}>
         <FormLabel htmlFor="controllerOfficerFirstName">First Name</FormLabel>
         <Input

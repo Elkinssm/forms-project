@@ -35,7 +35,6 @@ interface BusinessProfileFormProps {
 }
 
 const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
-    title,
     onNext,
     onDataChange,
     formData = { businessProfileOwnershipType: "", businessProfileBusinessType:"", businessProfileMCC:"", businessProfileGoodsServices:"", businessProfileBankName:"", businessProfileBusinessCheckingAccount:"", businessProfileBusinessCheckRouting:"" },
@@ -56,10 +55,6 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     };
     return (
         <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-            <Text fontWeight="bold" fontSize="lg" mb={4} color="text.highEmphasis">
-                {title}
-            </Text>
-
             <FormControl mb={4} isInvalid={!!errors.businessProfileOwnershipType}>
                 <FormLabel htmlFor="businessProfileOwnershipType">Ownership Type</FormLabel>
                 <Input

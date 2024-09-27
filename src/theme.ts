@@ -71,6 +71,7 @@ const theme = extendTheme({
           _invalid: {
             borderColor: "semantic.error.DEFAULT",
             boxShadow: "0 0 0 1px #E53935",
+            
             _focus: {
               borderColor: "semantic.error.DEFAULT",
               boxShadow: "0 0 0 1px #E53935",
