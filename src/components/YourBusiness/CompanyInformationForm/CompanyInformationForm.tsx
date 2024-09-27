@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Box, FormControl, FormLabel, HStack, Input, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { z } from "zod"
 import InputMask from "react-input-mask";
 
 const schema = z.object({
@@ -12,15 +12,11 @@ const schema = z.object({
   merchFedTaxId: z
     .string()
     .min(6, "The fed tax id must be at least 6 characters long"),
-  merchAddress: z
-    .string()
-    .min(10, "The address must be at least 10 characters long"),
+  merchAddress: z.string().min(10, "The address must be at least 10 characters long"),
   merchCity: z.string().min(3, "The city must be at least 3 characters long"),
   merchState: z.string().min(2, "The state must be at least 2 characters long"),
   merchZip: z.string().min(5, "The zip must be at least 5 characters long"),
-  merchPhone: z
-    .string()
-    .min(10, "The phone must be at least 10 characters long"),
+  merchPhone: z.string().min(10, "The phone must be at least 10 characters long"),
   yearsInBusiness: z.preprocess(
     (val) => Number(val),
     z.number().min(1, "Years in business must be at least 1 digit long")
