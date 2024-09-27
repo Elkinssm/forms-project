@@ -27,6 +27,7 @@ type BusinessDataForm = z.infer<typeof schema>;
 
 interface AdditionalDetailsFormProps {
   title: string;
+  description: string;
   onNext?: () => void;
   onBack?: () => void;
   onDataChange?: (data: BusinessDataForm) => void;

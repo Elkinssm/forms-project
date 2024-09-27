@@ -28,12 +28,13 @@ const schema = z.object({
 type OwnerInformationDataForm = z.infer<typeof schema>;
 
 interface OwnerInformationFormProps {
-    title: string;
-    onNext?: () => void;
-    onBack?: () => void;
-    onDataChange?: (data: OwnerInformationDataForm) => void;
-    formData?: OwnerInformationDataForm;
-    formRef?: React.RefObject<HTMLFormElement>;
+  title: string;
+  description?: string;
+  onNext?: () => void;
+  onBack?: () => void;
+  onDataChange?: (data: OwnerInformationDataForm) => void;
+  formData?: OwnerInformationDataForm;
+  formRef?: React.RefObject<HTMLFormElement>;
 }
 
 const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({

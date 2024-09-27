@@ -40,6 +40,7 @@ type SalesProfileDataForm = z.infer<typeof schema>;
 
 interface SalesProfileFormProps {
   title: string;
+  description: string;
   onNext?: () => void;
   onBack?: () => void;
   onDataChange?: (data: SalesProfileDataForm) => void;

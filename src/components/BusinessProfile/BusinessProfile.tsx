@@ -25,12 +25,13 @@ const schema = z.object({
 type BusinessProfileDataForm = z.infer<typeof schema>;
 
 interface BusinessProfileFormProps {
-    title: string;
-    onNext?: () => void;
-    onBack?: () => void;
-    onDataChange?: (data: BusinessProfileDataForm) => void;
-    formData?: BusinessProfileDataForm;
-    formRef?: React.RefObject<HTMLFormElement>;
+  title: string;
+  description?: string;
+  onNext?: () => void;
+  onBack?: () => void;
+  onDataChange?: (data: BusinessProfileDataForm) => void;
+  formData?: BusinessProfileDataForm;
+  formRef?: React.RefObject<HTMLFormElement>;
 }
 
 const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({

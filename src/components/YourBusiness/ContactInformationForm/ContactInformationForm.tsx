@@ -18,6 +18,7 @@ interface ContactInformationFormFormProps {
   title: string;
   onNext?: () => void;
   onBack?: () => void;
+  description: string;
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
   formRef?: React.RefObject<HTMLFormElement>;

@@ -57,6 +57,7 @@ type ControllingOfficerDataForm = z.infer<typeof schema>;
 
 interface ControllingOfficerFormProps {
   title: string;
+  description?: string;
   onNext?: () => void;
   onBack?: () => void;
   onDataChange?: (data: ControllingOfficerDataForm) => void;

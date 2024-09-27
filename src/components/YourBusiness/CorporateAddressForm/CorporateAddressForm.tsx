@@ -33,6 +33,7 @@ type BusinessDataForm = z.infer<typeof schema>;
 
 interface CorporateAddressFormProps {
   title: string;
+  description: string;
   onNext?: () => void;
   onBack?: () => void;
   onDataChange?: (data: BusinessDataForm) => void;

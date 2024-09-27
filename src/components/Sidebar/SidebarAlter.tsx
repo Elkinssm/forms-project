@@ -1,3 +1,4 @@
+// Sidebar.tsx
 import React, { useState, ReactElement, useEffect, useRef } from "react";
 import {
   Text,
@@ -57,6 +58,19 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
   const progressValue = ((selectedPage + 1) / totalSteps) * 100;
 
+  // Obtener el título y la descripción del formulario seleccionado
+  const currentChild = children[selectedPage];
+
+  // Verificar si el currentChild tiene title y description
+  const title =
+    currentChild && currentChild.props.title
+      ? currentChild.props.title
+      : "Default Title";
+  const description =
+    currentChild && currentChild.props.description
+      ? currentChild.props.description
+      : "Default Description";
+
   return (
     <Box display="flex" flexDirection={{ base: "column", md: "row" }} h="100vh">
       {/* Sidebar */}
@@ -70,30 +84,18 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         display="flex"
         flexDirection="column"
       >
-        <VStack align="start" spacing={2} mb={6} flexDirection={"row"}>
+        <VStack align="start" spacing={4} mb={6} flexDirection={"row"}>
           <Box
             display="flex"
             alignItems="center"
             justifyContent="center"
             bg="brand.primary"
             borderRadius="md"
-            p={2}
+            p={4}
             height={14}
             w={300}
           >
-            <HStack spacing={2}>
-              {/* <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                bg="white"
-                borderRadius="full"
-                boxSize="30px"
-              >
-                <Text fontWeight="bold" color="blue.500">
-                  1
-                </Text>
-              </Box> */}
+            <HStack spacing={4}>
               <Text fontWeight="bold" fontSize="lg" color="white">
                 Your Information
               </Text>
@@ -119,7 +121,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             </CircularProgress>
           </Box>
         </VStack>
-        <List spacing={2} pl={6} pt={2}>
+        <List spacing={3} pl={4} pt={2}>
           {React.Children.map(children, (child, index) => (
             <ListItem
               key={index}
@@ -156,21 +158,16 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           borderColor="gray.200"
           zIndex={1}
         >
-          <FormHeader
-            title="Business information"
-            description="Let’s start with your company’s basic information. [We could add here why the company requests this information]"
-          />
+          {/* Usar título y descripción del formulario actual */}
+          <FormHeader title={title} description={description} />
         </Box>
         <Box
-          // maxWidth={"200px"}
-          // bg={{ base: "red", md: "green", lg: "salmon" }}
           flex="1"
           p={6}
           overflowY="auto"
           maxH="calc(100vh - 120px)"
           position="relative"
           zIndex={0}
-          // maxWidth={{ base: "600px" , md: "800px", lg: "1300px" }}
         >
           <AnimatePresence initial={false} mode="wait">
             {React.Children.map(children, (child, index) =>
