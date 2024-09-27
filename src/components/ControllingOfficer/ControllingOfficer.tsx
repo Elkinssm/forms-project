@@ -46,9 +46,11 @@ const schema = z.object({
     .refine((data) => data >= new Date(), {
       message: "Expiratin date must be in the future",
     }),
-  controllerOfficerDob: z
-    .string()
-    .min(twoMin, `The dob must be at least ${twoMin} characters long`),
+  controllerOfficerDob: z.coerce
+  .date()
+  .refine((data) => data < new Date(), {
+    message: "Date of birth must be in the past",
+  }),
   controllerOfficerEmail: z.string().email("A valid email is required"),
 });
 type ControllingOfficerDataForm = z.infer<typeof schema>;
@@ -79,7 +81,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
     controllerOfficerSSN: "",
     controllerOfficerLicenseNumber: "",
     controllerOfficerLicenseNumberExpires: new Date(),
-    controllerOfficerDob: "",
+    controllerOfficerDob: new Date(),
     controllerOfficerEmail: "",
   },
   formRef,
@@ -104,11 +106,11 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
       </Text>
 
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerFirstName}>
-        <FormLabel htmlFor="controllerOfficerFirstName">First name</FormLabel>
+        <FormLabel htmlFor="controllerOfficerFirstName">First Name</FormLabel>
         <Input
           id="controllerOfficerFirstName"
           type="text"
-          placeholder="Enter the First Name"
+          placeholder="Enter the first name"
           {...register("controllerOfficerFirstName")}
         />
         {errors.controllerOfficerFirstName && (
@@ -119,11 +121,11 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerMiddleName}>
-        <FormLabel htmlFor="controllerOfficerMiddleName">Middle name</FormLabel>
+        <FormLabel htmlFor="controllerOfficerMiddleName">Middle Name</FormLabel>
         <Input
           id="controllerOfficerMiddleName"
           type="text"
-          placeholder="Enter the Middle Name"
+          placeholder="Enter the middle name"
           {...register("controllerOfficerMiddleName")}
         />
         {errors.controllerOfficerMiddleName && (
@@ -134,11 +136,11 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerLastName}>
-        <FormLabel htmlFor="controllerOfficerLastName">Last name</FormLabel>
+        <FormLabel htmlFor="controllerOfficerLastName">Last Name</FormLabel>
         <Input
           id="controllerOfficerLastName"
           type="text"
-          placeholder="Enter the Last Name"
+          placeholder="Enter the last name"
           {...register("controllerOfficerLastName")}
         />
         {errors.controllerOfficerLastName && (
@@ -152,7 +154,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
         <Input
           id="controllerOfficerTitle"
           type="text"
-          placeholder="Enter the Title"
+          placeholder="Enter the title"
           {...register("controllerOfficerTitle")}
         />
         {errors.controllerOfficerTitle && (
@@ -252,12 +254,12 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
 
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerLicenseNumber}>
         <FormLabel htmlFor="controllerOfficerLicenseNumber">
-          Licence Number
+          Driver License Number
         </FormLabel>
         <Input
           id="controllerOfficerLicenseNumber"
           type="text"
-          placeholder="Enter Licence number"
+          placeholder="Enter the driver license number"
           {...register("controllerOfficerLicenseNumber")}
         />
         {errors.controllerOfficerLicenseNumber && (
@@ -272,12 +274,12 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
         isInvalid={!!errors.controllerOfficerLicenseNumberExpires}
       >
         <FormLabel htmlFor="controllerOfficerLicenseNumberExpires">
-          Licence Number Expiration
+          Driver License Number Expiration Date
         </FormLabel>
         <Input
           id="controllerOfficerLicenseNumberExpires"
           type="date"
-          placeholder="Enter Licence number expiration date"
+          placeholder="Enter driver license number expiration date"
           {...register("controllerOfficerLicenseNumberExpires")}
         />
         {errors.controllerOfficerLicenseNumberExpires && (
@@ -288,11 +290,11 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerDob}>
-        <FormLabel htmlFor="controllerOfficerDob">Dob</FormLabel>
+        <FormLabel htmlFor="controllerOfficerDob">Date of Birth</FormLabel>
         <Input
           id="controllerOfficerDob"
-          type="text"
-          placeholder="Enter Dob"
+          type="date"
+          placeholder="Enter date of Birth"
           {...register("controllerOfficerDob")}
         />
         {errors.controllerOfficerDob && (

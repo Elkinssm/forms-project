@@ -13,7 +13,7 @@ const schema = z.object({
     ownerFirstName: z.string().min(2, "The Owner First Name must be at least 2 chars"),
     ownerMiddleName: z.string().min(2, "The Owner Middle Name must be at least 2 chars"),
     ownerLastName: z.string().min(2, "The Owner Middle Name must be at least 2 chars"),
-    ownerState: z.string().min(2, "The state must be at least 2 chars"),
+    ownerStateID: z.string().min(2, "The stateID must be at least 2 chars"),
     ownerSSN: z.string().min(9, "The SSN must be at least 9 chars"),
     ownerPercentOwnership: z.preprocess((val) => Number(val), z.number().int().min(1, "Percent Ownership must be at least 1")),
     ownerTitle: z.string().min(9, "The Title must be at least 9 chars"),
@@ -40,7 +40,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     title,
     onNext,
     onDataChange,
-    formData = { ownerFirstName: "", ownerMiddleName: "", ownerLastName: "", ownerState: "", ownerSSN: "", ownerPercentOwnership: 1, ownerTitle: "", ownerBirthday: new Date(), ownerEmail: "", ownerAddress: "", ownerCity: "", ownerZip: "", ownerPhone: "" },
+    formData = { ownerFirstName: "", ownerMiddleName: "", ownerLastName: "", ownerStateID: "", ownerSSN: "", ownerPercentOwnership: 1, ownerTitle: "", ownerBirthday: new Date(), ownerEmail: "", ownerAddress: "", ownerCity: "", ownerZip: "", ownerPhone: "" },
     formRef,
 }) => {
     const {
@@ -66,7 +66,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                 <Input
                     id="ownerFirstName"
                     type="text"
-                    placeholder="Enter the First Name"
+                    placeholder="Enter the first name"
                     {...register("ownerFirstName")}
                 />
                 {errors.ownerFirstName && (
@@ -79,7 +79,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                 <Input
                     id="ownerMiddleName"
                     type="text"
-                    placeholder="Enter the Middle Name"
+                    placeholder="Enter the middle name"
                     {...register("ownerMiddleName")}
                 />
                 {errors.ownerMiddleName && (
@@ -92,7 +92,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                 <Input
                     id="ownerLastName"
                     type="text"
-                    placeholder="Enter the Last Name"
+                    placeholder="Enter the last name"
                     {...register("ownerLastName")}
                 />
                 {errors.ownerLastName && (
@@ -100,16 +100,16 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                 )}
             </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerState}>
-                <FormLabel htmlFor="ownerState">State</FormLabel>
+            <FormControl mb={4} isInvalid={!!errors.ownerStateID}>
+                <FormLabel htmlFor="ownerStateID">State ID</FormLabel>
                 <Input
-                    id="ownerState"
+                    id="ownerStateID"
                     type="text"
-                    placeholder="Enter State"
-                    {...register("ownerState")}
+                    placeholder="Enter the State Id"
+                    {...register("ownerStateID")}
                 />
-                {errors.ownerState && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerState.message}</Text>
+                {errors.ownerStateID && (
+                    <Text color="semantic.error.DEFAULT">{errors.ownerStateID.message}</Text>
                 )}
             </FormControl>
 
@@ -131,7 +131,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                 <Input
                     id="ownerPercentOwnership"
                     type="number"
-                    placeholder="Enter Percent Ownership"
+                    placeholder="Enter ownership %"
                     {...register("ownerPercentOwnership")}
                 />
                 {errors.ownerPercentOwnership && (
@@ -144,7 +144,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                 <Input
                     id="ownerTitle"
                     type="number"
-                    placeholder="Enter Title"
+                    placeholder="Enter title"
                     {...register("ownerTitle")}
                 />
                 {errors.ownerTitle && (

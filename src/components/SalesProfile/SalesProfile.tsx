@@ -109,7 +109,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
         <Input
           id="salesProfileRetailChipSwipe"
           type="text"
-          placeholder="Enter Retail Chip Swipe"
+          placeholder="Enter retail chip swipe %"
           {...register("salesProfileRetailChipSwipe")}
         />
         {errors.salesProfileRetailChipSwipe && (
@@ -126,7 +126,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
         <Input
           id="salesProfileCurrentProcessor"
           type="text"
-          placeholder="Enter Current Processor"
+          placeholder="Enter current processor"
           {...register("salesProfileCurrentProcessor")}
         />
         {errors.salesProfileCurrentProcessor && (
@@ -137,11 +137,11 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.salesProfileImprintCard}>
-        <FormLabel htmlFor="salesProfileImprintCard">Imprint Card</FormLabel>
+        <FormLabel htmlFor="salesProfileImprintCard">Imprint Card %</FormLabel>
         <Input
           id="salesProfileImprintCard"
           type="text"
-          placeholder="Enter Imprint Card"
+          placeholder="Enter imprint card %"
           {...register("salesProfileImprintCard")}
         />
         {errors.salesProfileImprintCard && (
@@ -156,7 +156,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
         <Input
           id="salesProfileAvgTicket"
           type="text"
-          placeholder="Enter Avg Ticket"
+          placeholder="Enter avg ticket"
           {...register("salesProfileAvgTicket")}
         />
         {errors.salesProfileAvgTicket && (
@@ -171,7 +171,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
         <Input
           id="salesProfileMaxTicket"
           type="text"
-          placeholder="Enter Max Ticket"
+          placeholder="Enter max ticket"
           {...register("salesProfileMaxTicket")}
         />
         {errors.salesProfileMaxTicket && (
@@ -188,7 +188,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
         <Input
           id="salesProfileMonthlyVolume"
           type="text"
-          placeholder="Enter Monthly Volume"
+          placeholder="Enter monthly volume"
           {...register("salesProfileMonthlyVolume")}
         />
         {errors.salesProfileMonthlyVolume && (
@@ -199,11 +199,11 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.salesProfileMailPhone}>
-        <FormLabel htmlFor="salesProfileMailPhone">Mail Phone</FormLabel>
+        <FormLabel htmlFor="salesProfileMailPhone">Mail Phone %</FormLabel>
         <Input
           id="salesProfileMailPhone"
           type="text"
-          placeholder="Enter Mail Phone"
+          placeholder="Enter Mail Phone %"
           {...register("salesProfileMailPhone")}
         />
         {errors.salesProfileMailPhone && (

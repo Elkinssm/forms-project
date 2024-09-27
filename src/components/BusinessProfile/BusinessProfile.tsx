@@ -60,11 +60,11 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
             </Text>
 
             <FormControl mb={4} isInvalid={!!errors.businessProfileOwnershipType}>
-                <FormLabel htmlFor="businessProfileOwnershipType">Ownership type</FormLabel>
+                <FormLabel htmlFor="businessProfileOwnershipType">Ownership Type</FormLabel>
                 <Input
                     id="businessProfileOwnershipType"
                     type="text"
-                    placeholder="Enter the Ownership type"
+                    placeholder="Enter the ownership type"
                     {...register("businessProfileOwnershipType")}
                 />
                 {errors.businessProfileOwnershipType && (
@@ -100,10 +100,11 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
 
             <FormControl mb={4} isInvalid={!!errors.businessProfileGoodsServices}>
                 <FormLabel htmlFor="businessProfileGoodsServices">Goods Services</FormLabel>
+                {/* TODO Debe ser un textbox */}
                 <Input
                     id="businessProfileGoodsServices"
                     type="text"
-                    placeholder="Enter the Goods Services"
+                    placeholder="Enter the goods services"
                     {...register("businessProfileGoodsServices")}
                 />
                 {errors.businessProfileGoodsServices && (
@@ -116,7 +117,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
                 <Input
                     id="businessProfileBankName"
                     type="text"
-                    placeholder="Enter the Bank Name"
+                    placeholder="Enter the bank name"
                     {...register("businessProfileBankName")}
                 />
                 {errors.businessProfileBankName && (
@@ -129,7 +130,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
                 <Input
                     id="businessProfileBusinessCheckingAccount"
                     type="text"
-                    placeholder="Enter the Business Checking Account"
+                    placeholder="Enter the business checking account"
                     {...register("businessProfileBusinessCheckingAccount")}
                 />
                 {errors.businessProfileBusinessCheckingAccount && (
@@ -142,7 +143,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
                 <Input
                     id="businessProfileBusinessCheckRouting"
                     type="text"
-                    placeholder="Enter the Business Check Routing"
+                    placeholder="Enter the business check routing"
                     {...register("businessProfileBusinessCheckRouting")}
                 />
                 {errors.businessProfileBusinessCheckRouting && (

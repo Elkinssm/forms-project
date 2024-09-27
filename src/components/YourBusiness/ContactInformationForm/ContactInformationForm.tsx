@@ -56,7 +56,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
         <Input
           id="contactInformationContact"
           type="text"
-          placeholder="Enter your Contact"
+          placeholder="Enter your contact"
           {...register("contactInformationContact")}
         />
         {errors.contactInformationContact && (
@@ -64,7 +64,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
         )}
       </FormControl>
       <FormControl mb={4} isInvalid={!!errors.contactInformationPrimaryName}>
-        <FormLabel htmlFor="contactInformationPrimaryName">Prim Contact Name</FormLabel>
+        <FormLabel htmlFor="contactInformationPrimaryName">Primary Contact Name</FormLabel>
         <Input
           id="contactInformationPrimaryName"
           type="text"
@@ -76,7 +76,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
         )}
       </FormControl>
       <FormControl mb={4} isInvalid={!!errors.contactInformationSecondaryName}>
-        <FormLabel htmlFor="contactInformationSecondaryName">Seco Contact Name</FormLabel>
+        <FormLabel htmlFor="contactInformationSecondaryName">Secondary Contact Name</FormLabel>
         <Input
           id="contactInformationSecondaryName"
           type="text"

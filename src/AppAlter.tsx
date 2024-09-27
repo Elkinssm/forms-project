@@ -20,7 +20,7 @@ function App() {
         {/* Pasamos los formularios como children del Sidebar */}
         <Sidebar>
           <CorporateAddressForm title="Legal Company Name" />
-          <CompanyInformationForm title="Company Information" />
+          <CompanyInformationForm title="Business Information" />
           <ContactInformationForm title="Contact Information" />
           <AdditionalDetailsForm title="Additional Details" />
           <OwnerInformationForm title="Owner Information" />

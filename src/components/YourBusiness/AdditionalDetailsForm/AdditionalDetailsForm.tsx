@@ -60,11 +60,11 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
         {title}
       </Text>
       <FormControl mb={4} isInvalid={!!errors.aditionalDetailsLocations}>
-        <FormLabel htmlFor="aditionalDetailsLocations">Number Of Locations</FormLabel>
+        <FormLabel htmlFor="aditionalDetailsLocations">Number of Locations</FormLabel>
         <Input
           id="aditionalDetailsLocations"
           type="text"
-          placeholder="Enter your merchant name"
+          placeholder="Enter the number of locations"
           {...register("aditionalDetailsLocations")}
         />
         {errors.aditionalDetailsLocations && (
@@ -75,11 +75,11 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
         <FormLabel>Mailing Address</FormLabel>
         <RadioGroup>
           <Stack direction="column">
+            <Radio value="option2" {...register("aditionalDetailsMailing")}>
+              Corporate / Legal Name
+            </Radio>
             <Radio value="option1" {...register("aditionalDetailsMailing")}>
               DBA
-            </Radio>
-            <Radio value="option2" {...register("aditionalDetailsMailing")}>
-              Legal
             </Radio>
           </Stack>
         </RadioGroup>
@@ -92,7 +92,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
         <Input
           id="aditionalDetailsWebsite"
           type="text"
-          placeholder="Enter your website"
+          placeholder="Enter your website address"
           {...register("aditionalDetailsWebsite")}
         />
         {errors.aditionalDetailsWebsite && (

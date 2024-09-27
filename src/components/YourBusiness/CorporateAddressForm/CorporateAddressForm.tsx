@@ -179,12 +179,12 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
 
         <FormControl isInvalid={!!errors.corpLegalEmail}>
           <FormLabel htmlFor="corpLegalEmail" color={theme.colors.gray[700]}>
-            Corporate / Legal email
+            Corporate / Legal Email
           </FormLabel>
           <Input
             id="corpLegalEmail"
             type="text"
-            placeholder="Enter your your company / legal email"
+            placeholder="Enter your your company / legal eMail"
             {...register("corpLegalEmail")}
           />
           {errors.corpLegalEmail && (

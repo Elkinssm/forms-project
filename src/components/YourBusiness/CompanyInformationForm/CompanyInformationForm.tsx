@@ -106,7 +106,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
         <Input
           id="merchAddress"
           type="text"
-          placeholder="Enter your company address"
+          placeholder="Enter your location address"
           {...register("merchAddress")}
         />
         {errors.merchAddress && (
@@ -121,7 +121,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           <Input
             id="merchCity"
             type="text"
-            placeholder="Enter your company city"
+            placeholder="Enter your location city"
             {...register("merchCity")}
           />
           {errors.merchCity && (
@@ -133,7 +133,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           <Input
             id="merchState"
             type="text"
-            placeholder="Enter your company state"
+            placeholder="Enter your location state"
             {...register("merchState")}
           />
           {errors.merchState && (
@@ -153,7 +153,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
             value={zipValue}
             id="merchZip"
             type="text"
-            placeholder="Enter your company zip"
+            placeholder="Enter your location zip"
             {...register("merchZip")}
             onChange={handleZipChange}
           />
@@ -166,7 +166,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           <Input
             id="merchPhone"
             type="text"
-            placeholder="Enter your company phone"
+            placeholder="Enter your location phone"
             {...register("merchPhone")}
           />
           {errors.merchPhone && (
