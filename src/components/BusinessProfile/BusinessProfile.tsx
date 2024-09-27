@@ -81,19 +81,6 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
                 )}
             </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.businessProfileMCC}>
-                <FormLabel htmlFor="businessProfileMCC">MCC</FormLabel>
-                <Input
-                    id="businessProfileMCC"
-                    type="text"
-                    placeholder="Enter the MCC"
-                    {...register("businessProfileMCC")}
-                />
-                {errors.businessProfileMCC && (
-                    <Text color="semantic.error.DEFAULT">{errors.businessProfileMCC.message}</Text>
-                )}
-            </FormControl>
-
             <FormControl mb={4} isInvalid={!!errors.businessProfileGoodsServices}>
                 <FormLabel htmlFor="businessProfileGoodsServices">Goods Services</FormLabel>
                 {/* TODO Debe ser un textbox */}
@@ -108,6 +95,21 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
                 )}
             </FormControl>
 
+            <FormControl mb={4} isInvalid={!!errors.businessProfileMCC}>
+                <FormLabel htmlFor="businessProfileMCC">MCC</FormLabel>
+                <Input
+                    id="businessProfileMCC"
+                    type="text"
+                    placeholder="Enter the MCC"
+                    {...register("businessProfileMCC")}
+                />
+                {errors.businessProfileMCC && (
+                    <Text color="semantic.error.DEFAULT">{errors.businessProfileMCC.message}</Text>
+                )}
+            </FormControl>
+
+           
+
             <FormControl mb={4} isInvalid={!!errors.businessProfileBankName}>
                 <FormLabel htmlFor="businessProfileBankName">Bank Name</FormLabel>
                 <Input
@@ -118,6 +120,20 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
                 />
                 {errors.businessProfileBankName && (
                     <Text color="semantic.error.DEFAULT">{errors.businessProfileBankName.message}</Text>
+                )}
+            </FormControl>
+
+            
+            <FormControl mb={4} isInvalid={!!errors.businessProfileBusinessCheckRouting}>
+                <FormLabel htmlFor="businessProfileBusinessCheckRouting">Business Check Routing</FormLabel>
+                <Input
+                    id="businessProfileBusinessCheckRouting"
+                    type="text"
+                    placeholder="Enter the business check routing"
+                    {...register("businessProfileBusinessCheckRouting")}
+                />
+                {errors.businessProfileBusinessCheckRouting && (
+                    <Text color="semantic.error.DEFAULT">{errors.businessProfileBusinessCheckRouting.message}</Text>
                 )}
             </FormControl>
 
@@ -133,19 +149,9 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
                     <Text color="semantic.error.DEFAULT">{errors.businessProfileBusinessCheckingAccount.message}</Text>
                 )}
             </FormControl>
+            {/* TODO validar el campo con un api */}
 
-            <FormControl mb={4} isInvalid={!!errors.businessProfileBusinessCheckRouting}>
-                <FormLabel htmlFor="businessProfileBusinessCheckRouting">Business Check Routing</FormLabel>
-                <Input
-                    id="businessProfileBusinessCheckRouting"
-                    type="text"
-                    placeholder="Enter the business check routing"
-                    {...register("businessProfileBusinessCheckRouting")}
-                />
-                {errors.businessProfileBusinessCheckRouting && (
-                    <Text color="semantic.error.DEFAULT">{errors.businessProfileBusinessCheckRouting.message}</Text>
-                )}
-            </FormControl>
+{/* TODO open new window to connect the bank validar el campo con un api */}
         </Box>
 
 

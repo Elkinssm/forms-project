@@ -233,7 +233,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
         )}
       </FormControl>
 
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerSSN}>
+      {/* <FormControl mb={4} isInvalid={!!errors.controllerOfficerSSN}>
         <FormLabel htmlFor="controllerOfficerSSN">SSN</FormLabel>
         <Input
           id="controllerOfficerSSN"
@@ -246,7 +246,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             {errors.controllerOfficerSSN.message}
           </Text>
         )}
-      </FormControl>
+      </FormControl> */}
 
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerLicenseNumber}>
         <FormLabel htmlFor="controllerOfficerLicenseNumber">

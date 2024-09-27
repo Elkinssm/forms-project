@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Checkbox, Text } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -23,24 +23,25 @@ const schema = z.object({
     ownerCity: z.string().min(3, "The city must be at least 3 characters long"),
     ownerZip: z.string().min(5, "The zip must be at least 5 characters long"),
     ownerPhone: z.string().min(10, "The phone must be at least 10 characters long"),
+    controllerOfficerIsOwner: z.string(),
 
 });
 type OwnerInformationDataForm = z.infer<typeof schema>;
 
 interface OwnerInformationFormProps {
-  title: string;
-  description?: string;
-  onNext?: () => void;
-  onBack?: () => void;
-  onDataChange?: (data: OwnerInformationDataForm) => void;
-  formData?: OwnerInformationDataForm;
-  formRef?: React.RefObject<HTMLFormElement>;
+    title: string;
+    description?: string;
+    onNext?: () => void;
+    onBack?: () => void;
+    onDataChange?: (data: OwnerInformationDataForm) => void;
+    formData?: OwnerInformationDataForm;
+    formRef?: React.RefObject<HTMLFormElement>;
 }
 
 const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     onNext,
     onDataChange,
-    formData = { ownerFirstName: "", ownerMiddleName: "", ownerLastName: "", ownerStateID: "", ownerSSN: "", ownerPercentOwnership: 1, ownerTitle: "", ownerBirthday: new Date(), ownerEmail: "", ownerAddress: "", ownerCity: "", ownerZip: "", ownerPhone: "" },
+    formData = { ownerFirstName: "", ownerMiddleName: "", ownerLastName: "", ownerStateID: "", ownerSSN: "", ownerPercentOwnership: 1, ownerTitle: "", ownerBirthday: new Date(), ownerEmail: "", ownerAddress: "", ownerCity: "", ownerZip: "", ownerPhone: "", controllerOfficerIsOwner: "" },
     formRef,
 }) => {
     const {
@@ -227,6 +228,19 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                 {errors.ownerPhone && (
                     <Text color="semantic.error.DEFAULT">
                         {errors.ownerPhone.message}
+                    </Text>
+                )}
+            </FormControl>
+
+            <FormControl mb={4} isInvalid={!!errors.controllerOfficerIsOwner}>
+                <FormLabel htmlFor="controllerOfficerTitle">Is this is owner the Controller Officer?</FormLabel>
+                <Checkbox
+                    id="controllerOfficerIsOwner"
+                    {...register("controllerOfficerIsOwner")}
+                />
+                {errors.controllerOfficerIsOwner && (
+                    <Text color="semantic.error.DEFAULT">
+                        {errors.controllerOfficerIsOwner.message}
                     </Text>
                 )}
             </FormControl>

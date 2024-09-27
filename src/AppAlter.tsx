@@ -20,13 +20,13 @@ function App() {
       <Box maxW={"1200px"} mx="auto" overflow={"auto"}>
         {/* Pasamos los formularios como children del Sidebar */}
         <Sidebar>
-          <CompanyInformationForm
-            title="Company Information"
-            description="Provide details about your company information."
-          />
           <CorporateAddressForm
-            title="Corporate Address"
-            description="Enter the address where your company is legally registered."
+            title="Corporate Information"
+            description="Enter the Information where your company is legally registered."
+          />
+          <CompanyInformationForm
+            title="DBA Information"
+            description="Provide details about your company information."
           />
           <ContactInformationForm
             title="Contact Information"
@@ -38,7 +38,8 @@ function App() {
           />
           <OwnerInformationForm
             title="Owner Information"
-            description="Details about the owners of the company."
+            description="The following information for each individual, if any, who, directly or indirectly, through any contract, arrangement, understanding, relationship or otherwise, owns 25% or more of the equity
+interests of the legal entity listed above"
           />
           <BusinessProfileForm
             title="Business Profile"
