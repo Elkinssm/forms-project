@@ -18,7 +18,7 @@ const ZipInput = <T extends FieldValues,>({
   register,
   handleZipChange,
 }: ZipInputProps<T>) => {
-  return (
+  return ( // TODO, el label, id y paceholder debe conctenar el label  debe llegar por parametros, la mascara es igual para todos los zip XXXXX o XXXXX-XXXX, debe validarse si digito 5 o 9 caracteres ... 
     <FormControl mb={4} isInvalid={!!errors.merchZip}>
       <FormLabel htmlFor="merchZip">Location Zip</FormLabel>
       <Input
@@ -28,7 +28,7 @@ const ZipInput = <T extends FieldValues,>({
         value={zipValue}
         id="merchZip"
         type="text"
-        placeholder="Enter your location zip"
+   //     placeholder={`Enter your ${label}`}
         {...register("merchZip" as Path<T>)}
         onChange={handleZipChange}
       />
