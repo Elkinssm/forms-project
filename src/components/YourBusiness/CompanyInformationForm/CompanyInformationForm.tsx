@@ -10,7 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import InputMask from "react-input-mask";
+// import InputMask from "react-input-mask";
+import ZipInput from "../../FormComponents/ZipInputField";
 
 const schema = z.object({
   merchName: z
@@ -153,25 +154,13 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
         </FormControl>
       </HStack>
       <HStack spacing={4} mb={4}>
-        <FormControl mb={4} isInvalid={!!errors.merchZip}>
-          <FormLabel htmlFor="merchZip">Location Zip</FormLabel>
-          <Input
-            as={InputMask}
-            mask={mask}
-            maskChar={null}
-            value={zipValue}
-            id="merchZip"
-            type="text"
-            placeholder="Enter your location zip"
-            {...register("merchZip")}
-            onChange={handleZipChange}
-          />
-          {errors.merchZip && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.merchZip.message}
-            </Text>
-          )}
-        </FormControl>
+        <ZipInput
+          mask={mask}
+          zipValue={zipValue}
+          errors={errors}
+          register={register}
+          handleZipChange={handleZipChange}
+        />
         <FormControl mb={4} isInvalid={!!errors.merchPhone}>
           <FormLabel htmlFor="merchPhone">Location Phone</FormLabel>
           <Input
