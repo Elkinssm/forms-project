@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
-import InputMask from "react-input-mask";
 import {
   FieldErrors,
   FieldValues,
@@ -11,40 +10,40 @@ import {
 interface ZipInputProps<T extends FieldValues> {
   label: string;
   id: string;
-  zipValue: string;
+  placeholder?: string;
+  zipValue?: string;
   errors: FieldErrors<T>;
   register: UseFormRegister<T>;
-  handleZipChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ZipInput = <T extends FieldValues>({
   label,
   id,
-  zipValue,
+  placeholder,
+  zipValue = "",
   errors,
   register,
-  handleZipChange,
 }: ZipInputProps<T>) => {
-  const mask = "99999-9999";
-  const formatZipValue = (value: string) => {
-    const numericValue = value.replace(/\D/g, ""); 
-    if (numericValue.length > 5) {
-      return numericValue.slice(0, 5) + "-" + numericValue.slice(5, 9);
+  const [currentValue, setCurrentValue] = useState<string>(zipValue);
+
+
+  const handleZipChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, ""); 
+    if (value.length > 5) {
+      value = value.slice(0, 5) + "-" + value.slice(5); 
     }
-    return numericValue;
+    setCurrentValue(value); 
   };
 
   return (
     <FormControl mb={4} isInvalid={!!errors[id]}>
       <FormLabel htmlFor={id}>{label}</FormLabel>
       <Input
-        as={InputMask}
-        mask={mask}
-        maskChar={null}
-        value={formatZipValue(zipValue)}
+        maxLength={10}
+        value={currentValue}
         id={id}
         type="text"
-        placeholder={`Enter your ${label}`}
+        placeholder={placeholder || `Enter your ${label}`}
         {...register(id as Path<T>)}
         onChange={handleZipChange}
       />

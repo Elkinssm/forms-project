@@ -58,21 +58,6 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
     resolver: zodResolver(schema),
     defaultValues: formData,
   });
-  const [zipValue, setZipValue] = React.useState("");
-
-  const handleZipChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setZipValue(event.target.value);
-  };
-
-  // const handleZipChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value.replace(/\D/g, "");
-  //   setZipValue(value);
-  //   if (value.length > 5) {
-  //     setMask("99999-9999");
-  //   } else {
-  //     setMask("");
-  //   }
-  // };
 
   const onSubmit: SubmitHandler<BusinessDataForm> = (data, event) => {
     console.log(data);
@@ -157,13 +142,11 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
         </FormControl>
       </HStack>
       <HStack spacing={4} mb={4}>
-        <ZipInput<BusinessDataForm>
+        <ZipInput
           label="Location Zip"
           id="merchZip"
-          zipValue={zipValue}
           errors={errors}
           register={register}
-          handleZipChange={handleZipChange}
         />
         <FormControl mb={4} isInvalid={!!errors.merchPhone}>
           <FormLabel htmlFor="merchPhone">Location Phone</FormLabel>
