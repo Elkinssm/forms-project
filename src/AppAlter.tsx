@@ -24,12 +24,12 @@ function App() {
             title="Corporate Information"
             description="Enter the Information where your company is legally registered."
           />
-          <CompanyInformationForm
+           <CompanyInformationForm
             title="DBA Information"
             description="Provide details about your company information."
-          />
+          /> 
           <ContactInformationForm
-            title="Contact Information"
+            title="Primary Contact"
             description="Provide contact information for your business."
           />
           <AdditionalDetailsForm
@@ -47,7 +47,9 @@ interests of the legal entity listed above"
           />
           <ControllingOfficerForm
             title="Controlling Officer"
-            description="Information about the controlling officer."
+            description="Complete the following information for one individual with significant responsibility for managing the legal entity listed above, such as: An executive officer or senior manager (e.g., Chief Executive Officer, Chief
+Financial Officer, Chief Operating Officer, Managing Member, General Partner, President, Vice President, Treasurer); or Any other individual who regularly performs similar functions. If appropriate, an individual listed
+under section (a) above may also be listed in this section (b)"
           />
           <SalesProfileForm
             title="Sales Profile"

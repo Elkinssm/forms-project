@@ -96,7 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           >
             <HStack spacing={4}>
               <Text fontWeight="bold" fontSize="lg" color="white">
-                Your Information
+                Application
               </Text>
             </HStack>
             <Spacer />

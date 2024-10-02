@@ -14,6 +14,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputMask from "react-input-mask";
+import ZipInput from "../../FormComponents/ZipInputField";
 
 const schema = z.object({
   corpLegalFedTaxId: z
@@ -28,6 +29,23 @@ const schema = z.object({
   corpLegalPhone: z.string().min(10, "The phone number must be at least 10 characters long"),
   corpLegalEmail: z.string().email("A valid email is required"),
   controllerOfficerIsOwner: z.string().min(1, { message: " is required" }),
+
+  merchName: z
+    .string()
+    .min(6, "The location name must be at least 6 characters long"),
+  merchAddress: z
+    .string()
+    .min(10, "The address must be at least 10 characters long"),
+  merchCity: z.string().min(3, "The city must be at least 3 characters long"),
+  merchState: z.string().min(2, "The state must be at least 2 characters long"),
+  merchZip: z.string().min(5, "The zip must be at least 5 characters long"),
+  merchPhone: z
+    .string()
+    .min(10, "The phone must be at least 10 characters long"),
+  yearsInBusiness: z.preprocess(
+    (val) => Number(val),
+    z.number().min(1, "Years in business must be at least 1 digit long")
+  ),
 
 });
 
@@ -46,7 +64,26 @@ interface CorporateAddressFormProps {
 const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
   onNext,
   onDataChange,
-  formData = { corpLegalFedTaxId: "", corpLegalName: "", corpLegalAddress: "", corpLegalCity: "", corpLegalState: "", corpLegalZip: "", corpLegalPhone: "", corpLegalEmail: "", controllerOfficerIsOwner:"" },
+  formData = {
+    corpLegalFedTaxId: "",
+    corpLegalName: "",
+    corpLegalAddress: "",
+    corpLegalCity: "",
+    corpLegalState: "",
+    corpLegalZip: "",
+    corpLegalPhone: "",
+    corpLegalEmail: "",
+    controllerOfficerIsOwner: "",
+
+    merchName: "",
+    merchAddress: "",
+    merchCity: "",
+    merchState: "",
+    merchZip: "",
+    merchPhone: "",
+    yearsInBusiness: 0
+
+  },
   formRef,
 }) => {
   const theme = useTheme();
@@ -69,43 +106,43 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
 
       <FormControl mb={4} isInvalid={!!errors.corpLegalFedTaxId}>
-          <FormLabel htmlFor="corpLegalFedTaxId">Federal Tax ID (EIN)</FormLabel>
-          <Input
-            as={InputMask}
-            mask="**-*******"
-            maskChar={null}
-            id="corpLegalFedTaxId"
-            type="text"
-            placeholder="Enter your federal tax ID"
-            {...register("corpLegalFedTaxId")}
-          />
-          {errors.corpLegalFedTaxId && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.corpLegalFedTaxId.message}
-            </Text>
-          )}
-        </FormControl>
-
-      <HStack spacing={4} mb={4}>
-      <FormControl mb={4} isInvalid={!!errors.corpLegalName}>
-        <FormLabel htmlFor="legalName" color={theme.colors.gray[700]}>
-          Legal Name
-        </FormLabel>
+        <FormLabel htmlFor="corpLegalFedTaxId">Federal Tax ID (EIN)</FormLabel>
         <Input
-          id="legalName"
+          as={InputMask}
+          mask="**-*******"
+          maskChar={null}
+          id="corpLegalFedTaxId"
           type="text"
-          placeholder="Enter your legal name"
-          {...register("corpLegalName")}
+          placeholder="Enter your federal tax ID"
+          {...register("corpLegalFedTaxId")}
         />
-        {errors.corpLegalName && (
-          <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalName.message}</Text>
+        {errors.corpLegalFedTaxId && (
+          <Text color="semantic.error.DEFAULT">
+            {errors.corpLegalFedTaxId.message}
+          </Text>
         )}
       </FormControl>
 
-      
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.corpLegalName}>
+          <FormLabel htmlFor="legalName" color={theme.colors.gray[700]}>
+            Legal Name
+          </FormLabel>
+          <Input
+            id="legalName"
+            type="text"
+            placeholder="Enter your legal name"
+            {...register("corpLegalName")}
+          />
+          {errors.corpLegalName && (
+            <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalName.message}</Text>
+          )}
+        </FormControl>
+
+
       </HStack>
 
-     
+
 
       <HStack spacing={4} mb={4}>
         <FormControl isInvalid={!!errors.corpLegalPhone}>
@@ -137,37 +174,6 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
             <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalEmail.message}</Text>
           )}
         </FormControl>
-      </HStack>
-
-      <HStack spacing={4} mb={4}>
-      <FormControl mb={4} isInvalid={!!errors.corpLegalName}>
-        <FormLabel htmlFor="legalName" color={theme.colors.gray[700]}>
-          DBA Name
-        </FormLabel>
-        <Input
-          id="legalName"
-          type="text"
-          placeholder="Enter your legal name"
-          {...register("corpLegalName")}
-        />
-        {errors.corpLegalName && (
-          <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalName.message}</Text>
-        )}
-      </FormControl>
-
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerIsOwner}>
-        <FormLabel htmlFor="controllerOfficerTitle">Same Infomation as Legal</FormLabel>
-        <Checkbox
-          id="controllerOfficerIsOwner"
-          {...register("controllerOfficerIsOwner")}
-        />
-        {errors.controllerOfficerIsOwner && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerIsOwner.message}
-          </Text>
-        )}
-      </FormControl>
-
       </HStack>
 
       <FormControl mb={4} isInvalid={!!errors.corpLegalAddress}>
@@ -230,7 +236,33 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
         </FormControl>
       </HStack>
 
-      
+
+      <HStack spacing={4} mb={4}>
+      <Text fontSize='xl'>DBA</Text>
+      <FormLabel htmlFor="controllerOfficerTitle">Same Infomation as Legal</FormLabel>
+      <FormControl mb={4} isInvalid={!!errors.controllerOfficerIsOwner}>
+        
+        <Checkbox
+          id="controllerOfficerIsOwner"
+          {...register("controllerOfficerIsOwner")}
+        />
+        {errors.controllerOfficerIsOwner && (
+          <Text color="semantic.error.DEFAULT">
+            {errors.controllerOfficerIsOwner.message}
+          </Text>
+        )}
+      </FormControl>
+      </HStack>
+
+
+
+
+
+
+
+
+
+
     </Box>
   );
 };
