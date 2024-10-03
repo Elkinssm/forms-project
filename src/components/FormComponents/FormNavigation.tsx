@@ -13,7 +13,6 @@ interface FormNavigationProps {
 
 const FormNavigation: React.FC<FormNavigationProps> = ({
   onBack,
-  onNext,
   formRef,
   showBackButton = true,
   isFirstPage = false,

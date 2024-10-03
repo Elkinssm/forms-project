@@ -14,7 +14,7 @@ import {
   Link,
   Icon,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -101,16 +101,20 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     control,
     handleSubmit,
     formState: { errors },
+    trigger,
+    getValues,
   } = useForm<OwnerInformationDataForm>({
     resolver: zodResolver(schema),
     defaultValues: formData,
+    mode: "onChange",
   });
 
-  // useFieldArray para manejar dinámicamente los propietarios
   const { fields, append, remove } = useFieldArray({
     control,
     name: "owners",
   });
+
+  const [openIndex, setOpenIndex] = useState<number[]>([0]);
 
   if (fields.length === 0) {
     append({
@@ -131,16 +135,49 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     });
   }
 
+  // Validar antes de agregar un nuevo propietario
+  const handleAddOwner = async () => {
+    const isFormValid = await trigger(); // Ejecutar validación de formulario
+    if (isFormValid) {
+      append({
+        ownerFirstName: "",
+        ownerMiddleName: "",
+        ownerLastName: "",
+        ownerStateID: "",
+        ownerSSN: "",
+        ownerPercentOwnership: 1,
+        ownerTitle: "",
+        ownerBirthday: new Date(),
+        ownerEmail: "",
+        ownerAddress: "",
+        ownerCity: "",
+        ownerZip: "",
+        ownerPhone: "",
+        controllerOfficerIsOwner: false,
+      });
+      setOpenIndex([fields.length]); // Abrir el nuevo propietario agregado
+      console.log("Current form data:", getValues());
+    } else {
+      console.log("Form validation failed. Cannot add new owner.");
+    }
+  };
+
   const onSubmit: SubmitHandler<OwnerInformationDataForm> = (data) => {
-    console.log(data);
+    console.log("data", data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <Accordion allowToggle>
-        <VStack spacing={4} alignItems={"rigth"}>
+      <Accordion
+        allowToggle
+        index={openIndex}
+        onChange={(index) =>
+          setOpenIndex(Array.isArray(index) ? index : [index])
+        }
+      >
+        <VStack spacing={4} alignItems={"right"}>
           {fields.map((field, index) => (
             <AccordionItem key={field.id} w={"100%"}>
               <h2>
@@ -454,24 +491,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
               <Link
                 color="brand.primary"
                 fontWeight="bold"
-                onClick={() =>
-                  append({
-                    ownerFirstName: "",
-                    ownerMiddleName: "",
-                    ownerLastName: "",
-                    ownerStateID: "",
-                    ownerSSN: "",
-                    ownerPercentOwnership: 1,
-                    ownerTitle: "",
-                    ownerBirthday: new Date(),
-                    ownerEmail: "",
-                    ownerAddress: "",
-                    ownerCity: "",
-                    ownerZip: "",
-                    ownerPhone: "",
-                    controllerOfficerIsOwner: false,
-                  })
-                }
+                onClick={handleAddOwner} // Usamos la función de validación antes de agregar
                 display="inline-flex"
                 alignItems="center"
                 _hover={{ textDecoration: "none", color: "brand.secondary" }}
