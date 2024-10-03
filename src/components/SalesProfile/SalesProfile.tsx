@@ -83,39 +83,6 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
   };
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-
-      <FormControl mb={4} isInvalid={!!errors.salesProfileCurrentlyMCVISA}>
-        <FormLabel htmlFor="salesProfileCurrentlyMCVISA">
-          Processing ?
-        </FormLabel>
-        <Checkbox
-          id="salesProfileCurrentlyMCVISA"
-          {...register("salesProfileCurrentlyMCVISA")}
-        />
-        {errors.salesProfileCurrentlyMCVISA && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.salesProfileCurrentlyMCVISA.message}
-          </Text>
-        )}
-      </FormControl>
-
-      <FormControl mb={4} isInvalid={!!errors.salesProfileRetailChipSwipe}>
-        <FormLabel htmlFor="salesProfileRetailChipSwipe">
-          Retail Chip Swipe %
-        </FormLabel>
-        <Input
-          id="salesProfileRetailChipSwipe"
-          type="text"
-          placeholder="Enter retail chip swipe %"
-          {...register("salesProfileRetailChipSwipe")}
-        />
-        {errors.salesProfileRetailChipSwipe && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.salesProfileRetailChipSwipe.message}
-          </Text>
-        )}
-      </FormControl>
-
       <FormControl mb={4} isInvalid={!!errors.salesProfileCurrentProcessor}>
         <FormLabel htmlFor="salesProfileCurrentProcessor">
           Current Processor
@@ -133,97 +100,105 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
         )}
       </FormControl>
 
-      <FormControl mb={4} isInvalid={!!errors.salesProfileImprintCard}>
-        <FormLabel htmlFor="salesProfileImprintCard">Imprint Card %</FormLabel>
-        <Input
-          id="salesProfileImprintCard"
-          type="text"
-          placeholder="Enter imprint card %"
-          {...register("salesProfileImprintCard")}
-        />
-        {errors.salesProfileImprintCard && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.salesProfileImprintCard.message}
-          </Text>
-        )}
-      </FormControl>
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.salesProfileRetailChipSwipe}>
+          <FormLabel htmlFor="salesProfileRetailChipSwipe">
+            Retail Chip Swipe %
+          </FormLabel>
+          <Input
+            id="salesProfileRetailChipSwipe"
+            type="text"
+            placeholder="Enter retail chip swipe %"
+            {...register("salesProfileRetailChipSwipe")}
+          />
+          {errors.salesProfileRetailChipSwipe && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.salesProfileRetailChipSwipe.message}
+            </Text>
+          )}
+        </FormControl>
 
-      <FormControl mb={4} isInvalid={!!errors.salesProfileAvgTicket}>
-        <FormLabel htmlFor="salesProfileAvgTicket">Avg Ticket</FormLabel>
-        <Input
-          id="salesProfileAvgTicket"
-          type="text"
-          placeholder="Enter avg ticket"
-          {...register("salesProfileAvgTicket")}
-        />
-        {errors.salesProfileAvgTicket && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.salesProfileAvgTicket.message}
-          </Text>
-        )}
-      </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.salesProfileImprintCard}>
+          <FormLabel htmlFor="salesProfileImprintCard">
+            Imprint Card %
+          </FormLabel>
+          <Input
+            id="salesProfileImprintCard"
+            type="text"
+            placeholder="Enter imprint card %"
+            {...register("salesProfileImprintCard")}
+          />
+          {errors.salesProfileImprintCard && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.salesProfileImprintCard.message}
+            </Text>
+          )}
+        </FormControl>
 
-      <FormControl mb={4} isInvalid={!!errors.salesProfileMaxTicket}>
-        <FormLabel htmlFor="salesProfileMaxTicket">Max Ticket</FormLabel>
-        <Input
-          id="salesProfileMaxTicket"
-          type="text"
-          placeholder="Enter max ticket"
-          {...register("salesProfileMaxTicket")}
-        />
-        {errors.salesProfileMaxTicket && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.salesProfileMaxTicket.message}
-          </Text>
-        )}
-      </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.salesProfileMailPhone}>
+          <FormLabel htmlFor="salesProfileMailPhone">Mail Phone %</FormLabel>
+          <Input
+            id="salesProfileMailPhone"
+            type="text"
+            placeholder="Enter Mail Phone %"
+            {...register("salesProfileMailPhone")}
+          />
+          {errors.salesProfileMailPhone && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.salesProfileMailPhone.message}
+            </Text>
+          )}
+        </FormControl>
+      </HStack>
 
-      <FormControl mb={4} isInvalid={!!errors.salesProfileMonthlyVolume}>
-        <FormLabel htmlFor="salesProfileMonthlyVolume">
-          Monthly Volume
-        </FormLabel>
-        <Input
-          id="salesProfileMonthlyVolume"
-          type="text"
-          placeholder="Enter monthly volume"
-          {...register("salesProfileMonthlyVolume")}
-        />
-        {errors.salesProfileMonthlyVolume && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.salesProfileMonthlyVolume.message}
-          </Text>
-        )}
-      </FormControl>
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.salesProfileAvgTicket}>
+          <FormLabel htmlFor="salesProfileAvgTicket">Avg Ticket</FormLabel>
+          <Input
+            id="salesProfileAvgTicket"
+            type="text"
+            placeholder="Enter avg ticket"
+            {...register("salesProfileAvgTicket")}
+          />
+          {errors.salesProfileAvgTicket && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.salesProfileAvgTicket.message}
+            </Text>
+          )}
+        </FormControl>
 
-      <FormControl mb={4} isInvalid={!!errors.salesProfileMailPhone}>
-        <FormLabel htmlFor="salesProfileMailPhone">Mail Phone %</FormLabel>
-        <Input
-          id="salesProfileMailPhone"
-          type="text"
-          placeholder="Enter Mail Phone %"
-          {...register("salesProfileMailPhone")}
-        />
-        {errors.salesProfileMailPhone && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.salesProfileMailPhone.message}
-          </Text>
-        )}
-      </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.salesProfileMaxTicket}>
+          <FormLabel htmlFor="salesProfileMaxTicket">Max Ticket</FormLabel>
+          <Input
+            id="salesProfileMaxTicket"
+            type="text"
+            placeholder="Enter max ticket"
+            {...register("salesProfileMaxTicket")}
+          />
+          {errors.salesProfileMaxTicket && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.salesProfileMaxTicket.message}
+            </Text>
+          )}
+        </FormControl>
 
-      <FormControl mb={4} isInvalid={!!errors.salesProfileNextDayFunding}>
-        <FormLabel htmlFor="salesProfileNextDayFunding">
-          Next Day Funding
-        </FormLabel>
-        <Checkbox
-          id="salesProfileNextDayFunding"
-          {...register("salesProfileNextDayFunding")}
-        />
-        {errors.salesProfileNextDayFunding && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.salesProfileNextDayFunding.message}
-          </Text>
-        )}
-      </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.salesProfileMonthlyVolume}>
+          <FormLabel htmlFor="salesProfileMonthlyVolume">
+            Monthly Volume
+          </FormLabel>
+          <Input
+            id="salesProfileMonthlyVolume"
+            type="text"
+            placeholder="Enter monthly volume"
+            {...register("salesProfileMonthlyVolume")}
+          />
+          {errors.salesProfileMonthlyVolume && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.salesProfileMonthlyVolume.message}
+            </Text>
+          )}
+        </FormControl>
+      </HStack>
 
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.salesProfileInternetPerc}>
@@ -284,6 +259,40 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
               {errors.salesProfileB2GPerc.message}
             </Text>
           )}
+        </FormControl>
+      </HStack>
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.salesProfileCurrentlyMCVISA}>
+          <HStack spacing={4} mb={4}>
+            <FormLabel htmlFor="salesProfileCurrentlyMCVISA">
+              Processing ?
+            </FormLabel>
+            <Checkbox
+              id="salesProfileCurrentlyMCVISA"
+              {...register("salesProfileCurrentlyMCVISA")}
+            />
+            {errors.salesProfileCurrentlyMCVISA && (
+              <Text color="semantic.error.DEFAULT">
+                {errors.salesProfileCurrentlyMCVISA.message}
+              </Text>
+            )}
+          </HStack>
+        </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.salesProfileNextDayFunding}>
+          <HStack spacing={4} mb={4}>
+            <FormLabel htmlFor="salesProfileNextDayFunding">
+              Next Day Funding
+            </FormLabel>
+            <Checkbox
+              id="salesProfileNextDayFunding"
+              {...register("salesProfileNextDayFunding")}
+            />
+            {errors.salesProfileNextDayFunding && (
+              <Text color="semantic.error.DEFAULT">
+                {errors.salesProfileNextDayFunding.message}
+              </Text>
+            )}
+          </HStack>
         </FormControl>
       </HStack>
     </Box>

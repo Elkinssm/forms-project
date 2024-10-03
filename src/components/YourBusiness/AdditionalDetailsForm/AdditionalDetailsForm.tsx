@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -38,7 +38,11 @@ interface AdditionalDetailsFormProps {
 const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
   onNext,
   onDataChange,
-  formData = { aditionalDetailsLocations: 0, aditionalDetailsMailing: "", aditionalDetailsWebsite: "" },
+  formData = {
+    aditionalDetailsLocations: 0,
+    aditionalDetailsMailing: "",
+    aditionalDetailsWebsite: "",
+  },
   formRef,
 }) => {
   const {
@@ -56,18 +60,41 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
   };
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <FormControl mb={4} isInvalid={!!errors.aditionalDetailsLocations}>
-        <FormLabel htmlFor="aditionalDetailsLocations">Number of Locations</FormLabel>
-        <Input
-          id="aditionalDetailsLocations"
-          type="text"
-          placeholder="Enter the number of locations"
-          {...register("aditionalDetailsLocations")}
-        />
-        {errors.aditionalDetailsLocations && (
-          <Text color="semantic.error.DEFAULT">{errors.aditionalDetailsLocations.message}</Text>
-        )}
-      </FormControl>
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.aditionalDetailsLocations}>
+          <FormLabel htmlFor="aditionalDetailsLocations">
+            Number of Locations
+          </FormLabel>
+          <Input
+            id="aditionalDetailsLocations"
+            type="text"
+            placeholder="Enter the number of locations"
+            {...register("aditionalDetailsLocations")}
+          />
+          {errors.aditionalDetailsLocations && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.aditionalDetailsLocations.message}
+            </Text>
+          )}
+        </FormControl>
+
+        <FormControl mb={4} isInvalid={!!errors.aditionalDetailsWebsite}>
+          <FormLabel htmlFor="aditionalDetailsWebsite">
+            Website address
+          </FormLabel>
+          <Input
+            id="aditionalDetailsWebsite"
+            type="text"
+            placeholder="Enter your website address"
+            {...register("aditionalDetailsWebsite")}
+          />
+          {errors.aditionalDetailsWebsite && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.aditionalDetailsWebsite.message}
+            </Text>
+          )}
+        </FormControl>
+      </HStack>
       <FormControl mb={4} isInvalid={!!errors.aditionalDetailsMailing}>
         <FormLabel>Mailing Address</FormLabel>
         <RadioGroup>
@@ -81,19 +108,9 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
           </Stack>
         </RadioGroup>
         {errors.aditionalDetailsMailing && (
-          <Text color="semantic.error.DEFAULT">{errors.aditionalDetailsMailing.message}</Text>
-        )}
-      </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.aditionalDetailsWebsite}>
-        <FormLabel htmlFor="aditionalDetailsWebsite">Website address</FormLabel>
-        <Input
-          id="aditionalDetailsWebsite"
-          type="text"
-          placeholder="Enter your website address"
-          {...register("aditionalDetailsWebsite")}
-        />
-        {errors.aditionalDetailsWebsite && (
-          <Text color="semantic.error.DEFAULT">{errors.aditionalDetailsWebsite.message}</Text>
+          <Text color="semantic.error.DEFAULT">
+            {errors.aditionalDetailsMailing.message}
+          </Text>
         )}
       </FormControl>
     </Box>

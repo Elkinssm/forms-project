@@ -1,9 +1,10 @@
-import { Box, Checkbox, Text } from "@chakra-ui/react";
+import { Box, Checkbox, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import ZipInput from "../FormComponents/ZipInputField";
 
 const twoMin = 2;
 const schema = z.object({
@@ -46,9 +47,7 @@ const schema = z.object({
     .refine((data) => data >= new Date(), {
       message: "Expiratin date must be in the future",
     }),
-  controllerOfficerDob: z.coerce
-  .date()
-  .refine((data) => data < new Date(), {
+  controllerOfficerDob: z.coerce.date().refine((data) => data < new Date(), {
     message: "Date of birth must be in the past",
   }),
   controllerOfficerEmail: z.string().email("A valid email is required"),
@@ -101,77 +100,114 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
   };
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerFirstName}>
-        <FormLabel htmlFor="controllerOfficerFirstName">First Name</FormLabel>
-        <Input
-          id="controllerOfficerFirstName"
-          type="text"
-          placeholder="Enter the first name"
-          {...register("controllerOfficerFirstName")}
-        />
-        {errors.controllerOfficerFirstName && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerFirstName.message}
-          </Text>
-        )}
-      </FormControl>
-
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerMiddleName}>
-        <FormLabel htmlFor="controllerOfficerMiddleName">Middle Name</FormLabel>
-        <Input
-          id="controllerOfficerMiddleName"
-          type="text"
-          placeholder="Enter the middle name"
-          {...register("controllerOfficerMiddleName")}
-        />
-        {errors.controllerOfficerMiddleName && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerMiddleName.message}
-          </Text>
-        )}
-      </FormControl>
-
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerLastName}>
-        <FormLabel htmlFor="controllerOfficerLastName">Last Name</FormLabel>
-        <Input
-          id="controllerOfficerLastName"
-          type="text"
-          placeholder="Enter the last name"
-          {...register("controllerOfficerLastName")}
-        />
-        {errors.controllerOfficerLastName && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerLastName.message}
-          </Text>
-        )}
-      </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerTitle}>
-        <FormLabel htmlFor="controllerOfficerTitle">Title</FormLabel>
-        <Input
-          id="controllerOfficerTitle"
-          type="text"
-          placeholder="Enter the title"
-          {...register("controllerOfficerTitle")}
-        />
-        {errors.controllerOfficerTitle && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerTitle.message}
-          </Text>
-        )}
-      </FormControl>
-
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerIsOwner}>
-        <FormLabel htmlFor="controllerOfficerTitle">Is Owner</FormLabel>
-        <Checkbox
-          id="controllerOfficerIsOwner"
-          {...register("controllerOfficerIsOwner")}
-        />
-        {errors.controllerOfficerIsOwner && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerIsOwner.message}
-          </Text>
-        )}
+        <HStack spacing={4} mb={4}>
+          <FormLabel htmlFor="controllerOfficerTitle">Is Owner</FormLabel>
+          <Checkbox
+            id="controllerOfficerIsOwner"
+            {...register("controllerOfficerIsOwner")}
+          />
+          {errors.controllerOfficerIsOwner && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.controllerOfficerIsOwner.message}
+            </Text>
+          )}
+        </HStack>
       </FormControl>
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.controllerOfficerFirstName}>
+          <FormLabel htmlFor="controllerOfficerFirstName">First Name</FormLabel>
+          <Input
+            id="controllerOfficerFirstName"
+            type="text"
+            placeholder="Enter the first name"
+            {...register("controllerOfficerFirstName")}
+          />
+          {errors.controllerOfficerFirstName && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.controllerOfficerFirstName.message}
+            </Text>
+          )}
+        </FormControl>
+
+        <FormControl mb={4} isInvalid={!!errors.controllerOfficerMiddleName}>
+          <FormLabel htmlFor="controllerOfficerMiddleName">
+            Middle Name
+          </FormLabel>
+          <Input
+            id="controllerOfficerMiddleName"
+            type="text"
+            placeholder="Enter the middle name"
+            {...register("controllerOfficerMiddleName")}
+          />
+          {errors.controllerOfficerMiddleName && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.controllerOfficerMiddleName.message}
+            </Text>
+          )}
+        </FormControl>
+      </HStack>
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.controllerOfficerLastName}>
+          <FormLabel htmlFor="controllerOfficerLastName">Last Name</FormLabel>
+          <Input
+            id="controllerOfficerLastName"
+            type="text"
+            placeholder="Enter the last name"
+            {...register("controllerOfficerLastName")}
+          />
+          {errors.controllerOfficerLastName && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.controllerOfficerLastName.message}
+            </Text>
+          )}
+        </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.controllerOfficerDob}>
+          <FormLabel htmlFor="controllerOfficerDob">Date of Birth</FormLabel>
+          <Input
+            id="controllerOfficerDob"
+            type="date"
+            placeholder="Enter date of Birth"
+            {...register("controllerOfficerDob")}
+          />
+          {errors.controllerOfficerDob && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.controllerOfficerDob.message}
+            </Text>
+          )}
+        </FormControl>
+      </HStack>
+
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.controllerOfficerTitle}>
+          <FormLabel htmlFor="controllerOfficerTitle">Title</FormLabel>
+          <Input
+            id="controllerOfficerTitle"
+            type="text"
+            placeholder="Enter the title"
+            {...register("controllerOfficerTitle")}
+          />
+          {errors.controllerOfficerTitle && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.controllerOfficerTitle.message}
+            </Text>
+          )}
+        </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.controllerOfficerEmail}>
+          <FormLabel htmlFor="controllerOfficerEmail">Email</FormLabel>
+          <Input
+            id="controllerOfficerEmail"
+            type="text"
+            placeholder="Enter controller officer email"
+            {...register("controllerOfficerEmail")}
+          />
+          {errors.controllerOfficerEmail && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.controllerOfficerEmail.message}
+            </Text>
+          )}
+        </FormControl>
+      </HStack>
 
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerAddress}>
         <FormLabel htmlFor="controllerOfficerAddress">Address</FormLabel>
@@ -202,37 +238,29 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           </Text>
         )}
       </FormControl>
-
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerZip}>
-        <FormLabel htmlFor="controllerOfficerZip">Zip</FormLabel>
-        <Input
+      <HStack spacing={4} mb={4}>
+        <ZipInput
+          label="Zip Code"
           id="controllerOfficerZip"
-          type="text"
-          placeholder="Enter controller officer zip code"
-          {...register("controllerOfficerZip")}
+          errors={errors}
+          register={register}
         />
-        {errors.controllerOfficerZip && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerZip.message}
-          </Text>
-        )}
-      </FormControl>
 
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerHomePhone}>
-        <FormLabel htmlFor="controllerOfficerHomePhone">Home phone</FormLabel>
-        <Input
-          id="controllerOfficerHomePhone"
-          type="text"
-          placeholder="Enter controller officer home phone"
-          {...register("controllerOfficerHomePhone")}
-        />
-        {errors.controllerOfficerHomePhone && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerHomePhone.message}
-          </Text>
-        )}
-      </FormControl>
-
+        <FormControl mb={4} isInvalid={!!errors.controllerOfficerHomePhone}>
+          <FormLabel htmlFor="controllerOfficerHomePhone">Home phone</FormLabel>
+          <Input
+            id="controllerOfficerHomePhone"
+            type="text"
+            placeholder="Enter controller officer home phone"
+            {...register("controllerOfficerHomePhone")}
+          />
+          {errors.controllerOfficerHomePhone && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.controllerOfficerHomePhone.message}
+            </Text>
+          )}
+        </FormControl>
+      </HStack>
       {/* <FormControl mb={4} isInvalid={!!errors.controllerOfficerSSN}>
         <FormLabel htmlFor="controllerOfficerSSN">SSN</FormLabel>
         <Input
@@ -247,72 +275,44 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           </Text>
         )}
       </FormControl> */}
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.controllerOfficerLicenseNumber}>
+          <FormLabel htmlFor="controllerOfficerLicenseNumber">
+            Driver License Number
+          </FormLabel>
+          <Input
+            id="controllerOfficerLicenseNumber"
+            type="text"
+            placeholder="Enter the driver license number"
+            {...register("controllerOfficerLicenseNumber")}
+          />
+          {errors.controllerOfficerLicenseNumber && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.controllerOfficerLicenseNumber.message}
+            </Text>
+          )}
+        </FormControl>
 
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerLicenseNumber}>
-        <FormLabel htmlFor="controllerOfficerLicenseNumber">
-          Driver License Number
-        </FormLabel>
-        <Input
-          id="controllerOfficerLicenseNumber"
-          type="text"
-          placeholder="Enter the driver license number"
-          {...register("controllerOfficerLicenseNumber")}
-        />
-        {errors.controllerOfficerLicenseNumber && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerLicenseNumber.message}
-          </Text>
-        )}
-      </FormControl>
-
-      <FormControl
-        mb={4}
-        isInvalid={!!errors.controllerOfficerLicenseNumberExpires}
-      >
-        <FormLabel htmlFor="controllerOfficerLicenseNumberExpires">
-          Driver License Number Expiration Date
-        </FormLabel>
-        <Input
-          id="controllerOfficerLicenseNumberExpires"
-          type="date"
-          placeholder="Enter driver license number expiration date"
-          {...register("controllerOfficerLicenseNumberExpires")}
-        />
-        {errors.controllerOfficerLicenseNumberExpires && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerLicenseNumberExpires.message}
-          </Text>
-        )}
-      </FormControl>
-
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerDob}>
-        <FormLabel htmlFor="controllerOfficerDob">Date of Birth</FormLabel>
-        <Input
-          id="controllerOfficerDob"
-          type="date"
-          placeholder="Enter date of Birth"
-          {...register("controllerOfficerDob")}
-        />
-        {errors.controllerOfficerDob && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerDob.message}
-          </Text>
-        )}
-      </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerEmail}>
-        <FormLabel htmlFor="controllerOfficerEmail">Email</FormLabel>
-        <Input
-          id="controllerOfficerEmail"
-          type="text"
-          placeholder="Enter controller officer email"
-          {...register("controllerOfficerEmail")}
-        />
-        {errors.controllerOfficerEmail && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerEmail.message}
-          </Text>
-        )}
-      </FormControl>
+        <FormControl
+          mb={4}
+          isInvalid={!!errors.controllerOfficerLicenseNumberExpires}
+        >
+          <FormLabel htmlFor="controllerOfficerLicenseNumberExpires">
+            Expiration Date
+          </FormLabel>
+          <Input
+            id="controllerOfficerLicenseNumberExpires"
+            type="date"
+            placeholder="Enter driver license number expiration date"
+            {...register("controllerOfficerLicenseNumberExpires")}
+          />
+          {errors.controllerOfficerLicenseNumberExpires && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.controllerOfficerLicenseNumberExpires.message}
+            </Text>
+          )}
+        </FormControl>
+      </HStack>
     </Box>
   );
 };
