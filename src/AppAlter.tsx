@@ -1,9 +1,6 @@
-// App.tsx
 import { Box, ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 import "./App.css";
-
-// Importar los formularios
 import CompanyInformationForm from "./components/YourBusiness/CompanyInformationForm/CompanyInformationForm";
 import CorporateAddressForm from "./components/YourBusiness/CorporateAddressForm/CorporateAddressForm";
 import ContactInformationForm from "./components/YourBusiness/ContactInformationForm/ContactInformationForm";

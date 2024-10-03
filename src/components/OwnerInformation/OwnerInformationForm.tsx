@@ -1,253 +1,491 @@
-import { Box, Checkbox, Text } from "@chakra-ui/react";
-import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
 import {
-    FormControl,
-    FormLabel,
-    Input,
+  Box,
+  Checkbox,
+  Text,
+  Button,
+  VStack,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
+  ButtonGroup,
+  IconButton,
+  HStack,
+  Link,
+  Icon,
 } from "@chakra-ui/react";
+import React from "react";
+import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 
 const schema = z.object({
-    ownerFirstName: z.string().min(2, "The Owner First Name must be at least 2 chars"),
-    ownerMiddleName: z.string().min(2, "The Owner Middle Name must be at least 2 chars"),
-    ownerLastName: z.string().min(2, "The Owner Middle Name must be at least 2 chars"),
-    ownerStateID: z.string().min(2, "The stateID must be at least 2 chars"),
-    ownerSSN: z.string().min(9, "The SSN must be at least 9 chars"),
-    ownerPercentOwnership: z.preprocess((val) => Number(val), z.number().int().min(1, "Percent Ownership must be at least 1")),
-    ownerTitle: z.string().min(9, "The Title must be at least 9 chars"),
-    ownerBirthday: z.coerce.date().refine((data) => data < new Date(), { message: 'Birthday must be in the past' }),
-    ownerEmail: z.string().email("A valid email is required"),
-    ownerAddress: z.string().min(10, "The address must be at least 10 characters long"),
-    ownerCity: z.string().min(3, "The city must be at least 3 characters long"),
-    ownerZip: z.string().min(5, "The zip must be at least 5 characters long"),
-    ownerPhone: z.string().min(10, "The phone must be at least 10 characters long"),
-    controllerOfficerIsOwner: z.string(),
-
+  owners: z.array(
+    z.object({
+      ownerFirstName: z
+        .string()
+        .min(2, "The Owner First Name must be at least 2 chars"),
+      ownerMiddleName: z
+        .string()
+        .min(2, "The Owner Middle Name must be at least 2 chars"),
+      ownerLastName: z
+        .string()
+        .min(2, "The Owner Last Name must be at least 2 chars"),
+      ownerStateID: z.string().min(2, "The stateID must be at least 2 chars"),
+      ownerSSN: z.string().min(9, "The SSN must be at least 9 chars"),
+      ownerPercentOwnership: z.preprocess(
+        (val) => Number(val),
+        z.number().int().min(1, "Percent Ownership must be at least 1")
+      ),
+      ownerTitle: z.string().min(9, "The Title must be at least 9 chars"),
+      ownerBirthday: z.coerce.date().refine((data) => data < new Date(), {
+        message: "Birthday must be in the past",
+      }),
+      ownerEmail: z.string().email("A valid email is required"),
+      ownerAddress: z
+        .string()
+        .min(10, "The address must be at least 10 characters long"),
+      ownerCity: z
+        .string()
+        .min(3, "The city must be at least 3 characters long"),
+      ownerZip: z.string().min(5, "The zip must be at least 5 characters long"),
+      ownerPhone: z
+        .string()
+        .min(10, "The phone must be at least 10 characters long"),
+      controllerOfficerIsOwner: z.boolean(),
+    })
+  ),
 });
+
 type OwnerInformationDataForm = z.infer<typeof schema>;
 
 interface OwnerInformationFormProps {
-    title: string;
-    description?: string;
-    onNext?: () => void;
-    onBack?: () => void;
-    onDataChange?: (data: OwnerInformationDataForm) => void;
-    formData?: OwnerInformationDataForm;
-    formRef?: React.RefObject<HTMLFormElement>;
+  title: string;
+  description?: string;
+  onNext?: () => void;
+  onBack?: () => void;
+  onDataChange?: (data: OwnerInformationDataForm) => void;
+  formData?: OwnerInformationDataForm;
+  formRef?: React.RefObject<HTMLFormElement>;
 }
 
 const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
-    onNext,
-    onDataChange,
-    formData = { ownerFirstName: "", ownerMiddleName: "", ownerLastName: "", ownerStateID: "", ownerSSN: "", ownerPercentOwnership: 1, ownerTitle: "", ownerBirthday: new Date(), ownerEmail: "", ownerAddress: "", ownerCity: "", ownerZip: "", ownerPhone: "", controllerOfficerIsOwner: "" },
-    formRef,
+  onNext,
+  onDataChange,
+  formData = {
+    owners: [
+      {
+        ownerFirstName: "",
+        ownerMiddleName: "",
+        ownerLastName: "",
+        ownerStateID: "",
+        ownerSSN: "",
+        ownerPercentOwnership: 1,
+        ownerTitle: "",
+        ownerBirthday: new Date(),
+        ownerEmail: "",
+        ownerAddress: "",
+        ownerCity: "",
+        ownerZip: "",
+        ownerPhone: "",
+        controllerOfficerIsOwner: false,
+      },
+    ],
+  },
+  formRef,
 }) => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<OwnerInformationDataForm>({
-        resolver: zodResolver(schema),
-        defaultValues: formData,
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<OwnerInformationDataForm>({
+    resolver: zodResolver(schema),
+    defaultValues: formData,
+  });
+
+  // useFieldArray para manejar dinámicamente los propietarios
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "owners",
+  });
+
+  if (fields.length === 0) {
+    append({
+      ownerFirstName: "",
+      ownerMiddleName: "",
+      ownerLastName: "",
+      ownerStateID: "",
+      ownerSSN: "",
+      ownerPercentOwnership: 1,
+      ownerTitle: "",
+      ownerBirthday: new Date(),
+      ownerEmail: "",
+      ownerAddress: "",
+      ownerCity: "",
+      ownerZip: "",
+      ownerPhone: "",
+      controllerOfficerIsOwner: false,
     });
-    const onSubmit: SubmitHandler<OwnerInformationDataForm> = (data) => {
-        console.log(data);
-        if (onDataChange) onDataChange(data);
-        if (onNext) onNext();
-    };
-    return (
-        <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-            <FormControl mb={4} isInvalid={!!errors.ownerFirstName}>
-                <FormLabel htmlFor="ownerFirstName">First Name</FormLabel>
-                <Input
-                    id="ownerFirstName"
+  }
+
+  const onSubmit: SubmitHandler<OwnerInformationDataForm> = (data) => {
+    console.log(data);
+    if (onDataChange) onDataChange(data);
+    if (onNext) onNext();
+  };
+
+  return (
+    <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
+      <Accordion allowToggle>
+        <VStack spacing={4} alignItems={"rigth"}>
+          {fields.map((field, index) => (
+            <AccordionItem key={field.id} w={"100%"}>
+              <h2>
+                <AccordionButton>
+                  <Box flex="1" textAlign="left">
+                    <Text color={"text.highEmphasis"} fontWeight={"bold"}>
+                      Owner {index + 1}
+                    </Text>
+                  </Box>
+                  <HStack>
+                    {fields.length > 1 && (
+                      <ButtonGroup size="sm" isAttached variant="outline">
+                        <IconButton
+                          border={"none"}
+                          onClick={() => remove(index)}
+                          aria-label="Remove Owner"
+                          icon={<DeleteIcon color={"neutral.700"} />}
+                        />
+                      </ButtonGroup>
+                    )}
+                    <AccordionIcon />
+                  </HStack>
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerFirstName}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerFirstName`}>
+                    First Name
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerFirstName`}
                     type="text"
                     placeholder="Enter the first name"
-                    {...register("ownerFirstName")}
-                />
-                {errors.ownerFirstName && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerFirstName.message}</Text>
-                )}
-            </FormControl>
+                    {...register(`owners.${index}.ownerFirstName`)}
+                  />
+                  {errors.owners?.[index]?.ownerFirstName && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerFirstName?.message}
+                    </Text>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerMiddleName}>
-                <FormLabel htmlFor="ownerMiddleName">Middle Name</FormLabel>
-                <Input
-                    id="ownerMiddleName"
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerMiddleName}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerMiddleName`}>
+                    Middle Name
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerMiddleName`}
                     type="text"
                     placeholder="Enter the middle name"
-                    {...register("ownerMiddleName")}
-                />
-                {errors.ownerMiddleName && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerMiddleName.message}</Text>
-                )}
-            </FormControl>
+                    {...register(`owners.${index}.ownerMiddleName`)}
+                  />
+                  {errors.owners?.[index]?.ownerMiddleName && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerMiddleName?.message}
+                    </Text>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerLastName}>
-                <FormLabel htmlFor="ownerLastName">Last Name</FormLabel>
-                <Input
-                    id="ownerLastName"
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerLastName}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerLastName`}>
+                    Last Name
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerLastName`}
                     type="text"
                     placeholder="Enter the last name"
-                    {...register("ownerLastName")}
-                />
-                {errors.ownerLastName && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerLastName.message}</Text>
-                )}
-            </FormControl>
+                    {...register(`owners.${index}.ownerLastName`)}
+                  />
+                  {errors.owners?.[index]?.ownerLastName && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerLastName?.message}
+                    </Text>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerStateID}>
-                <FormLabel htmlFor="ownerStateID">State ID</FormLabel>
-                <Input
-                    id="ownerStateID"
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerStateID}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerStateID`}>
+                    State ID
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerStateID`}
                     type="text"
-                    placeholder="Enter the State Id"
-                    {...register("ownerStateID")}
-                />
-                {errors.ownerStateID && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerStateID.message}</Text>
-                )}
-            </FormControl>
+                    placeholder="Enter the State ID"
+                    {...register(`owners.${index}.ownerStateID`)}
+                  />
+                  {errors.owners?.[index]?.ownerStateID && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerStateID?.message}
+                    </Text>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerSSN}>
-                <FormLabel htmlFor="ownerSSN">SSN</FormLabel>
-                <Input
-                    id="ownerSSN"
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerSSN}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerSSN`}>
+                    SSN
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerSSN`}
                     type="text"
                     placeholder="Enter SSN"
-                    {...register("ownerSSN")}
-                />
-                {errors.ownerSSN && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerSSN.message}</Text>
-                )}
-            </FormControl>
+                    {...register(`owners.${index}.ownerSSN`)}
+                  />
+                  {errors.owners?.[index]?.ownerSSN && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerSSN?.message}
+                    </Text>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerPercentOwnership}>
-                <FormLabel htmlFor="ownerPercentOwnership">Ownership %</FormLabel>
-                <Input
-                    id="ownerPercentOwnership"
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerPercentOwnership}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerPercentOwnership`}>
+                    Ownership %
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerPercentOwnership`}
                     type="number"
                     placeholder="Enter ownership %"
-                    {...register("ownerPercentOwnership")}
-                />
-                {errors.ownerPercentOwnership && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerPercentOwnership.message}</Text>
-                )}
-            </FormControl>
+                    {...register(`owners.${index}.ownerPercentOwnership`)}
+                  />
+                  {errors.owners?.[index]?.ownerPercentOwnership && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerPercentOwnership?.message}
+                    </Text>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerTitle}>
-                <FormLabel htmlFor="ownerTitle">Title</FormLabel>
-                <Input
-                    id="ownerTitle"
-                    type="number"
-                    placeholder="Enter title"
-                    {...register("ownerTitle")}
-                />
-                {errors.ownerTitle && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerTitle.message}</Text>
-                )}
-            </FormControl>
-
-            <FormControl mb={4} isInvalid={!!errors.ownerEmail}>
-                <FormLabel htmlFor="ownerEmail">Email</FormLabel>
-                <Input
-                    id="ownerEmail"
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerTitle}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerTitle`}>
+                    Title
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerTitle`}
                     type="text"
-                    placeholder="Enter email"
-                    {...register("ownerEmail")}
-                />
-                {errors.ownerEmail && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerEmail.message}</Text>
-                )}
-            </FormControl>
+                    placeholder="Enter title"
+                    {...register(`owners.${index}.ownerTitle`)}
+                  />
+                  {errors.owners?.[index]?.ownerTitle && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerTitle?.message}
+                    </Text>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerBirthday}>
-                <FormLabel htmlFor="ownerBirthday">Birthday</FormLabel>
-                <Input
-                    id="ownerBirthday"
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerBirthday}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerBirthday`}>
+                    Birthday
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerBirthday`}
                     type="date"
                     placeholder="Enter birthday"
-                    {...register("ownerBirthday")}
-                />
-                {errors.ownerBirthday && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerBirthday.message}</Text>
-                )}
-            </FormControl>
+                    {...register(`owners.${index}.ownerBirthday`)}
+                  />
+                  {errors.owners?.[index]?.ownerBirthday && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerBirthday?.message}
+                    </Text>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerAddress}>
-                <FormLabel htmlFor="ownerAddress">Address</FormLabel>
-                <Input
-                    id="ownerAddress"
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerEmail}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerEmail`}>
+                    Email
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerEmail`}
+                    type="text"
+                    placeholder="Enter email"
+                    {...register(`owners.${index}.ownerEmail`)}
+                  />
+                  {errors.owners?.[index]?.ownerEmail && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerEmail?.message}
+                    </Text>
+                  )}
+                </FormControl>
+
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerAddress}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerAddress`}>
+                    Address
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerAddress`}
                     type="text"
                     placeholder="Enter owner address"
-                    {...register("ownerAddress")}
-                />
-                {errors.ownerAddress && (
-                    <Text color="semantic.error.DEFAULT">
-                        {errors.ownerAddress.message}
+                    {...register(`owners.${index}.ownerAddress`)}
+                  />
+                  {errors.owners?.[index]?.ownerAddress && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerAddress?.message}
                     </Text>
-                )}
-            </FormControl>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerCity}>
-                <FormLabel htmlFor="ownerCity">City</FormLabel>
-                <Input
-                    id="ownerCity"
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerCity}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerCity`}>
+                    City
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerCity`}
                     type="text"
                     placeholder="Enter owner city"
-                    {...register("ownerCity")}
-                />
-                {errors.ownerCity && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerCity.message}</Text>
-                )}
-            </FormControl>
+                    {...register(`owners.${index}.ownerCity`)}
+                  />
+                  {errors.owners?.[index]?.ownerCity && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerCity?.message}
+                    </Text>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerZip}>
-                <FormLabel htmlFor="ownerZip">Zip</FormLabel>
-                <Input
-                    id="ownerZip"
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerZip}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerZip`}>
+                    Zip
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerZip`}
                     type="text"
                     placeholder="Enter owner zip code"
-                    {...register("ownerZip")}
-                />
-                {errors.ownerZip && (
-                    <Text color="semantic.error.DEFAULT">{errors.ownerZip.message}</Text>
-                )}
-            </FormControl>
+                    {...register(`owners.${index}.ownerZip`)}
+                  />
+                  {errors.owners?.[index]?.ownerZip && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerZip?.message}
+                    </Text>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.ownerPhone}>
-                <FormLabel htmlFor="ownerPhone">Phone</FormLabel>
-                <Input
-                    id="ownerPhone"
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.ownerPhone}
+                >
+                  <FormLabel htmlFor={`owners.${index}.ownerPhone`}>
+                    Phone
+                  </FormLabel>
+                  <Input
+                    id={`owners.${index}.ownerPhone`}
                     type="text"
                     placeholder="Enter owner phone"
-                    {...register("ownerPhone")}
-                />
-                {errors.ownerPhone && (
-                    <Text color="semantic.error.DEFAULT">
-                        {errors.ownerPhone.message}
+                    {...register(`owners.${index}.ownerPhone`)}
+                  />
+                  {errors.owners?.[index]?.ownerPhone && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.ownerPhone?.message}
                     </Text>
-                )}
-            </FormControl>
+                  )}
+                </FormControl>
 
-            <FormControl mb={4} isInvalid={!!errors.controllerOfficerIsOwner}>
-                <FormLabel htmlFor="controllerOfficerTitle">Is this is owner the Controller Officer?</FormLabel>
-                <Checkbox
-                    id="controllerOfficerIsOwner"
-                    {...register("controllerOfficerIsOwner")}
-                />
-                {errors.controllerOfficerIsOwner && (
-                    <Text color="semantic.error.DEFAULT">
-                        {errors.controllerOfficerIsOwner.message}
+                <FormControl
+                  mb={4}
+                  isInvalid={!!errors.owners?.[index]?.controllerOfficerIsOwner}
+                >
+                  <FormLabel
+                    htmlFor={`owners.${index}.controllerOfficerIsOwner`}
+                  >
+                    Is this owner the Controller Officer?
+                  </FormLabel>
+                  <Checkbox
+                    id={`owners.${index}.controllerOfficerIsOwner`}
+                    {...register(`owners.${index}.controllerOfficerIsOwner`)}
+                  />
+                  {errors.owners?.[index]?.controllerOfficerIsOwner && (
+                    <Text color="red.500">
+                      {errors.owners[index]?.controllerOfficerIsOwner?.message}
                     </Text>
-                )}
-            </FormControl>
+                  )}
+                </FormControl>
+              </AccordionPanel>
+            </AccordionItem>
+          ))}
 
-        </Box>
-
-    );
+          <Box mt={4}>
+            <HStack justify="flex-end">
+              <Link
+                color="brand.primary"
+                fontWeight="bold"
+                onClick={() =>
+                  append({
+                    ownerFirstName: "",
+                    ownerMiddleName: "",
+                    ownerLastName: "",
+                    ownerStateID: "",
+                    ownerSSN: "",
+                    ownerPercentOwnership: 1,
+                    ownerTitle: "",
+                    ownerBirthday: new Date(),
+                    ownerEmail: "",
+                    ownerAddress: "",
+                    ownerCity: "",
+                    ownerZip: "",
+                    ownerPhone: "",
+                    controllerOfficerIsOwner: false,
+                  })
+                }
+                display="inline-flex"
+                alignItems="center"
+                _hover={{ textDecoration: "none", color: "brand.secondary" }}
+              >
+                <Icon as={AddIcon} mr={2} />
+                Add Owner
+              </Link>
+            </HStack>
+          </Box>
+        </VStack>
+      </Accordion>
+    </Box>
+  );
 };
 
 export default OwnerInformationForm;
