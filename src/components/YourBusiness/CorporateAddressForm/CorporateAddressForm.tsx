@@ -14,7 +14,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputMask from "react-input-mask";
-import ZipInput from "../../FormComponents/ZipInputField";
 
 const schema = z.object({
   corpLegalFedTaxId: z
@@ -25,28 +24,14 @@ const schema = z.object({
   corpLegalCity: z.string().min(1, { message: "City is required" }),
 
   corpLegalState: z.string().min(1, { message: "State is required" }),
-  corpLegalZip: z.string().min(5, { message: "ZIP code must be at least 5 characters long" }),
-  corpLegalPhone: z.string().min(10, "The phone number must be at least 10 characters long"),
+  corpLegalZip: z
+    .string()
+    .min(5, { message: "ZIP code must be at least 5 characters long" }),
+  corpLegalPhone: z
+    .string()
+    .min(10, "The phone number must be at least 10 characters long"),
   corpLegalEmail: z.string().email("A valid email is required"),
   controllerOfficerIsOwner: z.string().min(1, { message: " is required" }),
-
-  merchName: z
-    .string()
-    .min(6, "The location name must be at least 6 characters long"),
-  merchAddress: z
-    .string()
-    .min(10, "The address must be at least 10 characters long"),
-  merchCity: z.string().min(3, "The city must be at least 3 characters long"),
-  merchState: z.string().min(2, "The state must be at least 2 characters long"),
-  merchZip: z.string().min(5, "The zip must be at least 5 characters long"),
-  merchPhone: z
-    .string()
-    .min(10, "The phone must be at least 10 characters long"),
-  yearsInBusiness: z.preprocess(
-    (val) => Number(val),
-    z.number().min(1, "Years in business must be at least 1 digit long")
-  ),
-
 });
 
 type BusinessDataForm = z.infer<typeof schema>;
@@ -74,15 +59,6 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
     corpLegalPhone: "",
     corpLegalEmail: "",
     controllerOfficerIsOwner: "",
-
-    merchName: "",
-    merchAddress: "",
-    merchCity: "",
-    merchState: "",
-    merchZip: "",
-    merchPhone: "",
-    yearsInBusiness: 0
-
   },
   formRef,
 }) => {
@@ -104,7 +80,6 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-
       <FormControl mb={4} isInvalid={!!errors.corpLegalFedTaxId}>
         <FormLabel htmlFor="corpLegalFedTaxId">Federal Tax ID (EIN)</FormLabel>
         <Input
@@ -135,14 +110,12 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
             {...register("corpLegalName")}
           />
           {errors.corpLegalName && (
-            <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalName.message}</Text>
+            <Text color={"semantic.error.DEFAULT"}>
+              {errors.corpLegalName.message}
+            </Text>
           )}
         </FormControl>
-
-
       </HStack>
-
-
 
       <HStack spacing={4} mb={4}>
         <FormControl isInvalid={!!errors.corpLegalPhone}>
@@ -156,7 +129,9 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
             {...register("corpLegalPhone")}
           />
           {errors.corpLegalPhone && (
-            <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalPhone.message}</Text>
+            <Text color={"semantic.error.DEFAULT"}>
+              {errors.corpLegalPhone.message}
+            </Text>
           )}
         </FormControl>
 
@@ -171,7 +146,9 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
             {...register("corpLegalEmail")}
           />
           {errors.corpLegalEmail && (
-            <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalEmail.message}</Text>
+            <Text color={"semantic.error.DEFAULT"}>
+              {errors.corpLegalEmail.message}
+            </Text>
           )}
         </FormControl>
       </HStack>
@@ -187,7 +164,9 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           {...register("corpLegalAddress")}
         />
         {errors.corpLegalAddress && (
-          <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalAddress.message}</Text>
+          <Text color={"semantic.error.DEFAULT"}>
+            {errors.corpLegalAddress.message}
+          </Text>
         )}
       </FormControl>
 
@@ -195,13 +174,19 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
         <FormLabel htmlFor="corpLegalCity" color={theme.colors.gray[700]}>
           Legal City
         </FormLabel>
-        <Select id="corpLegalCity" placeholder="Select your company / legal city" {...register("corpLegalCity")}>
+        <Select
+          id="corpLegalCity"
+          placeholder="Select your company / legal city"
+          {...register("corpLegalCity")}
+        >
           <option value="New York">New York</option>
           <option value="Los Angeles">Los Angeles</option>
           <option value="Chicago">Chicago</option>
         </Select>
         {errors.corpLegalCity && (
-          <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalCity.message}</Text>
+          <Text color={"semantic.error.DEFAULT"}>
+            {errors.corpLegalCity.message}
+          </Text>
         )}
       </FormControl>
 
@@ -210,13 +195,19 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           <FormLabel htmlFor="corpLegalState" color={theme.colors.gray[700]}>
             Legal State
           </FormLabel>
-          <Select id="corpLegalState" placeholder="Select your company / legal state" {...register("corpLegalState")}>
+          <Select
+            id="corpLegalState"
+            placeholder="Select your company / legal state"
+            {...register("corpLegalState")}
+          >
             <option value="NY">New York</option>
             <option value="CA">California</option>
             <option value="IL">Illinois</option>
           </Select>
           {errors.corpLegalState && (
-            <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalState.message}</Text>
+            <Text color={"semantic.error.DEFAULT"}>
+              {errors.corpLegalState.message}
+            </Text>
           )}
         </FormControl>
 
@@ -231,38 +222,30 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
             {...register("corpLegalZip")}
           />
           {errors.corpLegalZip && (
-            <Text color={"semantic.error.DEFAULT"}>{errors.corpLegalZip.message}</Text>
+            <Text color={"semantic.error.DEFAULT"}>
+              {errors.corpLegalZip.message}
+            </Text>
           )}
         </FormControl>
       </HStack>
 
-
-      <HStack spacing={4} mb={4}>
-      <Text fontSize='xl'>DBA</Text>
-      <FormLabel htmlFor="controllerOfficerTitle">Same Infomation as Legal</FormLabel>
+      <Text fontSize="xl">DBA</Text>
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerIsOwner}>
-        
-        <Checkbox
-          id="controllerOfficerIsOwner"
-          {...register("controllerOfficerIsOwner")}
-        />
-        {errors.controllerOfficerIsOwner && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerIsOwner.message}
-          </Text>
-        )}
+        <HStack spacing={4} mb={4}>
+          <FormLabel htmlFor="controllerOfficerTitle">
+            Same Infomation as Legal
+          </FormLabel>
+          <Checkbox
+            id="controllerOfficerIsOwner"
+            {...register("controllerOfficerIsOwner")}
+          />
+          {errors.controllerOfficerIsOwner && (
+            <Text color="semantic.error.DEFAULT">
+              {errors.controllerOfficerIsOwner.message}
+            </Text>
+          )}
+        </HStack>
       </FormControl>
-      </HStack>
-
-
-
-
-
-
-
-
-
-
     </Box>
   );
 };

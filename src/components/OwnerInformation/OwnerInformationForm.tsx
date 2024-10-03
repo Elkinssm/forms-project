@@ -2,7 +2,6 @@ import {
   Box,
   Checkbox,
   Text,
-  Button,
   VStack,
   Accordion,
   AccordionItem,
