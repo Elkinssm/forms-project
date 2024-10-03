@@ -11,12 +11,14 @@ import {
   HStack,
   VStack,
   Spacer,
+  Image,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import FormHeader from "../FormComponents/FormHeader";
 import CircleIcon from "../../utils/CircleIcon";
 import FormNavigation from "../FormComponents/FormNavigation";
+import logo from "../../assets/logo-payment.jpg";
 
 interface SidebarProps {
   children: ReactElement[];
@@ -83,6 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         display="flex"
         flexDirection="column"
       >
+        <Image src={logo} alt="Logo" pb={2} width="auto" height="45px" />
         <VStack align="start" spacing={4} mb={6} flexDirection={"row"}>
           <Box
             display="flex"
