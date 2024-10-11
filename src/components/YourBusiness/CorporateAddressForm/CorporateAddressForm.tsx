@@ -14,6 +14,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputMask from "react-input-mask";
+import ZipInput from "../../FormComponents/ZipInputField";
 
 const schema = z.object({
   corpLegalFedTaxId: z
@@ -27,11 +28,16 @@ const schema = z.object({
   corpLegalZip: z
     .string()
     .min(5, { message: "ZIP code must be at least 5 characters long" }),
-  corpLegalPhone: z
-    .string()
-    .min(10, "The phone number must be at least 10 characters long"),
+  corpLegalPhone: z.preprocess(
+    (val) => Number(val),
+    z.number().min(10, "The phone number must be at least 10 characters long")
+  ),
+
+
   corpLegalEmail: z.string().email("A valid email is required"),
-  controllerOfficerIsOwner: z.string().min(1, { message: " is required" }),
+  controllerOfficerIsOwner: z.boolean(),
+
+
 });
 
 type BusinessDataForm = z.infer<typeof schema>;
@@ -56,9 +62,9 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
     corpLegalCity: "",
     corpLegalState: "",
     corpLegalZip: "",
-    corpLegalPhone: "",
+    corpLegalPhone: 0,
     corpLegalEmail: "",
-    controllerOfficerIsOwner: "",
+    controllerOfficerIsOwner: false,
   },
   formRef,
 }) => {
@@ -74,6 +80,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
 
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
     console.log(data);
+    debugger
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
@@ -124,7 +131,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           </FormLabel>
           <Input
             id="corpLegalPhone"
-            type="text"
+            type="number"
             placeholder="Enter your Legal Phone"
             {...register("corpLegalPhone")}
           />
@@ -211,22 +218,12 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           )}
         </FormControl>
 
-        <FormControl isInvalid={!!errors.corpLegalZip}>
-          <FormLabel htmlFor="corpLegalZip" color={theme.colors.gray[700]}>
-            Legal ZIP Code
-          </FormLabel>
-          <Input
-            id="corpLegalZip"
-            type="text"
-            placeholder="Enter your company / legal ZIP code"
-            {...register("corpLegalZip")}
-          />
-          {errors.corpLegalZip && (
-            <Text color={"semantic.error.DEFAULT"}>
-              {errors.corpLegalZip.message}
-            </Text>
-          )}
-        </FormControl>
+        <ZipInput
+          label="Legal ZIP Code"
+          id="corpLegalZip"
+          errors={errors}
+          register={register}
+        />
       </HStack>
 
       <Text fontSize="xl">DBA</Text>

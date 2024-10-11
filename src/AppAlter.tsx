@@ -12,6 +12,7 @@ import ControllingOfficerForm from "./components/ControllingOfficer/ControllingO
 import SalesProfileForm from "./components/SalesProfile/SalesProfile";
 
 function App() {
+
   return (
     <ChakraProvider theme={theme}>
       <Box maxW={"1200px"} mx="auto" overflow={"auto"}>
