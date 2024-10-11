@@ -12,6 +12,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+// TODO la validación aditionalDetailsMailing opciones no esta funcionando
+
 const schema = z.object({
   aditionalDetailsLocations: z.preprocess(
     (val) => Number(val),
@@ -55,6 +57,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
   });
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
     console.log(data);
+    debugger
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
@@ -67,7 +70,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
           </FormLabel>
           <Input
             id="aditionalDetailsLocations"
-            type="text"
+            type="number"
             placeholder="Enter the number of locations"
             {...register("aditionalDetailsLocations")}
           />
@@ -99,10 +102,10 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
         <FormLabel>Mailing Address</FormLabel>
         <RadioGroup>
           <Stack direction="column">
-            <Radio value="option2" {...register("aditionalDetailsMailing")}>
+            <Radio value="corporate" {...register("aditionalDetailsMailing")}>
               Corporate / Legal Name
             </Radio>
-            <Radio value="option1" {...register("aditionalDetailsMailing")}>
+            <Radio value="dba" {...register("aditionalDetailsMailing")}>
               DBA
             </Radio>
           </Stack>

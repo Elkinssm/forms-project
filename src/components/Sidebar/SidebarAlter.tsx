@@ -68,9 +68,9 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const description = currentChild?.props?.description || "Default Description";
 
   // Añadir logs para depuración
-  console.log("Current Child:", currentChild);
-  console.log("Title:", title);
-  console.log("Description:", description);
+  // console.log("Current Child:", currentChild);
+  // console.log("Title:", title);
+  // console.log("Description:", description);
 
   return (
     <Box display="flex" flexDirection={{ base: "column", md: "row" }} h="100vh">

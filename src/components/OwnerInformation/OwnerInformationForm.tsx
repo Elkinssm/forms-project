@@ -22,6 +22,8 @@ import { z } from "zod";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import ZipInput from "../FormComponents/ZipInputField";
 
+// TODO Validar que la suma de todos los owners sea del 50%
+
 const schema = z.object({
   owners: z.array(
     z.object({

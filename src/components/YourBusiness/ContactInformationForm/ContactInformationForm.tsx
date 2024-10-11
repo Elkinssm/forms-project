@@ -4,13 +4,14 @@ import { Box, FormControl, FormLabel, Input, Radio, RadioGroup, Stack, Text } fr
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+//TODO si se selecciona corporate/Legal se debe copiar la info, igual si es DBA, si dice New, si es nuevo el registro
 const schema = z.object({
-  contactInformationContact: z.string().min(1,"The contact information must be at least 1 characters long"),
+  contactInformationContact: z.string().min(1, "The contact information must be at least 1 characters long"),
   contactInformationPrimaryName: z.string().min(6, "The Contact Information Primary Name must be at least 6 characters long"),
   contactInformationSecondaryName: z
     .string()
     .min(6, "The Contact Information Secondary Name must be at least 6 characters long"),
-    aditionalDetailsMailing: z.string(),
+  aditionalDetailsMailing: z.string().min(1, "You must select a mailing option"),
 });
 
 type BusinessDataForm = z.infer<typeof schema>;
@@ -28,7 +29,12 @@ interface ContactInformationFormFormProps {
 const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
   onNext,
   onDataChange,
-  formData = { contactInformationContact: "", contactInformationPrimaryName: "", contactInformationSecondaryName: "", aditionalDetailsMailing:""  },
+  formData = {
+    contactInformationContact: "",
+    contactInformationPrimaryName: "",
+    contactInformationSecondaryName: "",
+    aditionalDetailsMailing: "corporate"
+  },
   formRef,
 }) => {
   const {
@@ -40,27 +46,28 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
     resolver: zodResolver(schema),
     defaultValues: formData,
   });
-
+  
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
     console.log(data);
+    debugger
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      
+
       <FormControl mb={4} isInvalid={!!errors.aditionalDetailsMailing}>
         <FormLabel>Use information</FormLabel>
-        <RadioGroup>
+        <RadioGroup value={formData.aditionalDetailsMailing} > 
           <Stack direction="column">
-            <Radio value="option2" {...register("aditionalDetailsMailing")}>
-              Corporate / Legal 
+            <Radio value="corporate" {...register("aditionalDetailsMailing")}>
+              Corporate / Legal
             </Radio>
-            <Radio value="option1" {...register("aditionalDetailsMailing")}>
+            <Radio value="bda" {...register("aditionalDetailsMailing")}>
               DBA
             </Radio>
-            <Radio value="option3" {...register("aditionalDetailsMailing")}>
+            <Radio value="new" {...register("aditionalDetailsMailing")}>
               New
             </Radio>
           </Stack>

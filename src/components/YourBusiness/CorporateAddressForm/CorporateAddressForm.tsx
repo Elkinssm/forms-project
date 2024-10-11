@@ -28,11 +28,8 @@ const schema = z.object({
   corpLegalZip: z
     .string()
     .min(5, { message: "ZIP code must be at least 5 characters long" }),
-  corpLegalPhone: z.preprocess(
-    (val) => Number(val),
-    z.number().min(10, "The phone number must be at least 10 characters long")
-  ),
 
+  corpLegalPhone: z.string().min(10, "The phone number must be at least 10 characters long"),
 
   corpLegalEmail: z.string().email("A valid email is required"),
   controllerOfficerIsOwner: z.boolean(),
@@ -62,7 +59,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
     corpLegalCity: "",
     corpLegalState: "",
     corpLegalZip: "",
-    corpLegalPhone: 0,
+    corpLegalPhone: "",
     corpLegalEmail: "",
     controllerOfficerIsOwner: false,
   },
@@ -80,7 +77,6 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
 
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
     console.log(data);
-    debugger
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
