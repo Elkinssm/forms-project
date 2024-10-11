@@ -1,17 +1,38 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Box, FormControl, FormLabel, Input, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  Radio,
+  RadioGroup,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 //TODO si se selecciona corporate/Legal se debe copiar la info, igual si es DBA, si dice New, si es nuevo el registro
 const schema = z.object({
-  contactInformationContact: z.string().min(1, "The contact information must be at least 1 characters long"),
-  contactInformationPrimaryName: z.string().min(6, "The Contact Information Primary Name must be at least 6 characters long"),
+  contactInformationContact: z
+    .string()
+    .min(1, "The contact information must be at least 1 characters long"),
+  contactInformationPrimaryName: z
+    .string()
+    .min(
+      6,
+      "The Contact Information Primary Name must be at least 6 characters long"
+    ),
   contactInformationSecondaryName: z
     .string()
-    .min(6, "The Contact Information Secondary Name must be at least 6 characters long"),
-  aditionalDetailsMailing: z.string().min(1, "You must select a mailing option"),
+    .min(
+      6,
+      "The Contact Information Secondary Name must be at least 6 characters long"
+    ),
+  aditionalDetailsMailing: z
+    .string()
+    .min(1, "You must select a mailing option"),
 });
 
 type BusinessDataForm = z.infer<typeof schema>;
@@ -33,7 +54,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
     contactInformationContact: "",
     contactInformationPrimaryName: "",
     contactInformationSecondaryName: "",
-    aditionalDetailsMailing: "corporate"
+    aditionalDetailsMailing: "corporate",
   },
   formRef,
 }) => {
@@ -46,20 +67,18 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
     resolver: zodResolver(schema),
     defaultValues: formData,
   });
-  
+
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
     console.log(data);
-    debugger
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-
       <FormControl mb={4} isInvalid={!!errors.aditionalDetailsMailing}>
         <FormLabel>Use information</FormLabel>
-        <RadioGroup value={formData.aditionalDetailsMailing} > 
+        <RadioGroup value={formData.aditionalDetailsMailing}>
           <Stack direction="column">
             <Radio value="corporate" {...register("aditionalDetailsMailing")}>
               Corporate / Legal
@@ -73,7 +92,9 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
           </Stack>
         </RadioGroup>
         {errors.aditionalDetailsMailing && (
-          <Text color="semantic.error.DEFAULT">{errors.aditionalDetailsMailing.message}</Text>
+          <Text color="semantic.error.DEFAULT">
+            {errors.aditionalDetailsMailing.message}
+          </Text>
         )}
       </FormControl>
       <FormControl mb={4} isInvalid={!!errors.contactInformationContact}>
@@ -85,11 +106,15 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
           {...register("contactInformationContact")}
         />
         {errors.contactInformationContact && (
-          <Text color="semantic.error.DEFAULT">{errors.contactInformationContact.message}</Text>
+          <Text color="semantic.error.DEFAULT">
+            {errors.contactInformationContact.message}
+          </Text>
         )}
       </FormControl>
       <FormControl mb={4} isInvalid={!!errors.contactInformationPrimaryName}>
-        <FormLabel htmlFor="contactInformationPrimaryName">Contact Email</FormLabel>
+        <FormLabel htmlFor="contactInformationPrimaryName">
+          Contact Email
+        </FormLabel>
         <Input
           id="contactInformationPrimaryName"
           type="text"
@@ -97,11 +122,15 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
           {...register("contactInformationPrimaryName")}
         />
         {errors.contactInformationPrimaryName && (
-          <Text color="semantic.error.DEFAULT">{errors.contactInformationPrimaryName.message}</Text>
+          <Text color="semantic.error.DEFAULT">
+            {errors.contactInformationPrimaryName.message}
+          </Text>
         )}
       </FormControl>
       <FormControl mb={4} isInvalid={!!errors.contactInformationSecondaryName}>
-        <FormLabel htmlFor="contactInformationSecondaryName">Contact Phone</FormLabel>
+        <FormLabel htmlFor="contactInformationSecondaryName">
+          Contact Phone
+        </FormLabel>
         <Input
           id="contactInformationSecondaryName"
           type="text"
@@ -109,7 +138,9 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
           {...register("contactInformationSecondaryName")}
         />
         {errors.contactInformationSecondaryName && (
-          <Text color="semantic.error.DEFAULT">{errors.contactInformationSecondaryName.message}</Text>
+          <Text color="semantic.error.DEFAULT">
+            {errors.contactInformationSecondaryName.message}
+          </Text>
         )}
       </FormControl>
 

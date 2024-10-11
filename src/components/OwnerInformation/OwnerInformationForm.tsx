@@ -438,29 +438,10 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       </Text>
                     )}
                   </FormControl>
-                  {/* 
-                  <FormControl
-                    mb={4}
-                    isInvalid={!!errors.owners?.[index]?.ownerZip}
-                  >
-                    <FormLabel htmlFor={`owners.${index}.ownerZip`}>
-                      Zip
-                    </FormLabel>
-                    <Input
-                      id={`owners.${index}.ownerZip`}
-                      type="text"
-                      placeholder="Enter owner zip code"
-                      {...register(`owners.${index}.ownerZip`)}
-                    />
-                    {errors.owners?.[index]?.ownerZip && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerZip?.message}
-                      </Text>
-                    )}
-                  </FormControl> */}
+
                   <ZipInput
                     label="Owner zip code"
-                    id="ownerZip"
+                    id={`owners.${index}.ownerZip`}
                     errors={errors}
                     register={register}
                   />

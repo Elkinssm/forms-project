@@ -57,7 +57,6 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
   });
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
     console.log(data);
-    debugger
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
