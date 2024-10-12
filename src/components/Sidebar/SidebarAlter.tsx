@@ -31,6 +31,7 @@ interface FormData {
 const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const [selectedPage, setSelectedPage] = useState<number>(0);
   const [formData, setFormData] = useState<FormData>({});
+  const [formDataAll, setFormDataAll] = useState<FormData>({});
   const [direction, setDirection] = useState<"next" | "back">("next");
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
   const totalSteps = React.Children.count(children);
@@ -56,6 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
   const handleDataChange = (data: FormData) => {
     setFormData((prevData) => ({ ...prevData, ...data }));
+    setFormDataAll((prevData) => ({ ...prevData, ...data }));
   };
 
   const progressValue = ((selectedPage + 1) / totalSteps) * 100;
@@ -190,7 +192,8 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                     onBack: handleBack,
                     onDataChange: handleDataChange,
                     formData: formData,
-                    formRef: formRef,
+                    formRef: formRef,                    
+                    formDataAll: formData,
                     // No sobreescribir title o description aquí
                   })}
                 </motion.div>

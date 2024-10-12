@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputMask from "react-input-mask";
 import ZipInput from "../../FormComponents/ZipInputField";
+import AllDataForm from '../../../utils/AllDataForm';
 
 const schema = z.object({
   corpLegalFedTaxId: z
@@ -39,6 +40,8 @@ const schema = z.object({
 
 type BusinessDataForm = z.infer<typeof schema>;
 
+
+
 interface CorporateAddressFormProps {
   title: string;
   description?: string;
@@ -47,6 +50,7 @@ interface CorporateAddressFormProps {
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
+  formDataAll?: AllDataForm;
 }
 
 const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
@@ -64,6 +68,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
     controllerOfficerIsOwner: false,
   },
   formRef,
+  formDataAll,
 }) => {
   const theme = useTheme();
   const {

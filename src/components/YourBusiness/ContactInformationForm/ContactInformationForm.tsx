@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Box,
@@ -12,25 +12,26 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import AllDataForm from "../../../utils/AllDataForm";
 
-//TODO si se selecciona corporate/Legal se debe copiar la info, igual si es DBA, si dice New, si es nuevo el registro
+//TODO si se selecciona corporate/Legal se debe copiar la info, igual si es DBA, si dice New, si es nuevo el registro 
 const schema = z.object({
   contactInformationContact: z
     .string()
     .min(1, "The contact information must be at least 1 characters long"),
-  contactInformationPrimaryName: z
+  contactInformationEmail: z
     .string()
     .min(
       6,
       "The Contact Information Primary Name must be at least 6 characters long"
     ),
-  contactInformationSecondaryName: z
+  contactInformationPhone: z
     .string()
     .min(
       6,
       "The Contact Information Secondary Name must be at least 6 characters long"
     ),
-  aditionalDetailsMailing: z
+  useInformationFrom: z
     .string()
     .min(1, "You must select a mailing option"),
 });
@@ -45,6 +46,7 @@ interface ContactInformationFormFormProps {
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
+  formDataAll?: AllDataForm;
 }
 
 const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
@@ -52,21 +54,53 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
   onDataChange,
   formData = {
     contactInformationContact: "",
-    contactInformationPrimaryName: "",
-    contactInformationSecondaryName: "",
-    aditionalDetailsMailing: "corporate",
+    contactInformationEmail: "",
+    contactInformationPhone: "",
+    useInformationFrom: "new",
   },
   formRef,
+  formDataAll,
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    // reset,
+    reset,
+    watch,
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(schema),
     defaultValues: formData,
   });
+
+  const useInformationFrom = watch("useInformationFrom"); // Watch for changes in the radio buttons
+
+  useEffect(() => {
+    if (useInformationFrom === "corporate") {
+      // Copiar información de Corporate / Legal
+      reset({
+        contactInformationContact: formDataAll?.corpLegalName, 
+        contactInformationEmail: formDataAll?.corpLegalEmail,
+        contactInformationPhone: formDataAll?.corpLegalPhone,
+        useInformationFrom: "corporate",
+      });
+    } else if (useInformationFrom === "bda") {
+      // Copiar información de DBA
+      reset({
+        contactInformationContact: formDataAll?.merchName, 
+        contactInformationEmail: formDataAll?.merchEmail,
+        contactInformationPhone: formDataAll?.merchPhone,
+        useInformationFrom: "bda",
+      });
+    } else if (useInformationFrom === "new") {
+      // Limpiar el formulario para capturar nueva información
+      reset({
+        contactInformationContact: "",
+        contactInformationEmail: "",
+        contactInformationPhone: "",
+        useInformationFrom: "new",
+      });
+    }
+  }, [useInformationFrom, reset]);
 
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
     console.log(data);
@@ -76,24 +110,24 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <FormControl mb={4} isInvalid={!!errors.aditionalDetailsMailing}>
+      <FormControl mb={4} isInvalid={!!errors.useInformationFrom}>
         <FormLabel>Use information</FormLabel>
-        <RadioGroup value={formData.aditionalDetailsMailing}>
+        <RadioGroup value={formData.useInformationFrom} defaultValue='new'>
           <Stack direction="column">
-            <Radio value="corporate" {...register("aditionalDetailsMailing")}>
+            <Radio value="corporate" {...register("useInformationFrom")}>
               Corporate / Legal
             </Radio>
-            <Radio value="bda" {...register("aditionalDetailsMailing")}>
+            <Radio value="bda" {...register("useInformationFrom")}>
               DBA
             </Radio>
-            <Radio value="new" {...register("aditionalDetailsMailing")}>
+            <Radio value="new" {...register("useInformationFrom")}>
               New
             </Radio>
           </Stack>
         </RadioGroup>
-        {errors.aditionalDetailsMailing && (
+        {errors.useInformationFrom && (
           <Text color="semantic.error.DEFAULT">
-            {errors.aditionalDetailsMailing.message}
+            {errors.useInformationFrom.message}
           </Text>
         )}
       </FormControl>
@@ -111,45 +145,38 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
           </Text>
         )}
       </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.contactInformationPrimaryName}>
-        <FormLabel htmlFor="contactInformationPrimaryName">
+      <FormControl mb={4} isInvalid={!!errors.contactInformationEmail}>
+        <FormLabel htmlFor="contactInformationEmail">
           Contact Email
         </FormLabel>
         <Input
-          id="contactInformationPrimaryName"
+          id="contactInformationEmail"
           type="text"
-          placeholder="Enter the primary contact name"
-          {...register("contactInformationPrimaryName")}
+          placeholder="Enter the primary contact email"
+          {...register("contactInformationEmail")}
         />
-        {errors.contactInformationPrimaryName && (
+        {errors.contactInformationEmail && (
           <Text color="semantic.error.DEFAULT">
-            {errors.contactInformationPrimaryName.message}
+            {errors.contactInformationEmail.message}
           </Text>
         )}
       </FormControl>
-      <FormControl mb={4} isInvalid={!!errors.contactInformationSecondaryName}>
-        <FormLabel htmlFor="contactInformationSecondaryName">
+      <FormControl mb={4} isInvalid={!!errors.contactInformationPhone}>
+        <FormLabel htmlFor="contactInformationPhone">
           Contact Phone
         </FormLabel>
         <Input
-          id="contactInformationSecondaryName"
+          id="contactInformationPhone"
           type="text"
-          placeholder="Enter the secondary contact name"
-          {...register("contactInformationSecondaryName")}
+          placeholder="Enter the secondary contact phone"
+          {...register("contactInformationPhone")}
         />
-        {errors.contactInformationSecondaryName && (
+        {errors.contactInformationPhone && (
           <Text color="semantic.error.DEFAULT">
-            {errors.contactInformationSecondaryName.message}
+            {errors.contactInformationPhone.message}
           </Text>
         )}
       </FormControl>
-
-      {/* TODO Add email and phone for primary and secondary contact name */}
-      {/* colocar checkbox para copiar Legal or DBE
-      same as legal
-      same as DBE
-      New information
-      */}
     </Box>
   );
 };

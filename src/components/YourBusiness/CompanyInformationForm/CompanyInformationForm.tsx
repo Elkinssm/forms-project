@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Box,
@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 // import InputMask from "react-input-mask";
 import ZipInput from "../../FormComponents/ZipInputField";
+import AllDataForm from '../../../utils/AllDataForm';
 
 const schema = z.object({
   merchDBAName: z.string()
@@ -43,6 +44,7 @@ interface CompanyInformationFormProps {
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
+  formDataAll?: AllDataForm;
 }
 
 const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
@@ -60,10 +62,12 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
     merchEmail: "",
   },
   formRef,
+  formDataAll,
 }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(schema),
@@ -76,6 +80,27 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
+
+  // Efecto para actualizar variables cuando isLoading es true
+  useEffect(() => {
+    
+    if (formDataAll?.controllerOfficerIsOwner) {
+
+      formData.merchDBAName = formDataAll.corpLegalName;
+
+      formData.merchAddress = formDataAll.corpLegalAddress;
+      formData.merchCity = formDataAll.corpLegalCity;
+      formData.merchState = formDataAll.corpLegalState;
+      formData.merchZip = formDataAll.corpLegalZip;
+      formData.merchPhone = formDataAll.corpLegalPhone;
+
+      formData.merchEmail = formDataAll.corpLegalEmail;
+
+      reset(formData);
+
+
+    }
+  }, [formDataAll?.controllerOfficerIsOwner, onreset]);
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
