@@ -12,6 +12,13 @@ import {
   VStack,
   Spacer,
   Image,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import { AnimatePresence, motion } from "framer-motion";
@@ -19,6 +26,7 @@ import FormHeader from "../FormComponents/FormHeader";
 import CircleIcon from "../../utils/CircleIcon";
 import FormNavigation from "../FormComponents/FormNavigation";
 import logo from "../../assets/logo-payment.jpg";
+import { ZodError } from "zod";
 
 interface SidebarProps {
   children: ReactElement[];
@@ -33,17 +41,23 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const [formData, setFormData] = useState<FormData>({});
   const [direction, setDirection] = useState<"next" | "back">("next");
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const totalSteps = React.Children.count(children);
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     setIsFirstRender(false);
   }, []);
-
   const handleNext = () => {
+    if (formRef.current) {
+      formRef.current.requestSubmit();
+    }
+  };
+
+  const handleFormValidationSuccess = () => {
     if (selectedPage < totalSteps - 1) {
       setDirection("next");
-      setSelectedPage(selectedPage + 1);
+      setSelectedPage((prevPage) => prevPage + 1);
     }
   };
 
@@ -56,6 +70,78 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
   const handleDataChange = (data: FormData) => {
     setFormData((prevData) => ({ ...prevData, ...data }));
+  };
+
+  // const handlePageChange = async (nextPage: number) => {
+  //   debugger;
+  //   if (formRef.current) {
+  //     try {
+  //       // Obtener el formulario actual
+  //       const currentChild = children[selectedPage];
+
+  //       // Aquí extraemos las props, incluyendo validationSchema, title, description, etc.
+  //       const validationSchema = currentChild?.props?.validationSchema;
+
+  //       if (validationSchema) {
+  //         const formData = new FormData(formRef.current);
+  //         const formValues = Object.fromEntries(formData.entries());
+
+  //         // Validar usando Zod con el esquema proporcionado por el formulario actual
+  //         await validationSchema.parseAsync(formValues);
+
+  //         // Si la validación es exitosa, cambiar de página
+  //         setSelectedPage(nextPage);
+  //       } else {
+  //         // Si no hay esquema de validación, permitir el cambio
+  //         setSelectedPage(nextPage);
+  //       }
+  //     } catch (error) {
+  //       if (error instanceof ZodError) {
+  //         // Manejar los errores de validación
+  //         console.error("Errores de validación:", error.errors);
+  //         setIsModalOpen(true);
+  //       }
+  //     }
+  //   }
+  // };
+
+  const handlePageChange = async (nextPage: number) => {
+    // Si el usuario está intentando avanzar
+    if (nextPage > selectedPage) {
+      // Validar el formulario actual antes de permitir avanzar
+      if (formRef.current) {
+        try {
+          // Obtener el formulario actual
+          const currentChild = children[selectedPage];
+
+          // Acceder a la prop `validationSchema` del formulario actual
+          const validationSchema = currentChild?.props?.validationSchema;
+
+          if (validationSchema) {
+            const formData = new FormData(formRef.current);
+            const formValues = Object.fromEntries(formData.entries());
+
+            // Validar usando Zod con el esquema proporcionado por el formulario actual
+            await validationSchema.parseAsync(formValues);
+
+            // Si la validación es exitosa, cambiar de página
+            setSelectedPage(nextPage);
+          } else {
+            // Si no hay esquema de validación, permitir el cambio
+            setSelectedPage(nextPage);
+          }
+        } catch (error) {
+          if (error instanceof ZodError) {
+            // Manejar los errores de validación y evitar el cambio de página
+            console.error("Errores de validación:", error.errors);
+            setIsModalOpen(true);
+          }
+        }
+      }
+    } else {
+      // Si el usuario está retrocediendo, permitir el cambio sin validar
+      setSelectedPage(nextPage);
+    }
   };
 
   const progressValue = ((selectedPage + 1) / totalSteps) * 100;
@@ -132,7 +218,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
               fontWeight={index === selectedPage ? "bold" : "regular"}
               cursor="pointer"
               color={index <= selectedPage ? "brand.primary" : "neutral.800"}
-              onClick={() => setSelectedPage(index)}
+              onClick={() => handlePageChange(index)}
             >
               <Icon
                 as={index <= selectedPage ? CheckIcon : CircleIcon}
@@ -186,7 +272,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
                   {React.cloneElement(child as React.ReactElement, {
-                    onNext: handleNext,
+                    onNext: handleFormValidationSuccess, // Llamado si el formulario es válido
                     onBack: handleBack,
                     onDataChange: handleDataChange,
                     formData: formData,
@@ -208,6 +294,26 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           />
         </Box>
       </Box>
+      {/* Modal de validación */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Incomplete Form</ModalHeader>
+          <ModalBody>
+            Please fill out all required fields before proceeding to the next
+            step.
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={() => setIsModalOpen(false)}>
+              Got it
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

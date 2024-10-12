@@ -4,29 +4,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { businesProfileSchema } from "./businessProfileSchema";
 
-const schema = z.object({
-  businessProfileOwnershipType: z
-    .string()
-    .min(2, "The Ownership type must be at least 2 chars"),
-  businessProfileBusinessType: z
-    .string()
-    .min(2, "The Business type must be at least 2 chars"),
-  businessProfileMCC: z.string().min(2, "The MCC must be at least 2 chars"),
-  businessProfileGoodsServices: z
-    .string()
-    .min(2, "The Goods Services must be at least 2 chars"),
-  businessProfileBankName: z
-    .string()
-    .min(2, "The Bank Name must be at least 2 chars"),
-  businessProfileBusinessCheckingAccount: z
-    .string()
-    .min(2, "The Business Checking Account must be at least 2 chars"),
-  businessProfileBusinessCheckRouting: z
-    .string()
-    .min(2, "The Business Check Routing must be at least 2 chars"),
-});
-type BusinessProfileDataForm = z.infer<typeof schema>;
+type BusinessProfileDataForm = z.infer<typeof businesProfileSchema>;
 
 interface BusinessProfileFormProps {
   title: string;
@@ -36,6 +16,7 @@ interface BusinessProfileFormProps {
   onDataChange?: (data: BusinessProfileDataForm) => void;
   formData?: BusinessProfileDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
+  validationSchema?: typeof businesProfileSchema;
 }
 
 const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
@@ -50,6 +31,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     businessProfileBusinessCheckingAccount: "",
     businessProfileBusinessCheckRouting: "",
   },
+  validationSchema = businesProfileSchema,
   formRef,
 }) => {
   const {
@@ -57,7 +39,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     handleSubmit,
     formState: { errors },
   } = useForm<BusinessProfileDataForm>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(validationSchema),
     defaultValues: formData,
   });
   const onSubmit: SubmitHandler<BusinessProfileDataForm> = (data) => {

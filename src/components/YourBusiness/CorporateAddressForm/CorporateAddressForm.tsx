@@ -15,29 +15,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputMask from "react-input-mask";
 import ZipInput from "../../FormComponents/ZipInputField";
+import { corporateAddresFormSchema } from "./corporateAddresFormSchema";
 
-const schema = z.object({
-  corpLegalFedTaxId: z
-    .string()
-    .min(6, "The fed tax id must be at least 6 characters long"),
-  corpLegalName: z.string().min(5, { message: "Name is required" }),
-  corpLegalAddress: z.string().min(5, { message: "Address is required" }),
-  corpLegalCity: z.string().min(1, { message: "City is required" }),
-
-  corpLegalState: z.string().min(1, { message: "State is required" }),
-  corpLegalZip: z
-    .string()
-    .min(5, { message: "ZIP code must be at least 5 characters long" }),
-
-  corpLegalPhone: z.string().min(10, "The phone number must be at least 10 characters long"),
-
-  corpLegalEmail: z.string().email("A valid email is required"),
-  controllerOfficerIsOwner: z.boolean(),
-
-
-});
-
-type BusinessDataForm = z.infer<typeof schema>;
+type BusinessDataForm = z.infer<typeof corporateAddresFormSchema>;
 
 interface CorporateAddressFormProps {
   title: string;
@@ -47,6 +27,7 @@ interface CorporateAddressFormProps {
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
+  validationSchema?: typeof corporateAddresFormSchema;
 }
 
 const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
@@ -63,6 +44,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
     corpLegalEmail: "",
     controllerOfficerIsOwner: false,
   },
+  validationSchema = corporateAddresFormSchema,
   formRef,
 }) => {
   const theme = useTheme();
@@ -71,7 +53,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
     handleSubmit,
     formState: { errors },
   } = useForm<BusinessDataForm>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(validationSchema),
     defaultValues: formData,
   });
 

@@ -11,31 +11,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { contactFormSchema } from "./contactFormSchema";
 import { z } from "zod";
 
-//TODO si se selecciona corporate/Legal se debe copiar la info, igual si es DBA, si dice New, si es nuevo el registro
-const schema = z.object({
-  contactInformationContact: z
-    .string()
-    .min(1, "The contact information must be at least 1 characters long"),
-  contactInformationPrimaryName: z
-    .string()
-    .min(
-      6,
-      "The Contact Information Primary Name must be at least 6 characters long"
-    ),
-  contactInformationSecondaryName: z
-    .string()
-    .min(
-      6,
-      "The Contact Information Secondary Name must be at least 6 characters long"
-    ),
-  aditionalDetailsMailing: z
-    .string()
-    .min(1, "You must select a mailing option"),
-});
-
-type BusinessDataForm = z.infer<typeof schema>;
+type BusinessDataForm = z.infer<typeof contactFormSchema>;
 
 interface ContactInformationFormFormProps {
   title: string;
@@ -45,6 +24,7 @@ interface ContactInformationFormFormProps {
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
+  validationSchema?: typeof contactFormSchema;
 }
 
 const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
@@ -56,6 +36,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
     contactInformationSecondaryName: "",
     aditionalDetailsMailing: "corporate",
   },
+  validationSchema = contactFormSchema,
   formRef,
 }) => {
   const {
@@ -64,7 +45,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
     formState: { errors },
     // reset,
   } = useForm<BusinessDataForm>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(validationSchema),
     defaultValues: formData,
   });
 
