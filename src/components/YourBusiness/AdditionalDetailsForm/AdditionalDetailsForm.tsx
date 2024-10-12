@@ -11,21 +11,10 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { additionalInformationSchema } from "./AdditionalInformationSchema";
 
 // TODO la validación aditionalDetailsMailing opciones no esta funcionando
-
-const schema = z.object({
-  aditionalDetailsLocations: z.preprocess(
-    (val) => Number(val),
-    z.number().int().min(1, "Locations must be at least 1")
-  ),
-  aditionalDetailsMailing: z.preprocess(
-    (val) => (val === null ? "" : val),
-    z.string().min(1, "Please select an option")
-  ),
-  aditionalDetailsWebsite: z.string().url("Invalid website URL"),
-});
-type BusinessDataForm = z.infer<typeof schema>;
+type BusinessDataForm = z.infer<typeof additionalInformationSchema>;
 
 interface AdditionalDetailsFormProps {
   title: string;
@@ -35,6 +24,7 @@ interface AdditionalDetailsFormProps {
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
+  validationSchema?: typeof additionalInformationSchema;
 }
 
 const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
@@ -45,6 +35,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
     aditionalDetailsMailing: "",
     aditionalDetailsWebsite: "",
   },
+  validationSchema = additionalInformationSchema,
   formRef,
 }) => {
   const {
@@ -52,7 +43,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
     handleSubmit,
     formState: { errors },
   } = useForm<BusinessDataForm>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(validationSchema),
     defaultValues: formData,
   });
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
