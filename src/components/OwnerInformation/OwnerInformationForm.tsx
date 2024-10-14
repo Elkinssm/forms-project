@@ -13,8 +13,15 @@ import {
   HStack,
   Link,
   Icon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  Button,
+  ModalFooter,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -51,7 +58,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
         ownerSSN: "",
         ownerPercentOwnership: 1,
         ownerTitle: "",
-        ownerBirthday: new Date(),
+        ownerBirthday: "",
         ownerEmail: "",
         ownerAddress: "",
         ownerCity: "",
@@ -68,6 +75,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
     trigger,
     getValues,
@@ -76,6 +84,8 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     defaultValues: formData,
     mode: "onChange",
   });
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -93,7 +103,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
       ownerSSN: "",
       ownerPercentOwnership: 1,
       ownerTitle: "",
-      ownerBirthday: new Date(),
+      ownerBirthday: "",
       ownerEmail: "",
       ownerAddress: "",
       ownerCity: "",
@@ -115,7 +125,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
         ownerSSN: "",
         ownerPercentOwnership: 1,
         ownerTitle: "",
-        ownerBirthday: new Date(),
+        ownerBirthday: "",
         ownerEmail: "",
         ownerAddress: "",
         ownerCity: "",
@@ -132,9 +142,44 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
 
   const onSubmit: SubmitHandler<OwnerInformationDataForm> = (data) => {
     console.log("data", data);
+
+    const totalOwnership = data.owners.reduce(
+      (sum, owner) => sum + owner.ownerPercentOwnership,
+      0
+    );
+
+    if (totalOwnership < 50) {
+      console.error("The sum of the ownership percentages must be 50%");
+      setIsModalOpen(true);
+      return; // Aquí puedes manejar el error de manera adecuada
+    }
+
+    console.log("data", data);
+    if (onDataChange) onDataChange(data);
+    if (onNext) onNext();
+
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
+
+  // Mantén tu useEffect original pero modifícalo como se indica
+  useEffect(() => {
+    // Iterar sobre los propietarios en formData
+    formData?.owners?.forEach((owner, idx) => {
+      if (owner.ownerBirthday) {
+        const formattedDate = new Date(owner.ownerBirthday)
+          .toISOString()
+          .split("T")[0];
+        const dateObject = new Date(formattedDate);
+        if (!isNaN(dateObject.getTime())) {
+          // Check if the date is valid
+          setValue(`owners.${idx}.ownerBirthday`, formattedDate);
+        } else {
+          console.error("Invalid date:", formattedDate);
+        }
+      }
+    });
+  }, [formData?.owners, setValue]);
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
@@ -331,7 +376,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       id={`owners.${index}.ownerBirthday`}
                       type="date"
                       placeholder="Enter birthday"
-                      {...register(`owners.${index}.ownerBirthday`)}
+                      {...register(`owners.${index}.ownerBirthday`, {
+                        valueAsDate: false,
+                      })}
                     />
                     {errors.owners?.[index]?.ownerBirthday && (
                       <Text color="red.500">
@@ -422,7 +469,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                     </FormLabel>
                     <Input
                       id={`owners.${index}.ownerPhone`}
-                      type="text"
+                      type="number"
                       placeholder="Enter owner phone"
                       {...register(`owners.${index}.ownerPhone`)}
                     />
@@ -479,6 +526,25 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
           </Box>
         </VStack>
       </Accordion>
+      {/* Modal de validación */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Incomplete Form</ModalHeader>
+          <ModalBody>
+            The sum of the ownership percentages must be 50%
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={() => setIsModalOpen(false)}>
+              Got it
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

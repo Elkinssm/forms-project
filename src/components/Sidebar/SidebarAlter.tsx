@@ -113,6 +113,9 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
       setSelectedPage(nextPage);
       return;
     }
+    if (nextPage === selectedPage) {
+      return;
+    }
     // se valida que solo avance al siguiente formulario
     if (nextPage != selectedPage + 1) {
       nextPage = selectedPage + 1;
@@ -132,8 +135,39 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             const formData = new FormData(formRef.current);
             const formValues = Object.fromEntries(formData.entries());
 
+            // Filtrar y crear el array de owners
+            const owners = Object.keys(formValues)
+              .filter((key) => key.startsWith("owners."))
+              .reduce((acc: Array<Record<string, any>>, key) => {
+                // Extraer el índice del owner
+                const ownerIndex = Number(key.split(".")[1]); // Convertir a número
+                const field = key.split(".")[2]; // 'ownerFirstName' en 'owners.0.ownerFirstName'
+
+                // Asegurarte de que el array existe
+                if (!acc[ownerIndex]) {
+                  acc[ownerIndex] = {};
+                }
+
+                // Asignar el valor al campo correspondiente
+                acc[ownerIndex][field] = formValues[key];
+                return acc;
+              }, [] as Array<Record<string, any>>);
+
+            // Crear un nuevo objeto para campos que no sean de owners
+            const otherFields = Object.keys(formValues)
+              .filter((key) => !key.startsWith("owners."))
+              .reduce((acc, key) => {
+                acc[key] = formValues[key]; // Asignar el campo al nuevo objeto
+                return acc;
+              }, {} as Record<string, any>);
+
+            // Crear el objeto final
+            const transformedValues = {
+              ...otherFields, // Incluir otros campos
+              owners, // Incluir el array de owners
+            };
             // Validar usando Zod con el esquema proporcionado por el formulario actual
-            await validationSchema.parseAsync(formValues);
+            await validationSchema.parseAsync(transformedValues);
 
             handleDataChange(formValues);
 

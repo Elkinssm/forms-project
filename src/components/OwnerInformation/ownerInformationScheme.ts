@@ -19,9 +19,10 @@ export const ownerInformationScheme = z.object({
         z.number().int().min(1, "Percent Ownership must be at least 1")
       ),
       ownerTitle: z.string().min(9, "The Title must be at least 9 chars"),
-      ownerBirthday: z.coerce.date().refine((data) => data < new Date(), {
-        message: "Birthday must be in the past",
-      }),
+      // ownerBirthday: z.coerce.date().refine((data) => data < new Date(), {
+      //   message: "Birthday must be in the past",
+      // }),
+      ownerBirthday: z.string().min(10,"A valid date is required"),
       ownerEmail: z.string().email("A valid email is required"),
       ownerAddress: z
         .string()
