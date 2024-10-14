@@ -13,7 +13,7 @@ import { z } from "zod";
 // import InputMask from "react-input-mask";
 import ZipInput from "../../FormComponents/ZipInputField";
 import { companyInformationScheme } from "./companyInformationSchema";
-import AllDataForm from '../../../utils/AllDataForm';
+import AllDataForm from "../../../utils/AllDataForm";
 
 type BusinessDataForm = z.infer<typeof companyInformationScheme>;
 
@@ -67,9 +67,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
 
   // Efecto para actualizar variables cuando isLoading es true
   useEffect(() => {
-    
     if (formDataAll?.controllerOfficerIsOwner) {
-
       formData.merchDBAName = formDataAll.corpLegalName;
 
       formData.merchAddress = formDataAll.corpLegalAddress;
@@ -81,8 +79,6 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
       formData.merchEmail = formDataAll.corpLegalEmail;
 
       reset(formData);
-
-
     }
   }, [formDataAll?.controllerOfficerIsOwner, onreset]);
 

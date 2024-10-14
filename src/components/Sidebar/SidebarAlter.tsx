@@ -126,6 +126,8 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             // Validar usando Zod con el esquema proporcionado por el formulario actual
             await validationSchema.parseAsync(formValues);
 
+            handleDataChange(formValues);
+
             // Si la validación es exitosa, cambiar de página
             setSelectedPage(nextPage);
           } else {
@@ -278,7 +280,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                     onBack: handleBack,
                     onDataChange: handleDataChange,
                     formData: formData,
-                    formRef: formRef,                    
+                    formRef: formRef,
                     formDataAll: formData,
                     // No sobreescribir title o description aquí
                   })}

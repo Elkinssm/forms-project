@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Box,
@@ -16,12 +16,9 @@ import { z } from "zod";
 import InputMask from "react-input-mask";
 import ZipInput from "../../FormComponents/ZipInputField";
 import { corporateAddresFormSchema } from "./corporateAddresFormSchema";
-import AllDataForm from '../../../utils/AllDataForm';
-
+import AllDataForm from "../../../utils/AllDataForm";
 
 type BusinessDataForm = z.infer<typeof corporateAddresFormSchema>;
-
-
 
 interface CorporateAddressFormProps {
   title: string;
@@ -47,7 +44,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
     corpLegalZip: "",
     corpLegalPhone: "",
     corpLegalEmail: "",
-    controllerOfficerIsOwner: false,
+    controllerOfficerIsOwner: "no",
   },
   validationSchema = corporateAddresFormSchema,
   formRef,
@@ -67,6 +64,21 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
     console.log(data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
+  };
+
+  useEffect(() => {
+    // Si la data cargada tiene el valor "yes", marcar el checkbox
+    if (formData?.controllerOfficerIsOwner === "yes") {
+      setIsChecked(true);
+    } else {
+      setIsChecked(false);
+    }
+  }, [formData?.controllerOfficerIsOwner]);
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(e.target.checked);
   };
 
   return (
@@ -213,12 +225,20 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
       <Text fontSize="xl">DBA</Text>
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerIsOwner}>
         <HStack spacing={4} mb={4}>
-          <FormLabel htmlFor="controllerOfficerTitle">
+          <FormLabel htmlFor="controllerOfficerIsOwner">
             Same Infomation as Legal
           </FormLabel>
+          {/* Campo oculto para enviar "no" cuando el checkbox no está seleccionado */}
+          <input
+            type="hidden"
+            value={isChecked ? "yes" : "no"} // Enviar el valor "yes" o "no"
+            {...register("controllerOfficerIsOwner")}
+          />
+
           <Checkbox
             id="controllerOfficerIsOwner"
-            {...register("controllerOfficerIsOwner")}
+            isChecked={isChecked}
+            onChange={handleCheckboxChange} // Manejar el cambio manualmente
           />
           {errors.controllerOfficerIsOwner && (
             <Text color="semantic.error.DEFAULT">
