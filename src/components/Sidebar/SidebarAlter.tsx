@@ -115,7 +115,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     }
     // se valida que solo avance al siguiente formulario
     if (nextPage != selectedPage + 1) {
-      nextPage == selectedPage + 1;
+      nextPage = selectedPage + 1;
     }
     // Si el usuario está intentando avanzar
     if (nextPage > selectedPage) {
