@@ -17,6 +17,7 @@ import InputMask from "react-input-mask";
 import ZipInput from "../../FormComponents/ZipInputField";
 import { corporateAddresFormSchema } from "./corporateAddresFormSchema";
 import AllDataForm from "../../../utils/AllDataForm";
+import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
 
 type BusinessDataForm = z.infer<typeof corporateAddresFormSchema>;
 
@@ -228,28 +229,16 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
       </HStack>
 
       <Text fontSize="xl">DBA</Text>
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerIsOwner}>
-        <HStack spacing={4} mb={4}>
-          <FormLabel htmlFor="controllerOfficerIsOwner">
-            Same Infomation as Legal
-          </FormLabel>
-          {/* Campo oculto para enviar "no" cuando el checkbox no está seleccionado */}
-          <input
-            type="hidden"
-            {...register("controllerOfficerIsOwner")}
-            value={isChecked ? "yes" : "no"}
-          />
-
-          <Checkbox
+      <FormControl>
+        <HStack alignItems={"center"}>
+          <ReusableCheckbox
             id="controllerOfficerIsOwner"
+            label="Same Information as Legal"
             isChecked={isChecked}
-            onChange={handleCheckboxChange} // Manejar el cambio manualmente
+            onChange={handleCheckboxChange}
+            register={register}
+            error={errors.controllerOfficerIsOwner}
           />
-          {errors.controllerOfficerIsOwner && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.controllerOfficerIsOwner.message}
-            </Text>
-          )}
         </HStack>
       </FormControl>
     </Box>

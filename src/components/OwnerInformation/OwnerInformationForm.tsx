@@ -29,6 +29,7 @@ import { z } from "zod";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import ZipInput from "../FormComponents/ZipInputField";
 import { ownerInformationScheme } from "./ownerInformationScheme";
+import ReusableCheckbox from "../FormComponents/ReusableCheckbox";
 
 // TODO Validar que la suma de todos los owners sea del 50%
 
@@ -79,6 +80,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     formState: { errors },
     trigger,
     getValues,
+    watch,
   } = useForm<OwnerInformationDataForm>({
     resolver: zodResolver(validationSchema),
     defaultValues: formData,
@@ -155,9 +157,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     }
 
     console.log("data", data);
-    if (onDataChange) onDataChange(data);
-    if (onNext) onNext();
-
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
@@ -486,23 +485,21 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       !!errors.owners?.[index]?.controllerOfficerIsOwner
                     }
                   >
-                    <FormLabel
-                      htmlFor={`owners.${index}.controllerOfficerIsOwner`}
-                    >
-                      Is this owner the Controller Officer?
-                    </FormLabel>
-                    <Checkbox
+                    <ReusableCheckbox
                       id={`owners.${index}.controllerOfficerIsOwner`}
-                      {...register(`owners.${index}.controllerOfficerIsOwner`)}
+                      label="Is this owner the Controller Officer?"
+                      isChecked={
+                        !!watch(`owners.${index}.controllerOfficerIsOwner`)
+                      }
+                      onChange={(e) =>
+                        setValue(
+                          `owners.${index}.controllerOfficerIsOwner`,
+                          e.target.checked
+                        )
+                      }
+                      register={register}
+                      error={errors.owners?.[index]?.controllerOfficerIsOwner}
                     />
-                    {errors.owners?.[index]?.controllerOfficerIsOwner && (
-                      <Text color="red.500">
-                        {
-                          errors.owners[index]?.controllerOfficerIsOwner
-                            ?.message
-                        }
-                      </Text>
-                    )}
                   </FormControl>
                 </HStack>
               </AccordionPanel>
