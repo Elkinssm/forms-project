@@ -54,6 +54,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(validationSchema),
@@ -78,7 +79,11 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(e.target.checked);
+    const checked = e.target.checked;
+    setIsChecked(checked);
+
+    // Actualiza el valor del checkbox en el formulario
+    setValue("controllerOfficerIsOwner", checked ? "yes" : "no");
   };
 
   return (
@@ -231,8 +236,8 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           {/* Campo oculto para enviar "no" cuando el checkbox no está seleccionado */}
           <input
             type="hidden"
-            value={isChecked ? "yes" : "no"} // Enviar el valor "yes" o "no"
             {...register("controllerOfficerIsOwner")}
+            value={isChecked ? "yes" : "no"}
           />
 
           <Checkbox

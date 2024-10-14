@@ -67,7 +67,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
 
   // Efecto para actualizar variables cuando isLoading es true
   useEffect(() => {
-    if (formDataAll?.controllerOfficerIsOwner) {
+    if (formDataAll?.controllerOfficerIsOwner === "yes") {
       formData.merchDBAName = formDataAll.corpLegalName;
 
       formData.merchAddress = formDataAll.corpLegalAddress;
@@ -77,9 +77,16 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
       formData.merchPhone = formDataAll.corpLegalPhone;
 
       formData.merchEmail = formDataAll.corpLegalEmail;
-
-      reset(formData);
+    } else {
+      // formData.merchDBAName = "";
+      // formData.merchAddress = "";
+      // formData.merchCity = "";
+      // formData.merchState = "";
+      // formData.merchZip = "";
+      // formData.merchPhone = "";
+      // formData.merchEmail = "";
     }
+    reset(formData);
   }, [formDataAll?.controllerOfficerIsOwner, onreset]);
 
   return (

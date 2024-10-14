@@ -108,6 +108,15 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   // };
 
   const handlePageChange = async (nextPage: number) => {
+    // si se esta devolviendo
+    if (nextPage < selectedPage) {
+      setSelectedPage(nextPage);
+      return;
+    }
+    // se valida que solo avance al siguiente formulario
+    if (nextPage != selectedPage + 1) {
+      nextPage == selectedPage + 1;
+    }
     // Si el usuario está intentando avanzar
     if (nextPage > selectedPage) {
       // Validar el formulario actual antes de permitir avanzar
