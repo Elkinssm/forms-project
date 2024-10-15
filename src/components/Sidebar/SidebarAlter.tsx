@@ -181,6 +181,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           if (error instanceof ZodError) {
             // Manejar los errores de validación y evitar el cambio de página
             console.error("Errores de validación:", error.errors);
+            console.error(formDataAll);
             setIsModalOpen(true);
           }
         }

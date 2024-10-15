@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import {
   FieldErrors,
   FieldValues,
