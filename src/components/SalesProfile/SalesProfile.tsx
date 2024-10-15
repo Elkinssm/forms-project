@@ -1,10 +1,11 @@
-import { Box, Checkbox, HStack, Text } from "@chakra-ui/react";
+import { Box, Checkbox, HStack } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { salesProfileSchema } from "./salesProfileSchema";
+import ErrorMessage from "../FormComponents/ErrorMessage";
 
 type SalesProfileDataForm = z.infer<typeof salesProfileSchema>;
 
@@ -65,11 +66,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           placeholder="Enter current processor"
           {...register("salesProfileCurrentProcessor")}
         />
-        {errors.salesProfileCurrentProcessor && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.salesProfileCurrentProcessor.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.salesProfileCurrentProcessor?.message} />
       </FormControl>
 
       <HStack spacing={4} mb={4}>
@@ -83,11 +80,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             placeholder="Enter retail chip swipe %"
             {...register("salesProfileRetailChipSwipe")}
           />
-          {errors.salesProfileRetailChipSwipe && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.salesProfileRetailChipSwipe.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.salesProfileRetailChipSwipe?.message} />
         </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.salesProfileImprintCard}>
@@ -100,11 +93,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             placeholder="Enter imprint card %"
             {...register("salesProfileImprintCard")}
           />
-          {errors.salesProfileImprintCard && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.salesProfileImprintCard.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.salesProfileImprintCard?.message} />
         </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.salesProfileMailPhone}>
@@ -115,11 +104,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             placeholder="Enter Mail Phone %"
             {...register("salesProfileMailPhone")}
           />
-          {errors.salesProfileMailPhone && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.salesProfileMailPhone.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.salesProfileMailPhone?.message} />
         </FormControl>
       </HStack>
 
@@ -132,11 +117,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             placeholder="Enter avg ticket"
             {...register("salesProfileAvgTicket")}
           />
-          {errors.salesProfileAvgTicket && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.salesProfileAvgTicket.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.salesProfileAvgTicket?.message} />
         </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.salesProfileMaxTicket}>
@@ -147,11 +128,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             placeholder="Enter max ticket"
             {...register("salesProfileMaxTicket")}
           />
-          {errors.salesProfileMaxTicket && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.salesProfileMaxTicket.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.salesProfileMaxTicket?.message} />
         </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.salesProfileMonthlyVolume}>
@@ -164,11 +141,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             placeholder="Enter monthly volume"
             {...register("salesProfileMonthlyVolume")}
           />
-          {errors.salesProfileMonthlyVolume && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.salesProfileMonthlyVolume.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.salesProfileMonthlyVolume?.message} />
         </FormControl>
       </HStack>
 
@@ -181,11 +154,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             placeholder="Enter Internet %"
             {...register("salesProfileInternetPerc")}
           />
-          {errors.salesProfileInternetPerc && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.salesProfileInternetPerc.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.salesProfileInternetPerc?.message} />
         </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.salesProfileB2BPerc}>
@@ -196,11 +165,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             placeholder="Enter B2B"
             {...register("salesProfileB2BPerc")}
           />
-          {errors.salesProfileB2BPerc && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.salesProfileB2BPerc.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.salesProfileB2BPerc?.message} />
         </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.salesProfileB2CPerc}>
@@ -211,11 +176,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             placeholder="Enter B2C"
             {...register("salesProfileB2CPerc")}
           />
-          {errors.salesProfileB2CPerc && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.salesProfileB2CPerc.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.salesProfileB2CPerc?.message} />
         </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.salesProfileB2GPerc}>
@@ -226,11 +187,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             placeholder="Enter B2G"
             {...register("salesProfileB2GPerc")}
           />
-          {errors.salesProfileB2GPerc && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.salesProfileB2GPerc.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.salesProfileB2GPerc?.message} />
         </FormControl>
       </HStack>
       <HStack spacing={4} mb={4}>
@@ -243,11 +200,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
               id="salesProfileCurrentlyMCVISA"
               {...register("salesProfileCurrentlyMCVISA")}
             />
-            {errors.salesProfileCurrentlyMCVISA && (
-              <Text color="semantic.error.DEFAULT">
-                {errors.salesProfileCurrentlyMCVISA.message}
-              </Text>
-            )}
+            <ErrorMessage error={errors.salesProfileCurrentlyMCVISA?.message} />
           </HStack>
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.salesProfileNextDayFunding}>
@@ -259,11 +212,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
               id="salesProfileNextDayFunding"
               {...register("salesProfileNextDayFunding")}
             />
-            {errors.salesProfileNextDayFunding && (
-              <Text color="semantic.error.DEFAULT">
-                {errors.salesProfileNextDayFunding.message}
-              </Text>
-            )}
+            <ErrorMessage error={errors.salesProfileNextDayFunding?.message} />
           </HStack>
         </FormControl>
       </HStack>

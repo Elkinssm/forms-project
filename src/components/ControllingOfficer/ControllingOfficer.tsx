@@ -1,4 +1,4 @@
-import { Box, HStack, Text } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, UseFormSetValue } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
@@ -7,6 +7,7 @@ import { z } from "zod";
 import ZipInput from "../FormComponents/ZipInputField";
 import { controllingOfficerSchema } from "./controllingOfficerSchema";
 import ReusableCheckbox from "../FormComponents/ReusableCheckbox";
+import ErrorMessage from "../FormComponents/ErrorMessage";
 
 type ControllingOfficerDataForm = z.infer<typeof controllingOfficerSchema>;
 
@@ -114,11 +115,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             placeholder="Enter the first name"
             {...register("controllerOfficerFirstName")}
           />
-          {errors.controllerOfficerFirstName && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.controllerOfficerFirstName.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.controllerOfficerFirstName?.message} />
         </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.controllerOfficerMiddleName}>
@@ -131,11 +128,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             placeholder="Enter the middle name"
             {...register("controllerOfficerMiddleName")}
           />
-          {errors.controllerOfficerMiddleName && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.controllerOfficerMiddleName.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.controllerOfficerMiddleName?.message} />
         </FormControl>
       </HStack>
       <HStack spacing={4} mb={4}>
@@ -147,11 +140,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             placeholder="Enter the last name"
             {...register("controllerOfficerLastName")}
           />
-          {errors.controllerOfficerLastName && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.controllerOfficerLastName.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.controllerOfficerLastName?.message} />
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.controllerOfficerDob}>
           <FormLabel htmlFor="controllerOfficerDob">Date of Birth</FormLabel>
@@ -163,11 +152,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
               valueAsDate: false,
             })}
           />
-          {errors.controllerOfficerDob && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.controllerOfficerDob.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.controllerOfficerDob?.message} />
         </FormControl>
       </HStack>
 
@@ -180,11 +165,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             placeholder="Enter the title"
             {...register("controllerOfficerTitle")}
           />
-          {errors.controllerOfficerTitle && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.controllerOfficerTitle.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.controllerOfficerTitle?.message} />
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.controllerOfficerEmail}>
           <FormLabel htmlFor="controllerOfficerEmail">Email</FormLabel>
@@ -194,11 +175,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             placeholder="Enter controller officer email"
             {...register("controllerOfficerEmail")}
           />
-          {errors.controllerOfficerEmail && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.controllerOfficerEmail.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.controllerOfficerEmail?.message} />
         </FormControl>
       </HStack>
 
@@ -210,11 +187,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           placeholder="Enter controller officer address"
           {...register("controllerOfficerAddress")}
         />
-        {errors.controllerOfficerAddress && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerAddress.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.controllerOfficerAddress?.message} />
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerCity}>
@@ -225,11 +198,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           placeholder="Enter controller officer city"
           {...register("controllerOfficerCity")}
         />
-        {errors.controllerOfficerCity && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerCity.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.controllerOfficerCity?.message} />
       </FormControl>
       <HStack spacing={4} mb={4}>
         <ZipInput
@@ -247,11 +216,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             placeholder="Enter controller officer home phone"
             {...register("controllerOfficerHomePhone")}
           />
-          {errors.controllerOfficerHomePhone && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.controllerOfficerHomePhone.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.controllerOfficerHomePhone?.message} />
         </FormControl>
       </HStack>
       {/* <FormControl mb={4} isInvalid={!!errors.controllerOfficerSSN}>
@@ -281,11 +246,9 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
               valueAsDate: false,
             })}
           />
-          {errors.controllerOfficerLicenseNumber && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.controllerOfficerLicenseNumber.message}
-            </Text>
-          )}
+          <ErrorMessage
+            error={errors.controllerOfficerLicenseNumber?.message}
+          />
         </FormControl>
 
         <FormControl
@@ -301,11 +264,9 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             placeholder="Enter driver license number expiration date"
             {...register("controllerOfficerLicenseNumberExpires")}
           />
-          {errors.controllerOfficerLicenseNumberExpires && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.controllerOfficerLicenseNumberExpires.message}
-            </Text>
-          )}
+          <ErrorMessage
+            error={errors.controllerOfficerLicenseNumberExpires?.message}
+          />
         </FormControl>
       </HStack>
     </Box>

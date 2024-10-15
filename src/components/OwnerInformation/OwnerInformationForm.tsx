@@ -29,6 +29,7 @@ import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import ZipInput from "../FormComponents/ZipInputField";
 import { ownerInformationScheme } from "./ownerInformationScheme";
 import ReusableCheckbox from "../FormComponents/ReusableCheckbox";
+import ErrorMessage from "../FormComponents/ErrorMessage";
 
 // TODO Validar que la suma de todos los owners sea del 50%
 
@@ -227,11 +228,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       placeholder="Enter the first name"
                       {...register(`owners.${index}.ownerFirstName`)}
                     />
-                    {errors.owners?.[index]?.ownerFirstName && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerFirstName?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={errors.owners?.[index]?.ownerFirstName?.message}
+                    />
                   </FormControl>
 
                   <FormControl
@@ -247,11 +246,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       placeholder="Enter the middle name"
                       {...register(`owners.${index}.ownerMiddleName`)}
                     />
-                    {errors.owners?.[index]?.ownerMiddleName && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerMiddleName?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={errors.owners?.[index]?.ownerMiddleName?.message}
+                    />
                   </FormControl>
                 </HStack>
 
@@ -269,11 +266,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       placeholder="Enter the last name"
                       {...register(`owners.${index}.ownerLastName`)}
                     />
-                    {errors.owners?.[index]?.ownerLastName && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerLastName?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={errors.owners?.[index]?.ownerLastName?.message}
+                    />
                   </FormControl>
 
                   <FormControl
@@ -289,11 +284,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       placeholder="Enter the State ID"
                       {...register(`owners.${index}.ownerStateID`)}
                     />
-                    {errors.owners?.[index]?.ownerStateID && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerStateID?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={errors.owners?.[index]?.ownerStateID?.message}
+                    />
                   </FormControl>
                 </HStack>
 
@@ -311,11 +304,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       placeholder="Enter SSN"
                       {...register(`owners.${index}.ownerSSN`)}
                     />
-                    {errors.owners?.[index]?.ownerSSN && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerSSN?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={errors.owners?.[index]?.ownerSSN?.message}
+                    />
                   </FormControl>
 
                   <FormControl
@@ -333,11 +324,11 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       placeholder="Enter ownership %"
                       {...register(`owners.${index}.ownerPercentOwnership`)}
                     />
-                    {errors.owners?.[index]?.ownerPercentOwnership && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerPercentOwnership?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={
+                        errors.owners?.[index]?.ownerPercentOwnership?.message
+                      }
+                    />
                   </FormControl>
                 </HStack>
 
@@ -355,11 +346,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       placeholder="Enter title"
                       {...register(`owners.${index}.ownerTitle`)}
                     />
-                    {errors.owners?.[index]?.ownerTitle && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerTitle?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={errors.owners?.[index]?.ownerTitle?.message}
+                    />
                   </FormControl>
 
                   <FormControl
@@ -377,11 +366,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                         valueAsDate: false,
                       })}
                     />
-                    {errors.owners?.[index]?.ownerBirthday && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerBirthday?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={errors.owners?.[index]?.ownerBirthday?.message}
+                    />
                   </FormControl>
                 </HStack>
 
@@ -399,11 +386,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       placeholder="Enter email"
                       {...register(`owners.${index}.ownerEmail`)}
                     />
-                    {errors.owners?.[index]?.ownerEmail && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerEmail?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={errors.owners?.[index]?.ownerEmail?.message}
+                    />
                   </FormControl>
 
                   <FormControl
@@ -419,11 +404,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       placeholder="Enter owner address"
                       {...register(`owners.${index}.ownerAddress`)}
                     />
-                    {errors.owners?.[index]?.ownerAddress && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerAddress?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={errors.owners?.[index]?.ownerAddress?.message}
+                    />
                   </FormControl>
                 </HStack>
 
@@ -441,11 +424,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       placeholder="Enter owner city"
                       {...register(`owners.${index}.ownerCity`)}
                     />
-                    {errors.owners?.[index]?.ownerCity && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerCity?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={errors.owners?.[index]?.ownerCity?.message}
+                    />
                   </FormControl>
 
                   <ZipInput
@@ -470,11 +451,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       placeholder="Enter owner phone"
                       {...register(`owners.${index}.ownerPhone`)}
                     />
-                    {errors.owners?.[index]?.ownerPhone && (
-                      <Text color="red.500">
-                        {errors.owners[index]?.ownerPhone?.message}
-                      </Text>
-                    )}
+                    <ErrorMessage
+                      error={errors.owners?.[index]?.ownerPhone?.message}
+                    />
                   </FormControl>
 
                   <FormControl

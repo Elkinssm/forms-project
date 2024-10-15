@@ -1,10 +1,11 @@
-import { Box, HStack, Text, Textarea } from "@chakra-ui/react";
+import { Box, HStack, Textarea } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { businesProfileSchema } from "./businessProfileSchema";
+import ErrorMessage from "../FormComponents/ErrorMessage";
 
 type BusinessProfileDataForm = z.infer<typeof businesProfileSchema>;
 
@@ -59,11 +60,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
           placeholder="Enter the ownership type"
           {...register("businessProfileOwnershipType")}
         />
-        {errors.businessProfileOwnershipType && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.businessProfileOwnershipType.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.businessProfileOwnershipType?.message} />
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.businessProfileBusinessType}>
@@ -76,11 +73,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
           placeholder="Enter the business type"
           {...register("businessProfileBusinessType")}
         />
-        {errors.businessProfileBusinessType && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.businessProfileBusinessType.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.businessProfileBusinessType?.message} />
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.businessProfileGoodsServices}>
@@ -93,11 +86,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
           placeholder="Enter the goods services"
           {...register("businessProfileGoodsServices")}
         />
-        {errors.businessProfileGoodsServices && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.businessProfileGoodsServices.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.businessProfileGoodsServices?.message} />
       </FormControl>
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.businessProfileBankName}>
@@ -108,11 +97,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
             placeholder="Enter the bank name"
             {...register("businessProfileBankName")}
           />
-          {errors.businessProfileBankName && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.businessProfileBankName.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.businessProfileBankName?.message} />
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessProfileMCC}>
           <FormLabel htmlFor="businessProfileMCC">MCC</FormLabel>
@@ -122,11 +107,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
             placeholder="Enter the MCC"
             {...register("businessProfileMCC")}
           />
-          {errors.businessProfileMCC && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.businessProfileMCC.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.businessProfileMCC?.message} />
         </FormControl>
       </HStack>
 
@@ -144,11 +125,9 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
             placeholder="Enter the business check routing"
             {...register("businessProfileBusinessCheckRouting")}
           />
-          {errors.businessProfileBusinessCheckRouting && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.businessProfileBusinessCheckRouting.message}
-            </Text>
-          )}
+          <ErrorMessage
+            error={errors.businessProfileBusinessCheckRouting?.message}
+          />
         </FormControl>
 
         <FormControl
@@ -164,11 +143,9 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
             placeholder="Enter the business checking account"
             {...register("businessProfileBusinessCheckingAccount")}
           />
-          {errors.businessProfileBusinessCheckingAccount && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.businessProfileBusinessCheckingAccount.message}
-            </Text>
-          )}
+          <ErrorMessage
+            error={errors.businessProfileBusinessCheckingAccount?.message}
+          />
         </FormControl>
       </HStack>
       {/* TODO validar el campo con un api */}

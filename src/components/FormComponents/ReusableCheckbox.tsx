@@ -1,11 +1,12 @@
 import React from "react";
-import { FormLabel, Checkbox, Text } from "@chakra-ui/react";
+import { FormLabel, Checkbox } from "@chakra-ui/react";
 import {
   UseFormRegister,
   FieldError,
   Path,
   FieldValues,
 } from "react-hook-form";
+import ErrorMessage from "./ErrorMessage";
 
 interface ReusableCheckboxProps<T extends FieldValues> {
   id: Path<T>;
@@ -28,7 +29,7 @@ const ReusableCheckbox = <T extends FieldValues>({
       <FormLabel htmlFor={id}>{label}</FormLabel>
       <input type="hidden" {...register(id)} value={isChecked ? "yes" : "no"} />
       <Checkbox id={id} isChecked={isChecked} onChange={onChange} />
-      {error && <Text color="semantic.error.DEFAULT">{error.message}</Text>}
+      <ErrorMessage error={error?.message} />
     </>
   );
 };
