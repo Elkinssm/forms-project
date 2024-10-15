@@ -1,29 +1,29 @@
 import { z } from "zod";
 
 export const salesProfileSchema = z.object({
-  salesProfileCurrentlyMCVISA: z.number(),
+  salesProfileCurrentlyMCVISA: z.enum(["yes", "no"]).default("no"),
   salesProfileRetailChipSwipe: z
     .string()
-    .min(2, "The Retail Chip Swipe must be at least 2 chars"),
+    .min(1, "The Retail Chip Swipe must be at least 1 chars"),
   salesProfileCurrentProcessor: z
     .string()
-    .min(2, "The Current Processorp must be at least 2 chars"),
+    .min(1, "The Current Processorp must be at least 1 chars"),
   salesProfileImprintCard: z
     .string()
-    .min(2, "The Imprint Card must be at least 2 chars"),
+    .min(1, "The Imprint Card must be at least 1 chars"),
   salesProfileAvgTicket: z
     .string()
-    .min(2, "The Avg Ticket must be at least 2 chars"),
+    .min(1, "The Avg Ticket must be at least 1 chars"),
   salesProfileMaxTicket: z
     .string()
-    .min(2, "The Max Ticket must be at least 2 chars"),
+    .min(1, "The Max Ticket must be at least 1 chars"),
   salesProfileMonthlyVolume: z
     .string()
-    .min(2, "The Monthly Volume must be at least 2 chars"),
+    .min(1, "The Monthly Volume must be at least 1 chars"),
   salesProfileMailPhone: z
     .string()
-    .min(2, "The Mail Phone must be at least 2 chars"),
-  salesProfileNextDayFunding: z.number(),
+    .min(1, "The Mail Phone must be at least 1 chars"),
+  salesProfileNextDayFunding: z.enum(["yes", "no"]).default("no"),
   salesProfileInternetPerc: z
     .string()
     .min(1, "The Internet % must be at least 1 chars"),

@@ -1,11 +1,12 @@
-import { Box, Checkbox, HStack } from "@chakra-ui/react";
-import React from "react";
+import { Box, HStack } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { salesProfileSchema } from "./salesProfileSchema";
 import ErrorMessage from "../FormComponents/ErrorMessage";
+import ReusableCheckbox from "../FormComponents/ReusableCheckbox";
 
 type SalesProfileDataForm = z.infer<typeof salesProfileSchema>;
 
@@ -24,7 +25,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
   onNext,
   onDataChange,
   formData = {
-    salesProfileCurrentlyMCVISA: 0,
+    salesProfileCurrentlyMCVISA: "no",
     salesProfileRetailChipSwipe: "",
     salesProfileCurrentProcessor: "",
     salesProfileImprintCard: "",
@@ -32,7 +33,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
     salesProfileMaxTicket: "",
     salesProfileMonthlyVolume: "",
     salesProfileMailPhone: "",
-    salesProfileNextDayFunding: 0,
+    salesProfileNextDayFunding: "no",
     salesProfileInternetPerc: "",
     salesProfileB2BPerc: "",
     salesProfileB2CPerc: "",
@@ -44,6 +45,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<SalesProfileDataForm>({
     resolver: zodResolver(validationSchema),
@@ -54,6 +56,37 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
+
+  const [
+    isCheckedSalesProfileNextDayFunding,
+    setIsCheckedSalesProfileNextDayFunding,
+  ] = useState(false);
+
+  const handleCheckboxChangeSalesProfileNextDayFunding = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const checked = e.target.checked;
+    setIsCheckedSalesProfileNextDayFunding(checked);
+
+    // Actualiza el valor del checkbox en el formulario
+    setValue("salesProfileNextDayFunding", checked ? "yes" : "no");
+  };
+
+  const [
+    isCheckedSalesProfileCurrentlyMCVISA,
+    setIsCheckedSalesProfileCurrentlyMCVISA,
+  ] = useState(false);
+
+  const handleCheckboxChangeSalesProfileCurrentlyMCVISA = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const checked = e.target.checked;
+    setIsCheckedSalesProfileCurrentlyMCVISA(checked);
+
+    // Actualiza el valor del checkbox en el formulario
+    setValue("salesProfileCurrentlyMCVISA", checked ? "yes" : "no");
+  };
+
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <FormControl mb={4} isInvalid={!!errors.salesProfileCurrentProcessor}>
@@ -193,26 +226,26 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.salesProfileCurrentlyMCVISA}>
           <HStack spacing={4} mb={4}>
-            <FormLabel htmlFor="salesProfileCurrentlyMCVISA">
-              Processing ?
-            </FormLabel>
-            <Checkbox
+            <ReusableCheckbox
               id="salesProfileCurrentlyMCVISA"
-              {...register("salesProfileCurrentlyMCVISA")}
+              label="Processing ?"
+              isChecked={isCheckedSalesProfileCurrentlyMCVISA}
+              onChange={handleCheckboxChangeSalesProfileCurrentlyMCVISA}
+              register={register}
+              error={errors.salesProfileCurrentlyMCVISA}
             />
-            <ErrorMessage error={errors.salesProfileCurrentlyMCVISA?.message} />
           </HStack>
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.salesProfileNextDayFunding}>
           <HStack spacing={4} mb={4}>
-            <FormLabel htmlFor="salesProfileNextDayFunding">
-              Next Day Funding
-            </FormLabel>
-            <Checkbox
+            <ReusableCheckbox
               id="salesProfileNextDayFunding"
-              {...register("salesProfileNextDayFunding")}
+              label="Next Day Funding"
+              isChecked={isCheckedSalesProfileNextDayFunding}
+              onChange={handleCheckboxChangeSalesProfileNextDayFunding}
+              register={register}
+              error={errors.salesProfileNextDayFunding}
             />
-            <ErrorMessage error={errors.salesProfileNextDayFunding?.message} />
           </HStack>
         </FormControl>
       </HStack>

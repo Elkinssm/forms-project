@@ -61,14 +61,15 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
 
   const handleFormattedDate = (
     dateValidate: string | undefined,
-    setValue: UseFormSetValue<ControllingOfficerDataForm> // Usa el tipo importado
+    setValue: UseFormSetValue<ControllingOfficerDataForm>, // Usa el tipo importado
+    field: keyof ControllingOfficerDataForm
   ) => {
     if (dateValidate) {
       const formattedDate = new Date(dateValidate).toISOString().split("T")[0];
       const dateObject = new Date(formattedDate);
       if (!isNaN(dateObject.getTime())) {
         // Verifica si la fecha es válida y usa el campo correcto de forma tipada
-        setValue("controllerOfficerDob", formattedDate);
+        setValue(field, formattedDate);
       } else {
         console.error("Invalid date:", formattedDate);
       }
@@ -76,13 +77,18 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
   };
 
   useEffect(() => {
-    handleFormattedDate(formData.controllerOfficerDob, setValue);
+    handleFormattedDate(
+      formData.controllerOfficerDob,
+      setValue,
+      "controllerOfficerDob"
+    );
   }, [formData.controllerOfficerDob, setValue]);
 
   useEffect(() => {
     handleFormattedDate(
       formData.controllerOfficerLicenseNumberExpires,
-      setValue
+      setValue,
+      "controllerOfficerLicenseNumberExpires"
     );
   }, [formData.controllerOfficerLicenseNumberExpires, setValue]);
 

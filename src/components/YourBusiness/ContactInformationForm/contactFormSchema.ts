@@ -3,18 +3,15 @@ import { z } from "zod";
 export const contactFormSchema = z.object({
   contactInformationContact: z
     .string()
-    .min(1, "The contact information must be at least 1 characters long"),
+    .min(1, "The contact name is required"),
   contactInformationEmail: z
     .string()
-    .min(
-      6,
-      "The Contact Information Primary Name must be at least 6 characters long"
-    ),
+    .email("The Contact email is required"),
   contactInformationPhone: z
     .string()
     .min(
-      6,
-      "The Contact Information Secondary Name must be at least 6 characters long"
+      10,
+      "The Contact phone must be at least 10 characters long"
     ),
   useInformationFrom: z
     .string()

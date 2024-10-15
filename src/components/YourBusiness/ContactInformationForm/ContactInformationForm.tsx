@@ -68,7 +68,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
     } else if (useInformationFrom === "bda") {
       // Copiar información de DBA
       reset({
-        contactInformationContact: formDataAll?.merchName,
+        contactInformationContact: formDataAll?.merchDBAName,
         contactInformationEmail: formDataAll?.merchEmail,
         contactInformationPhone: formDataAll?.merchPhone,
         useInformationFrom: "bda",
