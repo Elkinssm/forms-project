@@ -143,7 +143,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
 
   const onSubmit: SubmitHandler<OwnerInformationDataForm> = (data) => {
     console.log("data", data);
-
     const totalOwnership = data.owners.reduce(
       (sum, owner) => sum + owner.ownerPercentOwnership,
       0
@@ -488,7 +487,8 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       id={`owners.${index}.controllerOfficerIsOwner`}
                       label="Is this owner the Controller Officer?"
                       isChecked={
-                        !!watch(`owners.${index}.controllerOfficerIsOwner`)
+                        watch(`owners.${index}.controllerOfficerIsOwner`) ===
+                        "yes"
                       }
                       onChange={(e) =>
                         setValue(

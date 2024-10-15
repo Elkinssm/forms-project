@@ -18,5 +18,5 @@ export const corporateAddresFormSchema = z.object({
     .min(10, "The phone number must be at least 10 characters long"),
 
   corpLegalEmail: z.string().email("A valid email is required"),
-  controllerOfficerIsOwner: z.string().default("no"),
+  controllerOfficerIsOwner: z.enum(["yes", "no"]).default("no"),
 });

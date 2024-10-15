@@ -138,7 +138,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             // Filtrar y crear el array de owners
             const owners = Object.keys(formValues)
               .filter((key) => key.startsWith("owners."))
-              .reduce((acc: Array<Record<string, any>>, key) => {
+              .reduce((acc: Array<Record<string, string>>, key) => {
                 // Extraer el índice del owner
                 const ownerIndex = Number(key.split(".")[1]); // Convertir a número
                 const field = key.split(".")[2]; // 'ownerFirstName' en 'owners.0.ownerFirstName'
@@ -149,9 +149,9 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                 }
 
                 // Asignar el valor al campo correspondiente
-                acc[ownerIndex][field] = formValues[key];
+                acc[ownerIndex][field] = String(formValues[key]);
                 return acc;
-              }, [] as Array<Record<string, any>>);
+              }, [] as Array<Record<string, string>>);
 
             // Crear un nuevo objeto para campos que no sean de owners
             const otherFields = Object.keys(formValues)
@@ -159,7 +159,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
               .reduce((acc, key) => {
                 acc[key] = formValues[key]; // Asignar el campo al nuevo objeto
                 return acc;
-              }, {} as Record<string, any>);
+              }, {} as Record<string, string | File>);
 
             // Crear el objeto final
             const transformedValues = {
