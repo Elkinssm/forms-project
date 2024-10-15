@@ -34,7 +34,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
     controllerOfficerCity: "",
     controllerOfficerZip: "",
     controllerOfficerHomePhone: "",
-    controllerOfficerSSN: "",
+    //   controllerOfficerSSN: "",
     controllerOfficerLicenseNumber: "",
     controllerOfficerLicenseNumberExpires: "",
     controllerOfficerDob: "",
@@ -243,7 +243,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           <FormLabel htmlFor="controllerOfficerHomePhone">Home phone</FormLabel>
           <Input
             id="controllerOfficerHomePhone"
-            type="text"
+            type="number"
             placeholder="Enter controller officer home phone"
             {...register("controllerOfficerHomePhone")}
           />

@@ -27,9 +27,9 @@ export const controllingOfficerSchema = z.object({
   controllerOfficerHomePhone: z
     .string()
     .min(10, "The home phone must be at least 10 characters long"),
-  controllerOfficerSSN: z
-    .string()
-    .min(twoMin, `The SSN must be at least ${twoMin} characters long`),
+  // controllerOfficerSSN: z
+  //   .string()
+  //   .min(twoMin, `The SSN must be at least ${twoMin} characters long`),
   controllerOfficerLicenseNumber: z
     .string()
     .min(

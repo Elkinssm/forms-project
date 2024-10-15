@@ -79,7 +79,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           </FormLabel>
           <Input
             id="salesProfileRetailChipSwipe"
-            type="text"
+            type="number"
             placeholder="Enter retail chip swipe %"
             {...register("salesProfileRetailChipSwipe")}
           />
@@ -96,7 +96,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           </FormLabel>
           <Input
             id="salesProfileImprintCard"
-            type="text"
+            type="number"
             placeholder="Enter imprint card %"
             {...register("salesProfileImprintCard")}
           />
@@ -111,7 +111,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           <FormLabel htmlFor="salesProfileMailPhone">Mail Phone %</FormLabel>
           <Input
             id="salesProfileMailPhone"
-            type="text"
+            type="number"
             placeholder="Enter Mail Phone %"
             {...register("salesProfileMailPhone")}
           />
@@ -128,7 +128,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           <FormLabel htmlFor="salesProfileAvgTicket">Avg Ticket</FormLabel>
           <Input
             id="salesProfileAvgTicket"
-            type="text"
+            type="number"
             placeholder="Enter avg ticket"
             {...register("salesProfileAvgTicket")}
           />
@@ -143,7 +143,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           <FormLabel htmlFor="salesProfileMaxTicket">Max Ticket</FormLabel>
           <Input
             id="salesProfileMaxTicket"
-            type="text"
+            type="number"
             placeholder="Enter max ticket"
             {...register("salesProfileMaxTicket")}
           />
@@ -160,7 +160,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           </FormLabel>
           <Input
             id="salesProfileMonthlyVolume"
-            type="text"
+            type="number"
             placeholder="Enter monthly volume"
             {...register("salesProfileMonthlyVolume")}
           />
@@ -177,7 +177,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           <FormLabel htmlFor="salesProfileInternetPerc">Internet %</FormLabel>
           <Input
             id="salesProfileInternetPerc"
-            type="text"
+            type="number"
             placeholder="Enter Internet %"
             {...register("salesProfileInternetPerc")}
           />
@@ -192,7 +192,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           <FormLabel htmlFor="salesProfileB2BPerc">B2B %</FormLabel>
           <Input
             id="salesProfileB2BPerc"
-            type="text"
+            type="number"
             placeholder="Enter B2B"
             {...register("salesProfileB2BPerc")}
           />
@@ -207,7 +207,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           <FormLabel htmlFor="salesProfileB2CPerc">B2C %</FormLabel>
           <Input
             id="salesProfileB2CPerc"
-            type="text"
+            type="number"
             placeholder="Enter B2C"
             {...register("salesProfileB2CPerc")}
           />
@@ -222,7 +222,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           <FormLabel htmlFor="salesProfileB2GPerc">B2G %</FormLabel>
           <Input
             id="salesProfileB2GPerc"
-            type="text"
+            type="number"
             placeholder="Enter B2G"
             {...register("salesProfileB2GPerc")}
           />

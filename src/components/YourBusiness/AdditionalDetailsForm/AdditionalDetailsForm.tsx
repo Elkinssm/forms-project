@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { additionalInformationSchema } from "./AdditionalInformationSchema";
+import { additionalInformationSchema } from "./additionalInformationSchema";
 
 // TODO la validación aditionalDetailsMailing opciones no esta funcionando
 type BusinessDataForm = z.infer<typeof additionalInformationSchema>;
@@ -41,6 +41,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(validationSchema),
@@ -90,7 +91,10 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
       </HStack>
       <FormControl mb={4} isInvalid={!!errors.aditionalDetailsMailing}>
         <FormLabel>Mailing Address</FormLabel>
-        <RadioGroup>
+        <RadioGroup
+          value={formData.aditionalDetailsMailing}
+          onChange={(value) => setValue("aditionalDetailsMailing", value)} // Asegúrate de que setValue provenga de useForm
+        >
           <Stack direction="column">
             <Radio value="corporate" {...register("aditionalDetailsMailing")}>
               Corporate / Legal Name
