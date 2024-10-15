@@ -114,7 +114,7 @@ const theme = extendTheme({
           color: "text.disabled",
         },
         _invalid: {
-          color: "semantic.error.DEFAULT",
+          // color: "semantic.error.DEFAULT",
         },
       },
     },

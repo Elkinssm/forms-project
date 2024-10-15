@@ -6,6 +6,7 @@ import {
   Path,
   UseFormRegister,
 } from "react-hook-form";
+import ErrorMessage from "./ErrorMessage";
 
 interface ZipInputProps<T extends FieldValues> {
   label: string;
@@ -43,9 +44,7 @@ const ZipInput = <T extends FieldValues>({
         {...register(id as Path<T>, { onChange: handleZipChange })}
         isReadOnly={isReadOnly}
       />
-      {errors[id] && (
-        <Text color="red.500">{errors[id]?.message as string}</Text>
-      )}
+      <ErrorMessage error={errors[id]?.message as string} />
     </FormControl>
   );
 };

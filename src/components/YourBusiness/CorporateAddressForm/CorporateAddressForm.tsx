@@ -17,6 +17,7 @@ import ZipInput from "../../FormComponents/ZipInputField";
 import { corporateAddresFormSchema } from "./corporateAddresFormSchema";
 import AllDataForm from "../../../utils/AllDataForm";
 import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
+import ErrorMessage from "../../FormComponents/ErrorMessage";
 
 type BusinessDataForm = z.infer<typeof corporateAddresFormSchema>;
 
@@ -99,11 +100,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           placeholder="Enter your federal tax ID"
           {...register("corpLegalFedTaxId")}
         />
-        {errors.corpLegalFedTaxId && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.corpLegalFedTaxId.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.corpLegalFedTaxId?.message} />
       </FormControl>
 
       <HStack spacing={4} mb={4}>
@@ -117,11 +114,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
             placeholder="Enter your legal name"
             {...register("corpLegalName")}
           />
-          {errors.corpLegalName && (
-            <Text color={"semantic.error.DEFAULT"}>
-              {errors.corpLegalName.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.corpLegalName?.message} />
         </FormControl>
       </HStack>
 
@@ -136,11 +129,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
             placeholder="Enter your Legal Phone"
             {...register("corpLegalPhone")}
           />
-          {errors.corpLegalPhone && (
-            <Text color={"semantic.error.DEFAULT"}>
-              {errors.corpLegalPhone.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.corpLegalPhone?.message} />
         </FormControl>
 
         <FormControl isInvalid={!!errors.corpLegalEmail}>
@@ -153,11 +142,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
             placeholder="Enter your your company / legal email"
             {...register("corpLegalEmail")}
           />
-          {errors.corpLegalEmail && (
-            <Text color={"semantic.error.DEFAULT"}>
-              {errors.corpLegalEmail.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.corpLegalEmail?.message} />
         </FormControl>
       </HStack>
 
@@ -171,11 +156,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           placeholder="Enter your legal address"
           {...register("corpLegalAddress")}
         />
-        {errors.corpLegalAddress && (
-          <Text color={"semantic.error.DEFAULT"}>
-            {errors.corpLegalAddress.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.corpLegalAddress?.message} />
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.corpLegalCity}>
@@ -191,11 +172,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
           <option value="Los Angeles">Los Angeles</option>
           <option value="Chicago">Chicago</option>
         </Select>
-        {errors.corpLegalCity && (
-          <Text color={"semantic.error.DEFAULT"}>
-            {errors.corpLegalCity.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.corpLegalCity?.message} />
       </FormControl>
 
       <HStack spacing={4} mb={4}>
@@ -212,11 +189,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
             <option value="CA">California</option>
             <option value="IL">Illinois</option>
           </Select>
-          {errors.corpLegalState && (
-            <Text color={"semantic.error.DEFAULT"}>
-              {errors.corpLegalState.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.corpLegalState?.message} />
         </FormControl>
 
         <ZipInput
