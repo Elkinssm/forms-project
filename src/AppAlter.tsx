@@ -13,7 +13,7 @@ import SalesProfileForm from "./components/SalesProfile/SalesProfile";
 import { contactFormSchema } from "./components/YourBusiness/ContactInformationForm/contactFormSchema";
 import { corporateAddresFormSchema } from "./components/YourBusiness/CorporateAddressForm/corporateAddresFormSchema";
 import { companyInformationScheme } from "./components/YourBusiness/CompanyInformationForm/companyInformationSchema";
-import { additionalInformationSchema } from "./components/YourBusiness/AdditionalDetailsForm/AdditionalInformationSchema";
+import { additionalInformationSchema } from "./components/YourBusiness/AdditionalDetailsForm/additionalInformationSchema";
 import { ownerInformationScheme } from "./components/OwnerInformation/ownerInformationScheme";
 import { businesProfileSchema } from "./components/BusinessProfile/businessProfileSchema";
 import { controllingOfficerSchema } from "./components/ControllingOfficer/controllingOfficerSchema";

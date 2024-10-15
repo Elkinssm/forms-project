@@ -1,4 +1,4 @@
-import { Box, HStack, Text } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -12,6 +12,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { additionalInformationSchema } from "./additionalInformationSchema";
+import ErrorMessage from "../../FormComponents/ErrorMessage";
 
 // TODO la validación aditionalDetailsMailing opciones no esta funcionando
 type BusinessDataForm = z.infer<typeof additionalInformationSchema>;
@@ -65,11 +66,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
             placeholder="Enter the number of locations"
             {...register("aditionalDetailsLocations")}
           />
-          {errors.aditionalDetailsLocations && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.aditionalDetailsLocations.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.aditionalDetailsLocations?.message} />
         </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.aditionalDetailsWebsite}>
@@ -82,11 +79,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
             placeholder="Enter your website address"
             {...register("aditionalDetailsWebsite")}
           />
-          {errors.aditionalDetailsWebsite && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.aditionalDetailsWebsite.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.aditionalDetailsWebsite?.message} />
         </FormControl>
       </HStack>
       <FormControl mb={4} isInvalid={!!errors.aditionalDetailsMailing}>
@@ -104,11 +97,7 @@ const AdditionalDetailsForm: React.FC<AdditionalDetailsFormProps> = ({
             </Radio>
           </Stack>
         </RadioGroup>
-        {errors.aditionalDetailsMailing && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.aditionalDetailsMailing.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.aditionalDetailsMailing?.message} />
       </FormControl>
     </Box>
   );
