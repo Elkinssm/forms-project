@@ -11,6 +11,7 @@ interface ZipInputProps<T extends FieldValues> {
   label: string;
   id: string;
   placeholder?: string;
+  isReadOnly?: boolean;
   errors: FieldErrors<T>;
   register: UseFormRegister<T>;
 }
@@ -19,6 +20,7 @@ const ZipInput = <T extends FieldValues>({
   label,
   id,
   placeholder,
+  isReadOnly,
   errors,
   register,
 }: ZipInputProps<T>) => {
@@ -39,6 +41,7 @@ const ZipInput = <T extends FieldValues>({
         type="text"
         placeholder={placeholder || `Enter your ${label}`}
         {...register(id as Path<T>, { onChange: handleZipChange })}
+        isReadOnly={isReadOnly}
       />
       {errors[id] && (
         <Text color="red.500">{errors[id]?.message as string}</Text>

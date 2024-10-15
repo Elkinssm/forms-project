@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Box,
@@ -65,6 +65,8 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
     if (onNext) onNext();
   };
 
+  const [isReadOnlyData, setIsReadOnlyData] = useState(false);
+
   // Efecto para actualizar variables cuando isLoading es true
   useEffect(() => {
     if (formDataAll?.controllerOfficerIsOwner === "yes") {
@@ -77,6 +79,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
       formData.merchPhone = formDataAll.corpLegalPhone;
 
       formData.merchEmail = formDataAll.corpLegalEmail;
+      setIsReadOnlyData(true);
     } else {
       // formData.merchDBAName = "";
       // formData.merchAddress = "";
@@ -129,6 +132,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           type="text"
           placeholder="Enter your DBA name"
           {...register("merchDBAName")}
+          isReadOnly={isReadOnlyData}
         />
         {errors.merchDBAName && (
           <Text color="semantic.error.DEFAULT">
@@ -144,6 +148,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
             type="number"
             placeholder="Enter your location phone"
             {...register("merchPhone")}
+            isReadOnly={isReadOnlyData}
           />
           {errors.merchPhone && (
             <Text color="semantic.error.DEFAULT">
@@ -158,6 +163,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
             type="text"
             placeholder="Enter your location email"
             {...register("merchEmail")}
+            isReadOnly={isReadOnlyData}
           />
           {errors.merchEmail && (
             <Text color="semantic.error.DEFAULT">
@@ -173,6 +179,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           type="text"
           placeholder="Enter your location address"
           {...register("merchAddress")}
+          isReadOnly={isReadOnlyData}
         />
         {errors.merchAddress && (
           <Text color="semantic.error.DEFAULT">
@@ -188,6 +195,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           type="text"
           placeholder="Enter your location city"
           {...register("merchCity")}
+          isReadOnly={isReadOnlyData}
         />
         {errors.merchCity && (
           <Text color="semantic.error.DEFAULT">{errors.merchCity.message}</Text>
@@ -201,6 +209,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
             type="text"
             placeholder="Enter your location state"
             {...register("merchState")}
+            isReadOnly={isReadOnlyData}
           />
           {errors.merchState && (
             <Text color="semantic.error.DEFAULT">
@@ -214,6 +223,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           id="merchZip"
           errors={errors}
           register={register}
+          isReadOnly={isReadOnlyData}
         />
       </HStack>
     </Box>

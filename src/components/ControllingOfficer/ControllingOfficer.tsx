@@ -1,11 +1,12 @@
-import { Box, Checkbox, HStack, Text } from "@chakra-ui/react";
-import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { Box, HStack, Text } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { useForm, SubmitHandler, UseFormSetValue } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import ZipInput from "../FormComponents/ZipInputField";
 import { controllingOfficerSchema } from "./controllingOfficerSchema";
+import ReusableCheckbox from "../FormComponents/ReusableCheckbox";
 
 type ControllingOfficerDataForm = z.infer<typeof controllingOfficerSchema>;
 
@@ -28,15 +29,15 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
     controllerOfficerMiddleName: "",
     controllerOfficerLastName: "",
     controllerOfficerTitle: "",
-    controllerOfficerIsOwner: 0,
+    controllerOfficerOfficerIsOwner: "no",
     controllerOfficerAddress: "",
     controllerOfficerCity: "",
     controllerOfficerZip: "",
     controllerOfficerHomePhone: "",
     controllerOfficerSSN: "",
     controllerOfficerLicenseNumber: "",
-    controllerOfficerLicenseNumberExpires: new Date(),
-    controllerOfficerDob: new Date(),
+    controllerOfficerLicenseNumberExpires: "",
+    controllerOfficerDob: "",
     controllerOfficerEmail: "",
   },
   validationSchema = controllingOfficerSchema,
@@ -45,6 +46,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<ControllingOfficerDataForm>({
     resolver: zodResolver(validationSchema),
@@ -55,22 +57,54 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
+
+  const handleFormattedDate = (
+    dateValidate: string | undefined,
+    setValue: UseFormSetValue<ControllingOfficerDataForm> // Usa el tipo importado
+  ) => {
+    if (dateValidate) {
+      const formattedDate = new Date(dateValidate).toISOString().split("T")[0];
+      const dateObject = new Date(formattedDate);
+      if (!isNaN(dateObject.getTime())) {
+        // Verifica si la fecha es válida y usa el campo correcto de forma tipada
+        setValue("controllerOfficerDob", formattedDate);
+      } else {
+        console.error("Invalid date:", formattedDate);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleFormattedDate(formData.controllerOfficerDob, setValue);
+  }, [formData.controllerOfficerDob, setValue]);
+
+  useEffect(() => {
+    handleFormattedDate(
+      formData.controllerOfficerLicenseNumberExpires,
+      setValue
+    );
+  }, [formData.controllerOfficerLicenseNumberExpires, setValue]);
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setIsChecked(checked);
+
+    // Actualiza el valor del checkbox en el formulario
+    setValue("controllerOfficerOfficerIsOwner", checked ? "yes" : "no");
+  };
+
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerIsOwner}>
-        <HStack spacing={4} mb={4}>
-          <FormLabel htmlFor="controllerOfficerTitle">Is Owner</FormLabel>
-          <Checkbox
-            id="controllerOfficerIsOwner"
-            {...register("controllerOfficerIsOwner")}
-          />
-          {errors.controllerOfficerIsOwner && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.controllerOfficerIsOwner.message}
-            </Text>
-          )}
-        </HStack>
-      </FormControl>
+      <ReusableCheckbox
+        id="controllerOfficerOfficerIsOwner"
+        label="Is Owner"
+        isChecked={isChecked}
+        onChange={handleCheckboxChange}
+        register={register}
+        error={errors.controllerOfficerOfficerIsOwner}
+      />
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.controllerOfficerFirstName}>
           <FormLabel htmlFor="controllerOfficerFirstName">First Name</FormLabel>
@@ -125,7 +159,9 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             id="controllerOfficerDob"
             type="date"
             placeholder="Enter date of Birth"
-            {...register("controllerOfficerDob")}
+            {...register("controllerOfficerDob", {
+              valueAsDate: false,
+            })}
           />
           {errors.controllerOfficerDob && (
             <Text color="semantic.error.DEFAULT">
@@ -241,7 +277,9 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             id="controllerOfficerLicenseNumber"
             type="text"
             placeholder="Enter the driver license number"
-            {...register("controllerOfficerLicenseNumber")}
+            {...register("controllerOfficerLicenseNumber", {
+              valueAsDate: false,
+            })}
           />
           {errors.controllerOfficerLicenseNumber && (
             <Text color="semantic.error.DEFAULT">

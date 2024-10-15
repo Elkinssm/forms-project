@@ -22,7 +22,15 @@ export const ownerInformationScheme = z.object({
       // ownerBirthday: z.coerce.date().refine((data) => data < new Date(), {
       //   message: "Birthday must be in the past",
       // }),
-      ownerBirthday: z.string().min(10,"A valid date is required"),
+      ownerBirthday: z.coerce
+      .string()
+      .min(10, "Date of birth must be at least 10 characters long")
+      .refine((date) => {
+        const parsedDate = new Date(date);
+        return !isNaN(parsedDate.getTime()) && parsedDate < new Date();
+      }, {
+        message: "Date of birth must be a valid date in the past",
+      }),
       ownerEmail: z.string().email("A valid email is required"),
       ownerAddress: z
         .string()
@@ -34,7 +42,7 @@ export const ownerInformationScheme = z.object({
       ownerPhone: z
         .string()
         .min(10, "The phone must be at least 10 characters long"),
-      controllerOfficerIsOwner: z.boolean(),
+      controllerOfficerIsOwner: z.string().default("no"),
     })
   ),
 });

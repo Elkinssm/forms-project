@@ -9,7 +9,6 @@ import {
   Select,
   HStack,
   useTheme,
-  Checkbox,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

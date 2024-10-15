@@ -1,6 +1,5 @@
 import {
   Box,
-  Checkbox,
   Text,
   VStack,
   Accordion,
@@ -65,7 +64,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
         ownerCity: "",
         ownerZip: "",
         ownerPhone: "",
-        controllerOfficerIsOwner: false,
+        controllerOfficerIsOwner: "no",
       },
     ],
   },
@@ -111,7 +110,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
       ownerCity: "",
       ownerZip: "",
       ownerPhone: "",
-      controllerOfficerIsOwner: false,
+      controllerOfficerIsOwner: "no",
     });
   }
 
@@ -133,7 +132,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
         ownerCity: "",
         ownerZip: "",
         ownerPhone: "",
-        controllerOfficerIsOwner: false,
+        controllerOfficerIsOwner: "no",
       });
       setOpenIndex([fields.length]); // Abrir el nuevo propietario agregado
       console.log("Current form data:", getValues());
@@ -494,7 +493,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       onChange={(e) =>
                         setValue(
                           `owners.${index}.controllerOfficerIsOwner`,
-                          e.target.checked
+                          e.target.checked ? "yes" : "no"
                         )
                       }
                       register={register}

@@ -14,7 +14,7 @@ export const controllingOfficerSchema = z.object({
   controllerOfficerTitle: z
     .string()
     .min(2, "The Title must be at least 2 chars"),
-  controllerOfficerIsOwner: z.number(),
+  controllerOfficerOfficerIsOwner: z.string().default("no"),
   controllerOfficerAddress: z
     .string()
     .min(10, "The address must be at least 10 characters long"),
@@ -36,13 +36,25 @@ export const controllingOfficerSchema = z.object({
       twoMin,
       `The licence number must be at least ${twoMin} characters long`
     ),
-  controllerOfficerLicenseNumberExpires: z.coerce
-    .date()
-    .refine((data) => data >= new Date(), {
-      message: "Expiratin date must be in the future",
+  controllerOfficerLicenseNumberExpires: z
+    .string()
+    .min(10, "Expiration date must have at least 10 characters (YYYY-MM-DD)")
+    .refine(
+      (value) => {
+        const date = new Date(value);
+        const now = new Date();
+        return date > now;
+      },
+      { message: "Expiration date must be in the future" }
+    ),
+  controllerOfficerDob: z.coerce
+    .string()
+    .min(10, "Date of birth must be at least 10 characters long")
+    .refine((date) => {
+      const parsedDate = new Date(date);
+      return !isNaN(parsedDate.getTime()) && parsedDate < new Date();
+    }, {
+      message: "Date of birth must be a valid date in the past",
     }),
-  controllerOfficerDob: z.coerce.date().refine((data) => data < new Date(), {
-    message: "Date of birth must be in the past",
-  }),
   controllerOfficerEmail: z.string().email("A valid email is required"),
 });
