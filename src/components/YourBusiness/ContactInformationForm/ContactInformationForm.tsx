@@ -8,15 +8,15 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactFormSchema } from "./contactFormSchema";
 import { z } from "zod";
 import AllDataForm from "../../../utils/AllDataForm";
+import ErrorMessage from "../../FormComponents/ErrorMessage";
 
 type BusinessDataForm = z.infer<typeof contactFormSchema>;
-//TODO si se selecciona corporate/Legal se debe copiar la info, igual si es DBA, si dice New, si es nuevo el registro 
+//TODO si se selecciona corporate/Legal se debe copiar la info, igual si es DBA, si dice New, si es nuevo el registro
 
 interface ContactInformationFormFormProps {
   title: string;
@@ -60,7 +60,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
     if (useInformationFrom === "corporate") {
       // Copiar información de Corporate / Legal
       reset({
-        contactInformationContact: formDataAll?.corpLegalName, 
+        contactInformationContact: formDataAll?.corpLegalName,
         contactInformationEmail: formDataAll?.corpLegalEmail,
         contactInformationPhone: formDataAll?.corpLegalPhone,
         useInformationFrom: "corporate",
@@ -68,7 +68,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
     } else if (useInformationFrom === "bda") {
       // Copiar información de DBA
       reset({
-        contactInformationContact: formDataAll?.merchName, 
+        contactInformationContact: formDataAll?.merchName,
         contactInformationEmail: formDataAll?.merchEmail,
         contactInformationPhone: formDataAll?.merchPhone,
         useInformationFrom: "bda",
@@ -94,7 +94,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <FormControl mb={4} isInvalid={!!errors.useInformationFrom}>
         <FormLabel>Use information</FormLabel>
-        <RadioGroup value={formData.useInformationFrom} defaultValue='new'>
+        <RadioGroup value={formData.useInformationFrom} defaultValue="new">
           <Stack direction="column">
             <Radio value="corporate" {...register("useInformationFrom")}>
               Corporate / Legal
@@ -107,11 +107,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
             </Radio>
           </Stack>
         </RadioGroup>
-        {errors.useInformationFrom && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.useInformationFrom.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.useInformationFrom?.message} />
       </FormControl>
       <FormControl mb={4} isInvalid={!!errors.contactInformationContact}>
         <FormLabel htmlFor="contactInformationContact">Contact Name</FormLabel>
@@ -121,43 +117,27 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
           placeholder="Enter your contact name"
           {...register("contactInformationContact")}
         />
-        {errors.contactInformationContact && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.contactInformationContact.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.contactInformationContact?.message} />
       </FormControl>
       <FormControl mb={4} isInvalid={!!errors.contactInformationEmail}>
-        <FormLabel htmlFor="contactInformationEmail">
-          Contact Email
-        </FormLabel>
+        <FormLabel htmlFor="contactInformationEmail">Contact Email</FormLabel>
         <Input
           id="contactInformationEmail"
           type="text"
           placeholder="Enter the primary contact email"
           {...register("contactInformationEmail")}
         />
-        {errors.contactInformationEmail && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.contactInformationEmail.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.contactInformationEmail?.message} />
       </FormControl>
       <FormControl mb={4} isInvalid={!!errors.contactInformationPhone}>
-        <FormLabel htmlFor="contactInformationPhone">
-          Contact Phone
-        </FormLabel>
+        <FormLabel htmlFor="contactInformationPhone">Contact Phone</FormLabel>
         <Input
           id="contactInformationPhone"
           type="text"
           placeholder="Enter the secondary contact phone"
           {...register("contactInformationPhone")}
         />
-        {errors.contactInformationPhone && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.contactInformationPhone.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.contactInformationPhone?.message} />
       </FormControl>
     </Box>
   );

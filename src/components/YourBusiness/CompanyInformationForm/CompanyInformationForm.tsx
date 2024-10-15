@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import {
-  Box,
-  FormControl,
-  FormLabel,
-  HStack,
-  Input,
-  Text,
-} from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, HStack, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 // import InputMask from "react-input-mask";
 import ZipInput from "../../FormComponents/ZipInputField";
 import { companyInformationScheme } from "./companyInformationSchema";
 import AllDataForm from "../../../utils/AllDataForm";
+import ErrorMessage from "../../FormComponents/ErrorMessage";
 
 type BusinessDataForm = z.infer<typeof companyInformationScheme>;
 
@@ -103,11 +97,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
             placeholder="Enter your locaton name"
             {...register("merchName")}
           />
-          {errors.merchName && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.merchName.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.merchName?.message} />
         </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.yearsInBusiness}>
@@ -118,11 +108,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
             placeholder="Enter your years in business"
             {...register("yearsInBusiness")}
           />
-          {errors.yearsInBusiness && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.yearsInBusiness.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.yearsInBusiness?.message} />
         </FormControl>
       </HStack>
       <FormControl mb={4} isInvalid={!!errors.merchDBAName}>
@@ -134,11 +120,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           {...register("merchDBAName")}
           isReadOnly={isReadOnlyData}
         />
-        {errors.merchDBAName && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.merchDBAName.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.merchDBAName?.message} />
       </FormControl>
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.merchPhone}>
@@ -150,11 +132,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
             {...register("merchPhone")}
             isReadOnly={isReadOnlyData}
           />
-          {errors.merchPhone && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.merchPhone.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.merchPhone?.message} />
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.merchEmail}>
           <FormLabel htmlFor="merchEmail">Location Email</FormLabel>
@@ -165,11 +143,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
             {...register("merchEmail")}
             isReadOnly={isReadOnlyData}
           />
-          {errors.merchEmail && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.merchEmail.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.merchEmail?.message} />
         </FormControl>
       </HStack>
       <FormControl mb={4} isInvalid={!!errors.merchAddress}>
@@ -181,11 +155,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           {...register("merchAddress")}
           isReadOnly={isReadOnlyData}
         />
-        {errors.merchAddress && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.merchAddress.message}
-          </Text>
-        )}
+        <ErrorMessage error={errors.merchAddress?.message} />
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.merchCity}>
@@ -197,9 +167,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
           {...register("merchCity")}
           isReadOnly={isReadOnlyData}
         />
-        {errors.merchCity && (
-          <Text color="semantic.error.DEFAULT">{errors.merchCity.message}</Text>
-        )}
+        <ErrorMessage error={errors.merchCity?.message} />
       </FormControl>
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.merchState}>
@@ -211,11 +179,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
             {...register("merchState")}
             isReadOnly={isReadOnlyData}
           />
-          {errors.merchState && (
-            <Text color="semantic.error.DEFAULT">
-              {errors.merchState.message}
-            </Text>
-          )}
+          <ErrorMessage error={errors.merchState?.message} />
         </FormControl>
 
         <ZipInput
