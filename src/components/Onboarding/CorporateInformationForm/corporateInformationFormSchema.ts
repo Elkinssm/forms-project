@@ -18,5 +18,17 @@ export const corporateInformationFormSchema = z.object({
     .min(10, "The phone number must be at least 10 characters long"),
 
   corpLegalEmail: z.string().email("A valid email is required"),
-  controllerOfficerIsOwner: z.enum(["yes", "no"]).default("no"),
+  yearsInBusiness: z.preprocess(
+    (val) => Number(val),
+    z.number().min(1, "Years in business must be at least 1 digit long")
+  ),
+  aditionalDetailsLocations: z.preprocess(
+    (val) => Number(val),
+    z.number().int().min(1, "Locations must be at least 1")
+  ),
+  aditionalDetailsWebsite: z.string().url("Invalid website URL"),
+  aditionalDetailsMailing: z.preprocess(
+    (val) => (val === null ? "" : val),
+    z.string().min(1, "Please select an option")
+  ),
 });

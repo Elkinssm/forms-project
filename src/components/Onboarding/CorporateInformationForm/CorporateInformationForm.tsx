@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Box,
   FormControl,
   FormLabel,
   Input,
-  Text,
   Select,
   HStack,
   useTheme,
+  RadioGroup,
+  Stack,
+  Radio,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -16,7 +18,6 @@ import InputMask from "react-input-mask";
 import ZipInput from "../../FormComponents/ZipInputField";
 import { corporateInformationFormSchema } from "./corporateInformationFormSchema";
 import AllDataForm from "../../../utils/AllDataForm";
-import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 
 type BusinessDataForm = z.infer<typeof corporateInformationFormSchema>;
@@ -45,7 +46,9 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
     corpLegalZip: "",
     corpLegalPhone: "",
     corpLegalEmail: "",
-    controllerOfficerIsOwner: "no",
+    yearsInBusiness: 0,
+    aditionalDetailsLocations: 0,
+    aditionalDetailsWebsite: "",
   },
   validationSchema = corporateInformationFormSchema,
   formRef,
@@ -68,40 +71,35 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
     if (onNext) onNext();
   };
 
-  useEffect(() => {
-    // Si la data cargada tiene el valor "yes", marcar el checkbox
-    if (formData?.controllerOfficerIsOwner === "yes") {
-      setIsChecked(true);
-    } else {
-      setIsChecked(false);
-    }
-  }, [formData?.controllerOfficerIsOwner]);
-
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    setIsChecked(checked);
-
-    // Actualiza el valor del checkbox en el formulario
-    setValue("controllerOfficerIsOwner", checked ? "yes" : "no");
-  };
+  
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <FormControl mb={4} isInvalid={!!errors.corpLegalFedTaxId}>
-        <FormLabel htmlFor="corpLegalFedTaxId">Federal Tax ID (EIN)</FormLabel>
-        <Input
-          as={InputMask}
-          mask="**-*******"
-          maskChar={null}
-          id="corpLegalFedTaxId"
-          type="text"
-          placeholder="Enter your federal tax ID"
-          {...register("corpLegalFedTaxId")}
-        />
-        <ErrorMessage error={errors.corpLegalFedTaxId?.message} />
-      </FormControl>
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.corpLegalFedTaxId}>
+          <FormLabel htmlFor="corpLegalFedTaxId">Federal Tax ID (EIN)</FormLabel>
+          <Input
+            as={InputMask}
+            mask="**-*******"
+            maskChar={null}
+            id="corpLegalFedTaxId"
+            type="text"
+            placeholder="Enter your federal tax ID"
+            {...register("corpLegalFedTaxId")}
+          />
+          <ErrorMessage error={errors.corpLegalFedTaxId?.message} />
+        </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.yearsInBusiness}>
+          <FormLabel htmlFor="yearsInBusiness">Years in Business</FormLabel>
+          <Input
+            id="yearsInBusiness"
+            type="number"
+            placeholder="Enter your years in business"
+            {...register("yearsInBusiness")}
+          />
+          <ErrorMessage error={errors.yearsInBusiness?.message} />
+        </FormControl>
+      </HStack>
 
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.corpLegalName}>
@@ -200,18 +198,51 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
         />
       </HStack>
 
-      <Text fontSize="xl">DBA</Text>
-      <FormControl>
-        <HStack alignItems={"center"}>
-          <ReusableCheckbox
-            id="controllerOfficerIsOwner"
-            label="Same Information as Legal"
-            isChecked={isChecked}
-            onChange={handleCheckboxChange}
-            register={register}
-            error={errors.controllerOfficerIsOwner}
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.aditionalDetailsLocations}>
+          <FormLabel htmlFor="aditionalDetailsLocations">
+            Number of Locations
+          </FormLabel>
+          <Input
+            id="aditionalDetailsLocations"
+            type="number"
+            placeholder="Enter the number of locations"
+            {...register("aditionalDetailsLocations")}
           />
-        </HStack>
+          <ErrorMessage error={errors.aditionalDetailsLocations?.message} />
+        </FormControl>
+
+        <FormControl mb={4} isInvalid={!!errors.aditionalDetailsWebsite}>
+          <FormLabel htmlFor="aditionalDetailsWebsite">
+            Website address
+          </FormLabel>
+          <Input
+            id="aditionalDetailsWebsite"
+            type="text"
+            placeholder="Enter your website address"
+            {...register("aditionalDetailsWebsite")}
+          />
+          <ErrorMessage error={errors.aditionalDetailsWebsite?.message} />
+        </FormControl>
+      </HStack>
+      
+      
+      <FormControl mb={4} isInvalid={!!errors.aditionalDetailsMailing}>
+        <FormLabel>Mailing Address</FormLabel>
+        <RadioGroup
+          value={formData.aditionalDetailsMailing}
+          onChange={(value) => setValue("aditionalDetailsMailing", value)} // Asegúrate de que setValue provenga de useForm
+        >
+          <Stack direction="column">
+            <Radio value="corporate" {...register("aditionalDetailsMailing")}>
+              Corporate / Legal Name
+            </Radio>
+            <Radio value="dba" {...register("aditionalDetailsMailing")}>
+              DBA
+            </Radio>
+          </Stack>
+        </RadioGroup>
+        <ErrorMessage error={errors.aditionalDetailsMailing?.message} />
       </FormControl>
     </Box>
   );

@@ -4,7 +4,6 @@ import "./App.css";
 import DBAInformationForm from "./components/Onboarding/DBAInformationForm/DBAInformationForm";
 import CorporateInformationForm from "./components/Onboarding/CorporateInformationForm/CorporateInformationForm";
 import ContactInformationForm from "./components/Onboarding/ContactInformationForm/ContactInformationForm"; // Importamos el schema
-import AdditionalDetailsForm from "./components/Onboarding/AdditionalDetailsForm/AdditionalDetailsForm";
 import OwnerInformationForm from "./components/Onboarding/OwnerInformation/OwnerInformationForm";
 import BusinessProfileForm from "./components/Onboarding/BusinessProfile/BusinessProfile";
 import Sidebar from "./components/Sidebar/SidebarAlter";
@@ -12,9 +11,7 @@ import ControllingOfficerForm from "./components/Onboarding/ControllingOfficer/C
 import SalesProfileForm from "./components/Onboarding/SalesProfile/SalesProfile";
 import { contactFormSchema } from "./components/Onboarding/ContactInformationForm/contactFormSchema";
 import { corporateInformationFormSchema } from "./components/Onboarding/CorporateInformationForm/corporateInformationFormSchema";
-import { DBAInformationScheme } from "./components/Onboarding/DBAInformationForm/DBAInformationSchema";
-import { additionalInformationSchema } from "./components/Onboarding/AdditionalDetailsForm/additionalInformationSchema";
-import { ownerInformationScheme } from "./components/Onboarding/OwnerInformation/ownerInformationScheme";
+import { DBAInformationScheme } from "./components/Onboarding/DBAInformationForm/DBAInformationSchema";import { ownerInformationScheme } from "./components/Onboarding/OwnerInformation/ownerInformationScheme";
 import { businesProfileSchema } from "./components/Onboarding/BusinessProfile/businessProfileSchema";
 import { controllingOfficerSchema } from "./components/Onboarding/ControllingOfficer/controllingOfficerSchema";
 import { salesProfileSchema } from "./components/Onboarding/SalesProfile/salesProfileSchema";
@@ -39,11 +36,6 @@ function App() {
             title="Primary Contact" // se borra
             description="Provide contact information for your business."
             validationSchema={contactFormSchema}
-          />
-          <AdditionalDetailsForm
-            title="Additional Details"
-            description="Add any additional information relevant to your business."
-            validationSchema={additionalInformationSchema}
           />
           <OwnerInformationForm
             title="Owner Information"

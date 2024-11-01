@@ -4,9 +4,6 @@ export const DBAInformationScheme = z.object({
   merchDBAName: z
     .string()
     .min(6, "The DBA name must be at least 6 characters long"),
-  merchName: z
-    .string()
-    .min(6, "The location name must be at least 6 characters long"),
   merchAddress: z
     .string()
     .min(10, "The address must be at least 10 characters long"),
@@ -16,9 +13,5 @@ export const DBAInformationScheme = z.object({
   merchPhone: z
     .string()
     .min(10, "The phone number must be at least 10 characters long"),
-  yearsInBusiness: z.preprocess(
-    (val) => Number(val),
-    z.number().min(1, "Years in business must be at least 1 digit long")
-  ),
-  merchEmail: z.string().email("A valid email is required"),
+  controllerOfficerIsOwner: z.enum(["yes", "no"]).default("no"),
 });

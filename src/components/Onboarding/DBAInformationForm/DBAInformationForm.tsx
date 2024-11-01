@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Box, FormControl, FormLabel, HStack, Input } from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, HStack, Input, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 // import InputMask from "react-input-mask";
@@ -8,6 +8,7 @@ import ZipInput from "../../FormComponents/ZipInputField";
 import { DBAInformationScheme } from "./DBAInformationSchema";
 import AllDataForm from "../../../utils/AllDataForm";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
+import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
 
 type BusinessDataForm = z.infer<typeof DBAInformationScheme>;
 
@@ -28,14 +29,12 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
   onDataChange,
   formData = {
     merchDBAName: "",
-    merchName: "",
     merchAddress: "",
     merchCity: "",
     merchState: "",
     merchZip: "",
     merchPhone: "",
-    yearsInBusiness: 0,
-    merchEmail: "",
+    controllerOfficerIsOwner: "no",
   },
   validationSchema = DBAInformationScheme,
 
@@ -46,6 +45,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(validationSchema),
@@ -71,8 +71,6 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
       formData.merchState = formDataAll.corpLegalState;
       formData.merchZip = formDataAll.corpLegalZip;
       formData.merchPhone = formDataAll.corpLegalPhone;
-
-      formData.merchEmail = formDataAll.corpLegalEmail;
       setIsReadOnlyData(true);
     } else {
       // formData.merchDBAName = "";
@@ -86,43 +84,53 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
     reset(formData);
   }, [formDataAll?.controllerOfficerIsOwner, onreset]);
 
+  useEffect(() => {
+    // Si la data cargada tiene el valor "yes", marcar el checkbox
+    if (formData?.controllerOfficerIsOwner === "yes") {
+      setIsChecked(true);
+    } else {
+      setIsChecked(false);
+    }
+  }, [formData?.controllerOfficerIsOwner]);
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setIsChecked(checked);
+
+    // Actualiza el valor del checkbox en el formulario
+    setValue("controllerOfficerIsOwner", checked ? "yes" : "no");
+  };
+
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <HStack spacing={4} mb={4}>
-        <FormControl mb={4} isInvalid={!!errors.merchName} isRequired>
-          <FormLabel htmlFor="merchName">Location Name</FormLabel>
-          <Input
-            id="merchName"
-            type="text"
-            placeholder="Enter your locaton name"
-            {...register("merchName")}
+      <Text fontSize="xl">DBA</Text>
+      <FormControl>
+        <HStack alignItems={"center"}>
+          <ReusableCheckbox
+            id="controllerOfficerIsOwner"
+            label="Same Information as Legal"
+            isChecked={isChecked}
+            onChange={handleCheckboxChange}
+            register={register}
+            error={errors.controllerOfficerIsOwner}
           />
-          <ErrorMessage error={errors.merchName?.message} />
-        </FormControl>
-
-        <FormControl mb={4} isInvalid={!!errors.yearsInBusiness}>
-          <FormLabel htmlFor="yearsInBusiness">Years in Business</FormLabel>
-          <Input
-            id="yearsInBusiness"
-            type="number"
-            placeholder="Enter your years in business"
-            {...register("yearsInBusiness")}
-          />
-          <ErrorMessage error={errors.yearsInBusiness?.message} />
-        </FormControl>
-      </HStack>
-      <FormControl mb={4} isInvalid={!!errors.merchDBAName}>
-        <FormLabel htmlFor="merchDBAName">DBA Name</FormLabel>
-        <Input
-          id="merchDBAName"
-          type="text"
-          placeholder="Enter your DBA name"
-          {...register("merchDBAName")}
-          isReadOnly={isReadOnlyData}
-        />
-        <ErrorMessage error={errors.merchDBAName?.message} />
+        </HStack>
       </FormControl>
       <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.merchDBAName}>
+          <FormLabel htmlFor="merchDBAName">DBA Name / Location Name</FormLabel>
+          <Input
+            id="merchDBAName"
+            type="text"
+            placeholder="Enter your DBA name"
+            {...register("merchDBAName")}
+            isReadOnly={isReadOnlyData}
+          />
+          <ErrorMessage error={errors.merchDBAName?.message} />
+        </FormControl>
+
         <FormControl mb={4} isInvalid={!!errors.merchPhone}>
           <FormLabel htmlFor="merchPhone">Location Phone</FormLabel>
           <Input
@@ -134,41 +142,32 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
           />
           <ErrorMessage error={errors.merchPhone?.message} />
         </FormControl>
-        <FormControl mb={4} isInvalid={!!errors.merchEmail}>
-          <FormLabel htmlFor="merchEmail">Location Email</FormLabel>
+      </HStack>
+      <HStack spacing={4} mb={4}>
+        <FormControl mb={4} isInvalid={!!errors.merchAddress}>
+          <FormLabel htmlFor="merchAddress">Location Address</FormLabel>
           <Input
-            id="merchEmail"
+            id="merchAddress"
             type="text"
-            placeholder="Enter your location email"
-            {...register("merchEmail")}
+            placeholder="Enter your location address"
+            {...register("merchAddress")}
             isReadOnly={isReadOnlyData}
           />
-          <ErrorMessage error={errors.merchEmail?.message} />
+          <ErrorMessage error={errors.merchAddress?.message} />
+        </FormControl>
+
+        <FormControl mb={4} isInvalid={!!errors.merchCity}>
+          <FormLabel htmlFor="merchCity">Location City</FormLabel>
+          <Input
+            id="merchCity"
+            type="text"
+            placeholder="Enter your location city"
+            {...register("merchCity")}
+            isReadOnly={isReadOnlyData}
+          />
+          <ErrorMessage error={errors.merchCity?.message} />
         </FormControl>
       </HStack>
-      <FormControl mb={4} isInvalid={!!errors.merchAddress}>
-        <FormLabel htmlFor="merchAddress">Location Address</FormLabel>
-        <Input
-          id="merchAddress"
-          type="text"
-          placeholder="Enter your location address"
-          {...register("merchAddress")}
-          isReadOnly={isReadOnlyData}
-        />
-        <ErrorMessage error={errors.merchAddress?.message} />
-      </FormControl>
-
-      <FormControl mb={4} isInvalid={!!errors.merchCity}>
-        <FormLabel htmlFor="merchCity">Location City</FormLabel>
-        <Input
-          id="merchCity"
-          type="text"
-          placeholder="Enter your location city"
-          {...register("merchCity")}
-          isReadOnly={isReadOnlyData}
-        />
-        <ErrorMessage error={errors.merchCity?.message} />
-      </FormControl>
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.merchState}>
           <FormLabel htmlFor="merchState">Location State</FormLabel>
