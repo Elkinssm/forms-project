@@ -14,14 +14,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputMask from "react-input-mask";
 import ZipInput from "../../FormComponents/ZipInputField";
-import { corporateAddresFormSchema } from "./corporateAddresFormSchema";
+import { corporateInformationFormSchema } from "./corporateInformationFormSchema";
 import AllDataForm from "../../../utils/AllDataForm";
 import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 
-type BusinessDataForm = z.infer<typeof corporateAddresFormSchema>;
+type BusinessDataForm = z.infer<typeof corporateInformationFormSchema>;
 
-interface CorporateAddressFormProps {
+interface CorporateInfomationFormProps {
   title: string;
   description?: string;
   onNext?: () => void;
@@ -29,11 +29,11 @@ interface CorporateAddressFormProps {
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
-  validationSchema?: typeof corporateAddresFormSchema;
+  validationSchema?: typeof corporateInformationFormSchema;
   formDataAll?: AllDataForm;
 }
 
-const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
+const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
   onNext,
   onDataChange,
   formData = {
@@ -47,7 +47,7 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
     corpLegalEmail: "",
     controllerOfficerIsOwner: "no",
   },
-  validationSchema = corporateAddresFormSchema,
+  validationSchema = corporateInformationFormSchema,
   formRef,
   // formDataAll,
 }) => {
@@ -217,4 +217,4 @@ const CorporateAddressForm: React.FC<CorporateAddressFormProps> = ({
   );
 };
 
-export default CorporateAddressForm;
+export default CorporateInformationForm;

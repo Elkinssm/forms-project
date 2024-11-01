@@ -5,13 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 // import InputMask from "react-input-mask";
 import ZipInput from "../../FormComponents/ZipInputField";
-import { companyInformationScheme } from "./companyInformationSchema";
+import { DBAInformationScheme } from "./DBAInformationSchema";
 import AllDataForm from "../../../utils/AllDataForm";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 
-type BusinessDataForm = z.infer<typeof companyInformationScheme>;
+type BusinessDataForm = z.infer<typeof DBAInformationScheme>;
 
-interface CompanyInformationFormProps {
+interface DBAInformationFormProps {
   title: string;
   description: string;
   onNext?: () => void;
@@ -19,11 +19,11 @@ interface CompanyInformationFormProps {
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
-  validationSchema?: typeof companyInformationScheme;
+  validationSchema?: typeof DBAInformationScheme;
   formDataAll?: AllDataForm;
 }
 
-const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
+const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
   onNext,
   onDataChange,
   formData = {
@@ -37,7 +37,7 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
     yearsInBusiness: 0,
     merchEmail: "",
   },
-  validationSchema = companyInformationScheme,
+  validationSchema = DBAInformationScheme,
 
   formRef,
   formDataAll,
@@ -194,4 +194,4 @@ const CompanyInformationForm: React.FC<CompanyInformationFormProps> = ({
   );
 };
 
-export default CompanyInformationForm;
+export default DBAInformationForm;

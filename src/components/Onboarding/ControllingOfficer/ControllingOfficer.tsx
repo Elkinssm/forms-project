@@ -4,10 +4,10 @@ import { useForm, SubmitHandler, UseFormSetValue } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import ZipInput from "../FormComponents/ZipInputField";
+import ZipInput from "../../FormComponents/ZipInputField";
 import { controllingOfficerSchema } from "./controllingOfficerSchema";
-import ReusableCheckbox from "../FormComponents/ReusableCheckbox";
-import ErrorMessage from "../FormComponents/ErrorMessage";
+import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
+import ErrorMessage from "../../FormComponents/ErrorMessage";
 
 type ControllingOfficerDataForm = z.infer<typeof controllingOfficerSchema>;
 

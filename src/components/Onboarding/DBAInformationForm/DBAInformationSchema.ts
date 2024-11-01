@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const companyInformationScheme = z.object({
+export const DBAInformationScheme = z.object({
   merchDBAName: z
     .string()
     .min(6, "The DBA name must be at least 6 characters long"),

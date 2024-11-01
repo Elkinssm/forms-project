@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const corporateAddresFormSchema = z.object({
+export const corporateInformationFormSchema = z.object({
   corpLegalFedTaxId: z
     .string()
     .min(6, "The fed tax id must be at least 6 characters long"),

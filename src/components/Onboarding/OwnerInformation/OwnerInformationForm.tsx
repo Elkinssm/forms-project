@@ -26,10 +26,10 @@ import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import ZipInput from "../FormComponents/ZipInputField";
+import ZipInput from "../../FormComponents/ZipInputField";
 import { ownerInformationScheme } from "./ownerInformationScheme";
-import ReusableCheckbox from "../FormComponents/ReusableCheckbox";
-import ErrorMessage from "../FormComponents/ErrorMessage";
+import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
+import ErrorMessage from "../../FormComponents/ErrorMessage";
 
 // TODO Validar que la suma de todos los owners sea del 50%
 

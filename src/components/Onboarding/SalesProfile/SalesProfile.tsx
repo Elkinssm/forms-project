@@ -5,8 +5,8 @@ import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { salesProfileSchema } from "./salesProfileSchema";
-import ErrorMessage from "../FormComponents/ErrorMessage";
-import ReusableCheckbox from "../FormComponents/ReusableCheckbox";
+import ErrorMessage from "../../FormComponents/ErrorMessage";
+import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
 
 type SalesProfileDataForm = z.infer<typeof salesProfileSchema>;
 

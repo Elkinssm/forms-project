@@ -5,7 +5,7 @@ import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { businesProfileSchema } from "./businessProfileSchema";
-import ErrorMessage from "../FormComponents/ErrorMessage";
+import ErrorMessage from "../../FormComponents/ErrorMessage";
 
 type BusinessProfileDataForm = z.infer<typeof businesProfileSchema>;
 
