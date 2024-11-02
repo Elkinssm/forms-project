@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,4}\/?$/;
+
 export const corporateInformationFormSchema = z.object({
   corpLegalFedTaxId: z
     .string()
@@ -26,7 +28,7 @@ export const corporateInformationFormSchema = z.object({
     (val) => Number(val),
     z.number().int().min(1, "Locations must be at least 1")
   ),
-  aditionalDetailsWebsite: z.string().url("Invalid website URL"),
+  aditionalDetailsWebsite: z.string().regex(urlRegex, "Invalid website URL"),
   aditionalDetailsMailing: z.preprocess(
     (val) => (val === null ? "" : val),
     z.string().min(1, "Please select an option")

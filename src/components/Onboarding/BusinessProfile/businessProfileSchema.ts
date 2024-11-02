@@ -1,13 +1,12 @@
 import { z } from "zod";
 
-export const businesProfileSchema = z.object({
+export const businessProfileSchema = z.object({
   businessProfileOwnershipType: z
     .string()
-    .min(2, "The Ownership type must be at least 2 chars"),
+    .min(1, "The Ownership type is required"),
   businessProfileBusinessType: z
     .string()
-    .min(2, "The Business type must be at least 2 chars"),
-  businessProfileMCC: z.string().min(2, "The MCC must be at least 2 chars"),
+    .min(1, "The Business type type is required"),
   businessProfileGoodsServices: z
     .string()
     .min(2, "The Goods Services must be at least 2 chars"),
@@ -20,4 +19,25 @@ export const businesProfileSchema = z.object({
   businessProfileBusinessCheckRouting: z
     .string()
     .min(2, "The Business Check Routing must be at least 2 chars"),
+  businessProfileBusinessCheckRoutingCheck: z
+    .string()
+    .min(1, 'Please confirm your routing number'),
+  businessProfileBusinessCheckingAccountCheck: z
+    .string()
+    .min(1, 'Please confirm your routing number')
+}).superRefine((data, ctx) => {
+  if (data.businessProfileBusinessCheckRouting !== data.businessProfileBusinessCheckRoutingCheck) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Routing numbers must match',
+      path: ['businessProfileBusinessCheckRoutingCheck'],
+    });
+  }
+  if (data.businessProfileBusinessCheckingAccount !== data.businessProfileBusinessCheckingAccountCheck) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Business Checking Account must match',
+      path: ['businessProfileBusinessCheckingAccountCheck'],
+    });
+  }
 });

@@ -19,6 +19,7 @@ import {
   ModalBody,
   Button,
   ModalFooter,
+  Select,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
@@ -28,7 +29,6 @@ import { z } from "zod";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import ZipInput from "../../FormComponents/ZipInputField";
 import { ownerInformationScheme } from "./ownerInformationScheme";
-import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 
 // TODO Validar que la suma de todos los owners sea del 50%
@@ -65,7 +65,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
         ownerCity: "",
         ownerZip: "",
         ownerPhone: "",
-        controllerOfficerIsOwner: "no",
       },
     ],
   },
@@ -80,7 +79,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     formState: { errors },
     trigger,
     getValues,
-    watch,
   } = useForm<OwnerInformationDataForm>({
     resolver: zodResolver(validationSchema),
     defaultValues: formData,
@@ -111,7 +109,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
       ownerCity: "",
       ownerZip: "",
       ownerPhone: "",
-      controllerOfficerIsOwner: "no",
     });
   }
 
@@ -133,7 +130,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
         ownerCity: "",
         ownerZip: "",
         ownerPhone: "",
-        controllerOfficerIsOwner: "no",
       });
       setOpenIndex([fields.length]); // Abrir el nuevo propietario agregado
       console.log("Current form data:", getValues());
@@ -276,7 +272,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                     isInvalid={!!errors.owners?.[index]?.ownerStateID}
                   >
                     <FormLabel htmlFor={`owners.${index}.ownerStateID`}>
-                      State ID
+                      Driver Licence / State ID / Passport Number
                     </FormLabel>
                     <Input
                       id={`owners.${index}.ownerStateID`}
@@ -338,14 +334,20 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                     isInvalid={!!errors.owners?.[index]?.ownerTitle}
                   >
                     <FormLabel htmlFor={`owners.${index}.ownerTitle`}>
-                      Title
+                      Job Title
                     </FormLabel>
-                    <Input
+                    <Select
                       id={`owners.${index}.ownerTitle`}
-                      type="text"
-                      placeholder="Enter title"
+                      placeholder="Select your Job Title"
                       {...register(`owners.${index}.ownerTitle`)}
-                    />
+                    >
+                      <option value="CEO">CEO</option>
+                      <option value="Owner">Owner</option>
+                      <option value="President">President</option>
+                      <option value="Vice President">Vice President</option>
+                      <option value="Chairman">Chairman</option>
+                      <option value="Other">Other</option>
+                    </Select>
                     <ErrorMessage
                       error={errors.owners?.[index]?.ownerTitle?.message}
                     />
@@ -453,30 +455,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                     />
                     <ErrorMessage
                       error={errors.owners?.[index]?.ownerPhone?.message}
-                    />
-                  </FormControl>
-
-                  <FormControl
-                    mb={4}
-                    isInvalid={
-                      !!errors.owners?.[index]?.controllerOfficerIsOwner
-                    }
-                  >
-                    <ReusableCheckbox
-                      id={`owners.${index}.controllerOfficerIsOwner`}
-                      label="Is this owner the Controller Officer?"
-                      isChecked={
-                        watch(`owners.${index}.controllerOfficerIsOwner`) ===
-                        "yes"
-                      }
-                      onChange={(e) =>
-                        setValue(
-                          `owners.${index}.controllerOfficerIsOwner`,
-                          e.target.checked ? "yes" : "no"
-                        )
-                      }
-                      register={register}
-                      error={errors.owners?.[index]?.controllerOfficerIsOwner}
                     />
                   </FormControl>
                 </HStack>

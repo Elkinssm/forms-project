@@ -28,12 +28,10 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
     salesProfileCurrentlyMCVISA: "no",
     salesProfileRetailChipSwipe: "",
     salesProfileCurrentProcessor: "",
-    salesProfileImprintCard: "",
     salesProfileAvgTicket: "",
     salesProfileMaxTicket: "",
     salesProfileMonthlyVolume: "",
     salesProfileMailPhone: "",
-    salesProfileNextDayFunding: "no",
     salesProfileInternetPerc: "",
     salesProfileB2BPerc: "",
     salesProfileB2CPerc: "",
@@ -55,21 +53,6 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
     console.log(data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
-  };
-
-  const [
-    isCheckedSalesProfileNextDayFunding,
-    setIsCheckedSalesProfileNextDayFunding,
-  ] = useState(false);
-
-  const handleCheckboxChangeSalesProfileNextDayFunding = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const checked = e.target.checked;
-    setIsCheckedSalesProfileNextDayFunding(checked);
-
-    // Actualiza el valor del checkbox en el formulario
-    setValue("salesProfileNextDayFunding", checked ? "yes" : "no");
   };
 
   const [
@@ -116,19 +99,6 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           <ErrorMessage error={errors.salesProfileRetailChipSwipe?.message} />
         </FormControl>
 
-        <FormControl mb={4} isInvalid={!!errors.salesProfileImprintCard}>
-          <FormLabel htmlFor="salesProfileImprintCard">
-            Imprint Card %
-          </FormLabel>
-          <Input
-            id="salesProfileImprintCard"
-            type="number"
-            placeholder="Enter imprint card %"
-            {...register("salesProfileImprintCard")}
-          />
-          <ErrorMessage error={errors.salesProfileImprintCard?.message} />
-        </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.salesProfileMailPhone}>
           <FormLabel htmlFor="salesProfileMailPhone">Mail Phone %</FormLabel>
           <Input
@@ -138,6 +108,16 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             {...register("salesProfileMailPhone")}
           />
           <ErrorMessage error={errors.salesProfileMailPhone?.message} />
+        </FormControl>
+        <FormControl mb={4} isInvalid={!!errors.salesProfileInternetPerc}>
+          <FormLabel htmlFor="salesProfileInternetPerc">Internet %</FormLabel>
+          <Input
+            id="salesProfileInternetPerc"
+            type="number"
+            placeholder="Enter Internet %"
+            {...register("salesProfileInternetPerc")}
+          />
+          <ErrorMessage error={errors.salesProfileInternetPerc?.message} />
         </FormControl>
       </HStack>
 
@@ -179,17 +159,6 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
       </HStack>
 
       <HStack spacing={4} mb={4}>
-        <FormControl mb={4} isInvalid={!!errors.salesProfileInternetPerc}>
-          <FormLabel htmlFor="salesProfileInternetPerc">Internet %</FormLabel>
-          <Input
-            id="salesProfileInternetPerc"
-            type="number"
-            placeholder="Enter Internet %"
-            {...register("salesProfileInternetPerc")}
-          />
-          <ErrorMessage error={errors.salesProfileInternetPerc?.message} />
-        </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.salesProfileB2BPerc}>
           <FormLabel htmlFor="salesProfileB2BPerc">B2B %</FormLabel>
           <Input
@@ -228,23 +197,11 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           <HStack spacing={4} mb={4}>
             <ReusableCheckbox
               id="salesProfileCurrentlyMCVISA"
-              label="Processing ?"
+              label="Are you accepting today VISA, MASTERCARD, DISCOVER, AMEX for payments?"
               isChecked={isCheckedSalesProfileCurrentlyMCVISA}
               onChange={handleCheckboxChangeSalesProfileCurrentlyMCVISA}
               register={register}
               error={errors.salesProfileCurrentlyMCVISA}
-            />
-          </HStack>
-        </FormControl>
-        <FormControl mb={4} isInvalid={!!errors.salesProfileNextDayFunding}>
-          <HStack spacing={4} mb={4}>
-            <ReusableCheckbox
-              id="salesProfileNextDayFunding"
-              label="Next Day Funding"
-              isChecked={isCheckedSalesProfileNextDayFunding}
-              onChange={handleCheckboxChangeSalesProfileNextDayFunding}
-              register={register}
-              error={errors.salesProfileNextDayFunding}
             />
           </HStack>
         </FormControl>
