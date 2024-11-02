@@ -53,9 +53,10 @@ function App() {
             validationSchema={salesProfileSchema}
           />
         </Sidebar>
-        <Box mt={8}>
+        {/* Agregamos el componente AddressSearch para ver funcionar el api */}
+        {/* <Box mt={8}>
           <AddressSearch />
-        </Box>
+        </Box> */}
       </Box>
     </ChakraProvider>
   );
