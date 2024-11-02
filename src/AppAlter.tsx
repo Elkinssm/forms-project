@@ -11,10 +11,12 @@ import ControllingOfficerForm from "./components/Onboarding/ControllingOfficer/C
 import SalesProfileForm from "./components/Onboarding/SalesProfile/SalesProfile";
 import { contactFormSchema } from "./components/Onboarding/ContactInformationForm/contactFormSchema";
 import { corporateInformationFormSchema } from "./components/Onboarding/CorporateInformationForm/corporateInformationFormSchema";
-import { DBAInformationScheme } from "./components/Onboarding/DBAInformationForm/DBAInformationSchema";import { ownerInformationScheme } from "./components/Onboarding/OwnerInformation/ownerInformationScheme";
+import { DBAInformationScheme } from "./components/Onboarding/DBAInformationForm/DBAInformationSchema";
+import { ownerInformationScheme } from "./components/Onboarding/OwnerInformation/ownerInformationScheme";
 import { businesProfileSchema } from "./components/Onboarding/BusinessProfile/businessProfileSchema";
 import { controllingOfficerSchema } from "./components/Onboarding/ControllingOfficer/controllingOfficerSchema";
 import { salesProfileSchema } from "./components/Onboarding/SalesProfile/salesProfileSchema";
+import AddressSearch from "./components/Home/AddressSearch";
 
 function App() {
   return (
@@ -58,6 +60,9 @@ function App() {
             validationSchema={salesProfileSchema}
           />
         </Sidebar>
+        <Box mt={8}>
+          <AddressSearch />
+        </Box>
       </Box>
     </ChakraProvider>
   );
