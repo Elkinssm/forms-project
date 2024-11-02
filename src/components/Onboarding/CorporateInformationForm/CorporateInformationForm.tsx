@@ -49,6 +49,7 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
     yearsInBusiness: 0,
     aditionalDetailsLocations: 0,
     aditionalDetailsWebsite: "",
+    aditionalDetailsMailing: "",
   },
   validationSchema = corporateInformationFormSchema,
   formRef,
@@ -71,13 +72,13 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
     if (onNext) onNext();
   };
 
-  
-
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.corpLegalFedTaxId}>
-          <FormLabel htmlFor="corpLegalFedTaxId">Federal Tax ID (EIN)</FormLabel>
+          <FormLabel htmlFor="corpLegalFedTaxId">
+            Federal Tax ID (EIN)
+          </FormLabel>
           <Input
             as={InputMask}
             mask="**-*******"
@@ -225,8 +226,7 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
           <ErrorMessage error={errors.aditionalDetailsWebsite?.message} />
         </FormControl>
       </HStack>
-      
-      
+
       <FormControl mb={4} isInvalid={!!errors.aditionalDetailsMailing}>
         <FormLabel>Mailing Address</FormLabel>
         <RadioGroup

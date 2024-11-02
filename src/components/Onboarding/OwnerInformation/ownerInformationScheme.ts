@@ -18,7 +18,7 @@ export const ownerInformationScheme = z.object({
         (val) => Number(val),
         z.number().int().min(1, "Percent Ownership must be at least 1")
       ),
-      ownerTitle: z.string().min(9, "The Title must be at least 9 chars"),
+      ownerTitle: z.string().min(1, "The Title is required"),
       // ownerBirthday: z.coerce.date().refine((data) => data < new Date(), {
       //   message: "Birthday must be in the past",
       // }),
@@ -45,7 +45,6 @@ export const ownerInformationScheme = z.object({
       ownerPhone: z
         .string()
         .min(10, "The phone must be at least 10 characters long"),
-      controllerOfficerIsOwner: z.enum(["yes", "no"]).default("no"),
     })
   ),
 });

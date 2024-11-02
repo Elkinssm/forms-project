@@ -8,9 +8,6 @@ export const salesProfileSchema = z.object({
   salesProfileCurrentProcessor: z
     .string()
     .min(1, "The Current Processorp must be at least 1 chars"),
-  salesProfileImprintCard: z
-    .string()
-    .min(1, "The Imprint Card must be at least 1 chars"),
   salesProfileAvgTicket: z
     .string()
     .min(1, "The Avg Ticket must be at least 1 chars"),
@@ -23,7 +20,6 @@ export const salesProfileSchema = z.object({
   salesProfileMailPhone: z
     .string()
     .min(1, "The Mail Phone must be at least 1 chars"),
-  salesProfileNextDayFunding: z.enum(["yes", "no"]).default("no"),
   salesProfileInternetPerc: z
     .string()
     .min(1, "The Internet % must be at least 1 chars"),

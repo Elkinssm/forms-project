@@ -1,4 +1,4 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, HStack, Select } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, UseFormSetValue } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
@@ -164,15 +164,22 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
 
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.controllerOfficerTitle}>
-          <FormLabel htmlFor="controllerOfficerTitle">Title</FormLabel>
-          <Input
-            id="controllerOfficerTitle"
-            type="text"
-            placeholder="Enter the title"
-            {...register("controllerOfficerTitle")}
-          />
+          <FormLabel htmlFor={`controllerOfficerTitle`}>Job Title</FormLabel>
+          <Select
+            id={`controllerOfficerTitle`}
+            placeholder="Select your Job Title"
+            {...register(`controllerOfficerTitle`)}
+          >
+            <option value="CEO">CEO</option>
+            <option value="Owner">Owner</option>
+            <option value="President">President</option>
+            <option value="Vice President">Vice President</option>
+            <option value="Chairman">Chairman</option>
+            <option value="Other">Other</option>
+          </Select>
           <ErrorMessage error={errors.controllerOfficerTitle?.message} />
         </FormControl>
+
         <FormControl mb={4} isInvalid={!!errors.controllerOfficerEmail}>
           <FormLabel htmlFor="controllerOfficerEmail">Email</FormLabel>
           <Input
@@ -225,20 +232,6 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           <ErrorMessage error={errors.controllerOfficerHomePhone?.message} />
         </FormControl>
       </HStack>
-      {/* <FormControl mb={4} isInvalid={!!errors.controllerOfficerSSN}>
-        <FormLabel htmlFor="controllerOfficerSSN">SSN</FormLabel>
-        <Input
-          id="controllerOfficerSSN"
-          type="text"
-          placeholder="Enter SSN"
-          {...register("controllerOfficerSSN")}
-        />
-        {errors.controllerOfficerSSN && (
-          <Text color="semantic.error.DEFAULT">
-            {errors.controllerOfficerSSN.message}
-          </Text>
-        )}
-      </FormControl> */}
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.controllerOfficerLicenseNumber}>
           <FormLabel htmlFor="controllerOfficerLicenseNumber">

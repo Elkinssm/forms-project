@@ -13,7 +13,7 @@ export const controllingOfficerSchema = z.object({
     .min(2, "The Last Name must be at least 2 chars"),
   controllerOfficerTitle: z
     .string()
-    .min(2, "The Title must be at least 2 chars"),
+    .min(1, "The Title is required"),
   controllerOfficerOfficerIsOwner: z.string().default("no"),
   controllerOfficerAddress: z
     .string()
