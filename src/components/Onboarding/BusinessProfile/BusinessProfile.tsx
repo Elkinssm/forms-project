@@ -6,6 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { businessProfileSchema } from "./businessProfileSchema";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
+import { SearchItem } from "../../FormComponents/Interfaces/SearchItem";
+import { convertToSearchItemsForSearchInput } from "../../../utils/convertToSearchItems";
+import { bankData } from "../../../utils/data/Banks";
+import SearchInput from "../../FormComponents/SearchInput";
 
 type BusinessProfileDataForm = z.infer<typeof businessProfileSchema>;
 
@@ -39,6 +43,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<BusinessProfileDataForm>({
     resolver: zodResolver(validationSchema),
@@ -48,6 +53,13 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     console.log(data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
+  };
+
+  const searchItems: SearchItem[] =
+    convertToSearchItemsForSearchInput(bankData);
+
+  const handleItemSelect = (itemName: string) => {
+    setValue("businessProfileBankName", itemName); // Actualiza el valor en el formulario
   };
 
   const validOwnershipTypes = [
@@ -157,16 +169,15 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
         <ErrorMessage error={errors.businessProfileGoodsServices?.message} />
       </FormControl>
       <HStack spacing={4} mb={4}>
-        <FormControl mb={4} isInvalid={!!errors.businessProfileBankName}>
-          <FormLabel htmlFor="businessProfileBankName">Bank Name</FormLabel>
-          <Input
-            id="businessProfileBankName"
-            type="text"
-            placeholder="Enter the bank name"
-            {...register("businessProfileBankName")}
-          />
-          <ErrorMessage error={errors.businessProfileBankName?.message} />
-        </FormControl>
+        <SearchInput
+          label="Bank Name"
+          id="businessProfileBankName"
+          placeholder="Enter the bank name"
+          data={searchItems}
+          onItemSelect={handleItemSelect}
+          errors={errors}
+          register={register}
+        />
       </HStack>
 
       <HStack spacing={4} mb={4}>
