@@ -14,6 +14,7 @@ import { ownerInformationScheme } from "./components/Onboarding/OwnerInformation
 import { businessProfileSchema } from "./components/Onboarding/BusinessProfile/businessProfileSchema";
 import { controllingOfficerSchema } from "./components/Onboarding/ControllingOfficer/controllingOfficerSchema";
 import { salesProfileSchema } from "./components/Onboarding/SalesProfile/salesProfileSchema";
+import AddressSearch from "./components/Home/AddressSearch";
 
 function App() {
   return (
@@ -52,6 +53,10 @@ function App() {
             validationSchema={salesProfileSchema}
           />
         </Sidebar>
+        {/* Agregamos el componente AddressSearch para ver funcionar el api */}
+        {/* <Box mt={8}>
+          <AddressSearch />
+        </Box> */}
       </Box>
     </ChakraProvider>
   );
