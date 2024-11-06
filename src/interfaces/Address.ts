@@ -29,3 +29,8 @@ export interface AddressResponse {
   results: AddressResult[];
   status: string;
 }
+
+export interface Address {
+  formatted_address: string;
+  address_components: AddressComponent[];
+}

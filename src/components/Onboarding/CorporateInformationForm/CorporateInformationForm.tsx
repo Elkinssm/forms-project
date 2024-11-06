@@ -1,24 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Box,
   FormControl,
   FormLabel,
   Input,
-  Select,
   HStack,
   useTheme,
   RadioGroup,
   Stack,
   Radio,
+  List,
+  ListItem,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputMask from "react-input-mask";
-import ZipInput from "../../FormComponents/ZipInputField";
 import { corporateInformationFormSchema } from "./corporateInformationFormSchema";
 import AllDataForm from "../../../utils/AllDataForm";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
+import useAddressGoogle from "/src/hooks/address/useAddressGoogle";
+import { Address, AddressComponent } from "/src/interfaces/Address";
 
 type BusinessDataForm = z.infer<typeof corporateInformationFormSchema>;
 
@@ -53,24 +55,110 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
   },
   validationSchema = corporateInformationFormSchema,
   formRef,
-  // formDataAll,
 }) => {
   const theme = useTheme();
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(validationSchema),
     defaultValues: formData,
   });
 
+  const { fetchAddress } = useAddressGoogle();
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<Address[]>([]);
+  const [isAddressValid, setIsAddressValid] = useState(false);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (query.length > 2) {
+        const response = await fetchAddress(query);
+        if (response && response.results) {
+          setSuggestions(response.results);
+          setIsAddressValid(false);
+          console.log("Suggestions fetched:", response.results);
+        }
+      } else {
+        setSuggestions([]);
+        setIsAddressValid(false);
+      }
+    };
+
+    fetchSuggestions();
+  }, [query]);
+
+  const handleAddressSelect = (address: Address) => {
+    try {
+      console.log("Address selected:", address);
+      const selectedAddress = address.formatted_address;
+      const addressComponents = address.address_components;
+
+      if (!addressComponents || addressComponents.length === 0) {
+        console.error("No address components found");
+        return;
+      }
+
+      const getAddressComponent = (type: string, useShortName = false) => {
+        const component = addressComponents.find(
+          (component: AddressComponent) => component.types.includes(type)
+        );
+        console.log(`Looking for ${type}:`, component);
+        return component?.[useShortName ? "short_name" : "long_name"] || "";
+      };
+
+      // Obtener ciudad con múltiples alternativas
+      const city =
+        getAddressComponent("locality") ||
+        getAddressComponent("sublocality") ||
+        getAddressComponent("administrative_area_level_2") ||
+        "";
+
+      // Obtener estado (siempre usar short name para el estado)
+      const state =
+        getAddressComponent("administrative_area_level_1", true) || "";
+
+      // Obtener ZIP code
+      const zip = getAddressComponent("postal_code") || "";
+
+      console.table({ selectedAddress, city, state, zip });
+
+      // Establecer valores del formulario sin importar la validez completa
+      setValue("corpLegalAddress", selectedAddress);
+      setValue("corpLegalCity", city);
+      setValue("corpLegalState", state);
+      setValue("corpLegalZip", zip);
+
+      // Actualizar el estado del query
+      setQuery(selectedAddress);
+
+      // Validar solo los campos disponibles (por ejemplo, estado es obligatorio)
+      setIsAddressValid(state !== "");
+
+      // Limpiar sugerencias
+      setSuggestions([]);
+    } catch (error) {
+      if (!isAddressValid) {
+        alert("Please enter a valid state in the address.");
+        return;
+      }
+      console.error("Error processing address:", error);
+      setIsAddressValid(false);
+    }
+  };
+
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
     console.log(data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
+
+  const corpLegalCity = watch("corpLegalCity");
+  const corpLegalState = watch("corpLegalState");
+  const corpLegalZip = watch("corpLegalZip");
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
@@ -150,27 +238,55 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
           Legal Address
         </FormLabel>
         <Input
-          id="address"
+          id="corpLegalAddress"
           type="text"
           placeholder="Enter your legal address"
-          {...register("corpLegalAddress")}
+          {...register("corpLegalAddress", {
+            onChange: (e) => {
+              setQuery(e.target.value);
+              setValue("corpLegalAddress", e.target.value);
+              setIsAddressValid(false);
+            },
+          })}
+          onBlur={() => setSuggestions([])}
         />
         <ErrorMessage error={errors.corpLegalAddress?.message} />
+        {suggestions.length > 0 && (
+          <List>
+            {suggestions.map((suggestion, index) => (
+              <ListItem
+                key={index}
+                onMouseDown={() => {
+                  console.log("Suggestion clicked:", suggestion);
+                  handleAddressSelect(suggestion);
+                }}
+                cursor="pointer"
+                _hover={{ backgroundColor: "gray.200" }}
+                p={2}
+                borderWidth="1px"
+                borderRadius="md"
+                mb={2}
+                boxShadow="sm"
+              >
+                {suggestion.formatted_address}
+              </ListItem>
+            ))}
+          </List>
+        )}
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.corpLegalCity}>
         <FormLabel htmlFor="corpLegalCity" color={theme.colors.gray[700]}>
           Legal City
         </FormLabel>
-        <Select
+        <Input
           id="corpLegalCity"
-          placeholder="Select your company / legal city"
+          type="text"
+          placeholder="Enter your legal city"
+          value={corpLegalCity}
+          readOnly
           {...register("corpLegalCity")}
-        >
-          <option value="New York">New York</option>
-          <option value="Los Angeles">Los Angeles</option>
-          <option value="Chicago">Chicago</option>
-        </Select>
+        />
         <ErrorMessage error={errors.corpLegalCity?.message} />
       </FormControl>
 
@@ -179,24 +295,31 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
           <FormLabel htmlFor="corpLegalState" color={theme.colors.gray[700]}>
             Legal State
           </FormLabel>
-          <Select
+          <Input
             id="corpLegalState"
-            placeholder="Select your company / legal state"
+            type="text"
+            placeholder="Enter your legal state"
+            value={corpLegalState}
+            readOnly
             {...register("corpLegalState")}
-          >
-            <option value="NY">New York</option>
-            <option value="CA">California</option>
-            <option value="IL">Illinois</option>
-          </Select>
+          />
           <ErrorMessage error={errors.corpLegalState?.message} />
         </FormControl>
 
-        <ZipInput
-          label="Legal ZIP Code"
-          id="corpLegalZip"
-          errors={errors}
-          register={register}
-        />
+        <FormControl isInvalid={!!errors.corpLegalZip}>
+          <FormLabel htmlFor="corpLegalZip" color={theme.colors.gray[700]}>
+            Legal ZIP Code
+          </FormLabel>
+          <Input
+            id="corpLegalZip"
+            type="text"
+            placeholder="Enter your legal ZIP code"
+            value={corpLegalZip}
+            readOnly
+            {...register("corpLegalZip")}
+          />
+          <ErrorMessage error={errors.corpLegalZip?.message} />
+        </FormControl>
       </HStack>
 
       <HStack spacing={4} mb={4}>
