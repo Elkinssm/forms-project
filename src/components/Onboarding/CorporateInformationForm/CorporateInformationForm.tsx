@@ -132,9 +132,6 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
       setValue("corpLegalState", state);
       setValue("corpLegalZip", zip);
 
-      // Actualizar el estado del query
-      setQuery(selectedAddress);
-
       // Validar solo los campos disponibles (por ejemplo, estado es obligatorio)
       setIsAddressValid(state !== "");
 
