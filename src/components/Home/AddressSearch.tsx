@@ -10,7 +10,7 @@ import {
   ListItem,
   Spinner,
 } from "@chakra-ui/react";
-import useAddressGoogle from "/src/hooks/address/useAddressGoogle";
+import useAddressGoogle from "../../hooks/address/useAddressGoogle";
 import { useState, useEffect } from "react";
 
 const AddressSearch = () => {

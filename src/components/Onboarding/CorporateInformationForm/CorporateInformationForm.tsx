@@ -19,8 +19,8 @@ import InputMask from "react-input-mask";
 import { corporateInformationFormSchema } from "./corporateInformationFormSchema";
 import AllDataForm from "../../../utils/AllDataForm";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
-import useAddressGoogle from "/src/hooks/address/useAddressGoogle";
-import { Address, AddressComponent } from "/src/interfaces/Address";
+import useAddressGoogle from "../../../hooks/address/useAddressGoogle";
+import { Address, AddressComponent } from "../../../interfaces/Address";
 
 type BusinessDataForm = z.infer<typeof corporateInformationFormSchema>;
 
@@ -110,6 +110,8 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
         return component?.[useShortName ? "short_name" : "long_name"] || "";
       };
 
+      setSuggestions([]);
+
       // Obtener ciudad con múltiples alternativas
       const city =
         getAddressComponent("locality") ||
@@ -132,11 +134,14 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
       setValue("corpLegalState", state);
       setValue("corpLegalZip", zip);
 
+      // Actualizar el estado del query
+      setQuery("");
+
       // Validar solo los campos disponibles (por ejemplo, estado es obligatorio)
-      setIsAddressValid(state !== "");
+      setIsAddressValid(true);
 
       // Limpiar sugerencias
-      setSuggestions([]);
+      
     } catch (error) {
       if (!isAddressValid) {
         alert("Please enter a valid state in the address.");
@@ -241,7 +246,7 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
           {...register("corpLegalAddress", {
             onChange: (e) => {
               setQuery(e.target.value);
-              setValue("corpLegalAddress", e.target.value);
+              // setValue("corpLegalAddress", e.target.value);
               setIsAddressValid(false);
             },
           })}
@@ -258,11 +263,11 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
                   handleAddressSelect(suggestion);
                 }}
                 cursor="pointer"
-                _hover={{ backgroundColor: "gray.200" }}
+                _hover={{ backgroundColor: "brand.primary" }}
                 p={2}
                 borderWidth="1px"
                 borderRadius="md"
-                mb={2}
+                mb={0}
                 boxShadow="sm"
               >
                 {suggestion.formatted_address}

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const HttpClient = axios.create({
-  baseURL: "https://localhost:7234/api",
+  baseURL: "https://api-onboarding.fortress-pay.com/api",
   headers: {
     accept: "*/*",
   },

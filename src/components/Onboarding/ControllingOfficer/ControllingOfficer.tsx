@@ -1,4 +1,4 @@
-import { Box, HStack, Select } from "@chakra-ui/react";
+import { Box, HStack, Select, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, UseFormSetValue } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
@@ -59,6 +59,8 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
     if (onNext) onNext();
   };
 
+  const [isDisabledData, setIsDisabledData] = useState(true);
+
   const handleFormattedDate = (
     dateValidate: string | undefined,
     setValue: UseFormSetValue<ControllingOfficerDataForm>, // Usa el tipo importado
@@ -92,7 +94,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
     );
   }, [formData.controllerOfficerLicenseNumberExpires, setValue]);
 
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
@@ -100,18 +102,30 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
 
     // Actualiza el valor del checkbox en el formulario
     setValue("controllerOfficerOfficerIsOwner", checked ? "yes" : "no");
+
+    setIsDisabledData(checked)
+
+
+
+
+
+
   };
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-      <ReusableCheckbox
-        id="controllerOfficerOfficerIsOwner"
-        label="Is Owner"
-        isChecked={isChecked}
-        onChange={handleCheckboxChange}
-        register={register}
-        error={errors.controllerOfficerOfficerIsOwner}
-      />
+      <FormLabel>Is Owner</FormLabel>
+      <HStack spacing={4} mb={4}>
+        <ReusableCheckbox
+          id="controllerOfficerOfficerIsOwner"
+          label=""
+          isChecked={isChecked}
+          onChange={handleCheckboxChange}
+          register={register}
+          error={errors.controllerOfficerOfficerIsOwner}
+        />
+        <Text>Has the controlling officer already been entered as one of the owners?</Text>
+      </HStack>
       <HStack spacing={4} mb={4}>
         <FormControl mb={4} isInvalid={!!errors.controllerOfficerFirstName}>
           <FormLabel htmlFor="controllerOfficerFirstName">First Name</FormLabel>
@@ -120,6 +134,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter the first name"
             {...register("controllerOfficerFirstName")}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.controllerOfficerFirstName?.message} />
         </FormControl>
@@ -133,6 +148,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter the middle name"
             {...register("controllerOfficerMiddleName")}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.controllerOfficerMiddleName?.message} />
         </FormControl>
@@ -145,6 +161,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter the last name"
             {...register("controllerOfficerLastName")}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.controllerOfficerLastName?.message} />
         </FormControl>
@@ -157,6 +174,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             {...register("controllerOfficerDob", {
               valueAsDate: false,
             })}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.controllerOfficerDob?.message} />
         </FormControl>
@@ -169,6 +187,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             id={`controllerOfficerTitle`}
             placeholder="Select your Job Title"
             {...register(`controllerOfficerTitle`)}
+            isDisabled={isDisabledData}
           >
             <option value="CEO">CEO</option>
             <option value="Owner">Owner</option>
@@ -187,6 +206,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter controller officer email"
             {...register("controllerOfficerEmail")}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.controllerOfficerEmail?.message} />
         </FormControl>
@@ -199,6 +219,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           type="text"
           placeholder="Enter controller officer address"
           {...register("controllerOfficerAddress")}
+          isDisabled={isDisabledData}
         />
         <ErrorMessage error={errors.controllerOfficerAddress?.message} />
       </FormControl>
@@ -210,6 +231,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           type="text"
           placeholder="Enter controller officer city"
           {...register("controllerOfficerCity")}
+          isDisabled={isDisabledData}
         />
         <ErrorMessage error={errors.controllerOfficerCity?.message} />
       </FormControl>
@@ -219,6 +241,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           id="controllerOfficerZip"
           errors={errors}
           register={register}
+          isDisabled={isDisabledData}
         />
 
         <FormControl mb={4} isInvalid={!!errors.controllerOfficerHomePhone}>
@@ -228,6 +251,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="number"
             placeholder="Enter controller officer home phone"
             {...register("controllerOfficerHomePhone")}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.controllerOfficerHomePhone?.message} />
         </FormControl>
@@ -244,6 +268,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             {...register("controllerOfficerLicenseNumber", {
               valueAsDate: false,
             })}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage
             error={errors.controllerOfficerLicenseNumber?.message}
@@ -262,6 +287,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="date"
             placeholder="Enter driver license number expiration date"
             {...register("controllerOfficerLicenseNumberExpires")}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage
             error={errors.controllerOfficerLicenseNumberExpires?.message}

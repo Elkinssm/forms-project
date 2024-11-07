@@ -30,6 +30,7 @@ import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import ZipInput from "../../FormComponents/ZipInputField";
 import { ownerInformationScheme } from "./ownerInformationScheme";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
+import AllDataForm from "../../../utils/AllDataForm";
 
 // TODO Validar que la suma de todos los owners sea del 50%
 
@@ -44,6 +45,7 @@ interface OwnerInformationFormProps {
   formData?: OwnerInformationDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
   validationSchema?: typeof ownerInformationScheme;
+  formDataAll?: AllDataForm;
 }
 
 const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
@@ -70,6 +72,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
   },
   validationSchema = ownerInformationScheme,
   formRef,
+  formDataAll,
 }) => {
   const {
     register,
@@ -86,6 +89,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
   });
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalError, setModalError] = useState<string | null>(null);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -144,13 +148,32 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
       (sum, owner) => sum + owner.ownerPercentOwnership,
       0
     );
+    debugger
 
-    if (totalOwnership < 50) {
-      console.error("The sum of the ownership percentages must be 50%");
-      setIsModalOpen(true);
-      return; // Aquí puedes manejar el error de manera adecuada
+    if (formDataAll?.businessProfileOwnershipType !== "Partnership") {
+      if (totalOwnership < 49) {
+        setModalError("The sum of the ownership percentages must be 51%");
+        setIsModalOpen(true);
+        return; 
+      }
+      if (totalOwnership > 100) {
+        setModalError("The sum of the percentages must be 100%");
+        setIsModalOpen(true);
+        return; 
+      }
+    }else{
+      if (data.owners.length !== 2) {
+        setModalError("The Partnership must have 2 owners");
+        setIsModalOpen(true);
+        return; 
+      }
+      if (totalOwnership !== 100) {
+        setModalError("The sum of the percentages must be 100%");
+        setIsModalOpen(true);
+        return; 
+      }
     }
-
+    
     console.log("data", data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
@@ -489,7 +512,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
         <ModalContent>
           <ModalHeader>Incomplete Form</ModalHeader>
           <ModalBody>
-            The sum of the ownership percentages must be 50%
+            {modalError}
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" onClick={() => setIsModalOpen(false)}>

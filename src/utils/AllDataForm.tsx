@@ -17,6 +17,8 @@ type AllDataForm = {
   merchPhone: string;
   yearsInBusiness: number;
   merchEmail: string;
+
+  businessProfileOwnershipType: string;
 };
 
 export default AllDataForm;

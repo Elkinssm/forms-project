@@ -10,6 +10,7 @@ import { SearchItem } from "../../FormComponents/Interfaces/SearchItem";
 import { convertToSearchItemsForSearchInput } from "../../../utils/convertToSearchItems";
 import { bankData } from "../../../utils/data/Banks";
 import SearchInput from "../../FormComponents/SearchInput";
+import { validOwnershipTypes } from "../../../utils/data/OwnerShipTypes";
 
 type BusinessProfileDataForm = z.infer<typeof businessProfileSchema>;
 
@@ -61,17 +62,6 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
   const handleItemSelect = (itemName: string) => {
     setValue("businessProfileBankName", itemName); // Actualiza el valor en el formulario
   };
-
-  const validOwnershipTypes = [
-    "Sole Proprietor",
-    "Partnership",
-    "Corporation",
-    "LLC",
-    "PA/PC",
-    "Publicly",
-    "Goverment",
-    "Non-Profit",
-  ];
 
   const [showOtherInput, setShowOtherInput] = useState(false);
 

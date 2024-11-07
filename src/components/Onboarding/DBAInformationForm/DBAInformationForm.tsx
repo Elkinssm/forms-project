@@ -34,7 +34,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
     merchState: "",
     merchZip: "",
     merchPhone: "",
-    controllerOfficerIsOwner: "no",
+    controllerOfficerIsOwner: "yes",
   },
   validationSchema = DBAInformationScheme,
 
@@ -59,48 +59,49 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
     if (onNext) onNext();
   };
 
-  const [isReadOnlyData, setIsReadOnlyData] = useState(false);
+  const [isDisabledData, setIsDisabledData] = useState(false);
 
   // Efecto para actualizar variables cuando isLoading es true
   useEffect(() => {
-    if (formDataAll?.controllerOfficerIsOwner === "yes") {
+    if (formDataAll) {
       formData.merchDBAName = formDataAll.corpLegalName;
-
       formData.merchAddress = formDataAll.corpLegalAddress;
       formData.merchCity = formDataAll.corpLegalCity;
       formData.merchState = formDataAll.corpLegalState;
       formData.merchZip = formDataAll.corpLegalZip;
       formData.merchPhone = formDataAll.corpLegalPhone;
-      setIsReadOnlyData(true);
-    } else {
-      // formData.merchDBAName = "";
-      // formData.merchAddress = "";
-      // formData.merchCity = "";
-      // formData.merchState = "";
-      // formData.merchZip = "";
-      // formData.merchPhone = "";
-      // formData.merchEmail = "";
+      setIsDisabledData(true);
+      setIsChecked(true);
     }
     reset(formData);
   }, [formDataAll?.controllerOfficerIsOwner, onreset]);
 
-  useEffect(() => {
-    // Si la data cargada tiene el valor "yes", marcar el checkbox
-    if (formData?.controllerOfficerIsOwner === "yes") {
-      setIsChecked(true);
-    } else {
-      setIsChecked(false);
-    }
-  }, [formData?.controllerOfficerIsOwner]);
-
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
     setIsChecked(checked);
-
-    // Actualiza el valor del checkbox en el formulario
+    if (checked) {
+      if (formDataAll) {
+        formData.merchDBAName = formDataAll.corpLegalName;
+        formData.merchAddress = formDataAll.corpLegalAddress;
+        formData.merchCity = formDataAll.corpLegalCity;
+        formData.merchState = formDataAll.corpLegalState;
+        formData.merchZip = formDataAll.corpLegalZip;
+        formData.merchPhone = formDataAll.corpLegalPhone
+      }
+    } else {
+      // Actualiza el valor del checkbox en el formulario
+      formData.merchDBAName = "";
+      formData.merchAddress = "";
+      formData.merchCity = "";
+      formData.merchState = "";
+      formData.merchZip = "";
+      formData.merchPhone = "";
+    }
     setValue("controllerOfficerIsOwner", checked ? "yes" : "no");
+    setIsDisabledData(checked);
+    reset(formData);
   };
 
   return (
@@ -126,7 +127,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             type="text"
             placeholder="Enter your DBA name"
             {...register("merchDBAName")}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.merchDBAName?.message} />
         </FormControl>
@@ -138,7 +139,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             type="number"
             placeholder="Enter your location phone"
             {...register("merchPhone")}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.merchPhone?.message} />
         </FormControl>
@@ -151,7 +152,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             type="text"
             placeholder="Enter your location address"
             {...register("merchAddress")}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.merchAddress?.message} />
         </FormControl>
@@ -163,7 +164,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             type="text"
             placeholder="Enter your location city"
             {...register("merchCity")}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.merchCity?.message} />
         </FormControl>
@@ -176,7 +177,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             type="text"
             placeholder="Enter your location state"
             {...register("merchState")}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.merchState?.message} />
         </FormControl>
@@ -186,7 +187,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
           id="merchZip"
           errors={errors}
           register={register}
-          isReadOnly={isReadOnlyData}
+          isDisabled={isDisabledData}
         />
       </HStack>
     </Box>

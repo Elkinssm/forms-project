@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { AddressResult, AddressResponse } from "/src/interfaces/Address";
-import HttpClient from "/src/services/HttpClient";
+import { AddressResult, AddressResponse } from "../../interfaces/Address";
+import HttpClient from "../../services/HttpClient";
 
 const useAddressGoogle = () => {
   const [address, setAddress] = useState<AddressResult | null>(null);
