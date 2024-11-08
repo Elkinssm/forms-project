@@ -24,7 +24,9 @@ export const businessProfileSchema = z.object({
     .min(1, 'Please confirm your routing number'),
   businessProfileBusinessCheckingAccountCheck: z
     .string()
-    .min(1, 'Please confirm your routing number')
+    .min(1, 'Please confirm your routing number'),
+    businessProfileDriverLicenseImage: z.string().min(1, 'Please upload a valid driver license image'),
+    businessProfileVoidedCheckImage: z.string().min(1, 'Please upload a valid voided check image'),
 }).superRefine((data, ctx) => {
   if (data.businessProfileBusinessCheckRouting !== data.businessProfileBusinessCheckRoutingCheck) {
     ctx.addIssue({

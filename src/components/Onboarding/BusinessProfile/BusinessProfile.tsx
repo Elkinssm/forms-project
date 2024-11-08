@@ -1,4 +1,4 @@
-import { Box, HStack, Select, Textarea } from "@chakra-ui/react";
+import { Box, HStack, Select, Textarea, Text, Button, VisuallyHidden, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
@@ -56,6 +56,10 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     if (onNext) onNext();
   };
 
+  const [driverLicenseImagePreview, setDriverLicenseImagePreview] = useState<string | null>(null);
+  const [voidedCheckImagePreview, updateVoidedCheckImagePreview] = useState<string | null>(null);
+
+
   const searchItems: SearchItem[] =
     convertToSearchItemsForSearchInput(bankData);
 
@@ -90,6 +94,25 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     }
     console.log("formData", formData.businessProfileOwnershipType);
   }, []);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const id = e.target.id;
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        if (id === "businessProfileDriverLicenseImage") {
+          setValue("businessProfileDriverLicenseImage", base64String);
+          setDriverLicenseImagePreview(base64String);
+        } else {
+          setValue("businessProfileVoidedCheckImage", base64String);
+          updateVoidedCheckImagePreview(base64String);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
@@ -194,7 +217,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
           isInvalid={!!errors.businessProfileBusinessCheckRoutingCheck}
         >
           <FormLabel htmlFor="businessProfileBusinessCheckRoutingCheck">
-          Recheck Business Check Routing
+            Recheck Business Check Routing
           </FormLabel>
           <Input
             id="businessProfileBusinessCheckRoutingCheck"
@@ -246,6 +269,63 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
           />
         </FormControl>
       </HStack>
+
+
+      {/* New image upload field */}
+      <HStack spacing={4} mb={4}>
+        <FormControl isInvalid={!!errors.businessProfileDriverLicenseImage} mt={4}>
+          <FormLabel htmlFor="businessProfileDriverLicenseImage">Upload Driver License Image</FormLabel>
+          <VStack spacing={4} align="center">
+            <Button as="label" htmlFor="businessProfileDriverLicenseImage" colorScheme="teal" cursor="pointer">
+              Choose File
+            </Button>
+            <VisuallyHidden>
+              <Input
+                id="businessProfileDriverLicenseImage"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </VisuallyHidden>
+            <ErrorMessage
+              error={errors.businessProfileDriverLicenseImage?.message}
+            />
+            {driverLicenseImagePreview && (
+              <Box mt={4}>
+                <Text>Image Preview:</Text>
+                <img src={driverLicenseImagePreview} alt="Driver License Preview" style={{ maxWidth: "200px" }} />
+              </Box>
+            )}
+          </VStack>
+        </FormControl>
+
+        <FormControl isInvalid={!!errors.businessProfileVoidedCheckImage} mt={4}>
+          <FormLabel htmlFor="businessProfileVoidedCheckImage">Upload Voided Check Image</FormLabel>
+          <VStack spacing={4} align="center">
+            <Button as="label" htmlFor="businessProfileVoidedCheckImage" colorScheme="teal" cursor="pointer">
+              Choose File
+            </Button>
+            <VisuallyHidden>
+              <Input
+                id="businessProfileVoidedCheckImage"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </VisuallyHidden>
+            <ErrorMessage
+              error={errors.businessProfileVoidedCheckImage?.message}
+            />
+            {voidedCheckImagePreview && (
+              <Box mt={4}>
+                <Text>Image Preview:</Text>
+                <img src={voidedCheckImagePreview} alt="Driver License Preview" style={{ maxWidth: "200px" }} />
+              </Box>
+            )}
+          </VStack>
+        </FormControl>
+      </HStack>
+
       {/* TODO validar el campo con un api */}
 
       {/* TODO open new window to connect the bank validar el campo con un api */}
