@@ -191,7 +191,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     }
   };
 
-  const progressValue = ((selectedPage + 1) / totalSteps) * 100;
+  const progressValue = ((selectedPage ) / (totalSteps-1)) * 100;
 
   // Obtener el título y la descripción del formulario seleccionado
   const currentChild = children[selectedPage];
