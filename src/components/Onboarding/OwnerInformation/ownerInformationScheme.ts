@@ -8,7 +8,7 @@ export const ownerInformationScheme = z.object({
         .min(2, "The Owner First Name must be at least 2 chars"),
       ownerMiddleName: z
         .string()
-        .min(2, "The Owner Middle Name must be at least 2 chars"),
+        .optional(),
       ownerLastName: z
         .string()
         .min(2, "The Owner Last Name must be at least 2 chars"),

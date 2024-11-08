@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Box, FormControl, FormLabel, HStack, Input, Text } from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, HStack, Input, List, ListItem, Text, useTheme } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-// import InputMask from "react-input-mask";
-import ZipInput from "../../FormComponents/ZipInputField";
 import { DBAInformationScheme } from "./DBAInformationSchema";
 import AllDataForm from "../../../utils/AllDataForm";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
+import useAddressGoogle from "../../../hooks/address/useAddressGoogle";
+import { Address, AddressComponent } from "../../../interfaces/Address";
 
 type BusinessDataForm = z.infer<typeof DBAInformationScheme>;
 
@@ -41,16 +41,102 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
   formRef,
   formDataAll,
 }) => {
+  const theme = useTheme();
   const {
     register,
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(validationSchema),
     defaultValues: formData,
   });
+
+  const { fetchAddress } = useAddressGoogle();
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<Address[]>([]);
+  const [isAddressValid, setIsAddressValid] = useState(false);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (query.length > 2) {
+        const response = await fetchAddress(query);
+        if (response && response.results) {
+          setSuggestions(response.results);
+          setIsAddressValid(false);
+          console.log("Suggestions fetched:", response.results);
+        }
+      } else {
+        setSuggestions([]);
+        setIsAddressValid(false);
+      }
+    };
+
+    fetchSuggestions();
+  }, [query]);
+
+  const handleAddressSelect = (address: Address) => {
+    try {
+      console.log("Address selected:", address);
+      const selectedAddress = address.formatted_address;
+      const addressComponents = address.address_components;
+
+      if (!addressComponents || addressComponents.length === 0) {
+        console.error("No address components found");
+        return;
+      }
+
+      const getAddressComponent = (type: string, useShortName = false) => {
+        const component = addressComponents.find(
+          (component: AddressComponent) => component.types.includes(type)
+        );
+        console.log(`Looking for ${type}:`, component);
+        return component?.[useShortName ? "short_name" : "long_name"] || "";
+      };
+
+      setSuggestions([]);
+
+      // Obtener ciudad con múltiples alternativas
+      const city =
+        getAddressComponent("locality") ||
+        getAddressComponent("sublocality") ||
+        getAddressComponent("administrative_area_level_2") ||
+        "";
+
+      // Obtener estado (siempre usar short name para el estado)
+      const state =
+        getAddressComponent("administrative_area_level_1", true) || "";
+
+      // Obtener ZIP code
+      const zip = getAddressComponent("postal_code") || "";
+
+      console.table({ selectedAddress, city, state, zip });
+
+      // Establecer valores del formulario sin importar la validez completa
+      setValue("merchAddress", selectedAddress);
+      setValue("merchCity", city);
+      setValue("merchState", state);
+      setValue("merchZip", zip);
+
+      // Actualizar el estado del query
+      setQuery("");
+
+      // Validar solo los campos disponibles (por ejemplo, estado es obligatorio)
+      setIsAddressValid(true);
+
+      // Limpiar sugerencias
+      
+    } catch (error) {
+      if (!isAddressValid) {
+        alert("Please enter a valid state in the address.");
+        return;
+      }
+      console.error("Error processing address:", error);
+      setIsAddressValid(false);
+    }
+  };
 
   const onSubmit: SubmitHandler<BusinessDataForm> = (data, event) => {
     console.log(data);
@@ -104,6 +190,11 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
     reset(formData);
   };
 
+
+  const merchCity = watch("merchCity");
+  const merchState = watch("merchState");
+  const merchZip = watch("merchZip");
+
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <Text fontSize="xl">DBA</Text>
@@ -145,7 +236,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
         </FormControl>
       </HStack>
       <HStack spacing={4} mb={4}>
-        <FormControl mb={4} isInvalid={!!errors.merchAddress}>
+        {/* <FormControl mb={4} isInvalid={!!errors.merchAddress}>
           <FormLabel htmlFor="merchAddress">Location Address</FormLabel>
           <Input
             id="merchAddress"
@@ -155,7 +246,50 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.merchAddress?.message} />
-        </FormControl>
+        </FormControl> */}
+
+        <FormControl mb={4} isInvalid={!!errors.merchAddress}>
+        <FormLabel htmlFor="merchAddress" color={theme.colors.gray[700]}>
+          Location Address
+        </FormLabel>
+        <Input
+          id="merchAddress"
+          type="text"
+          placeholder="Enter your location address"
+          {...register("merchAddress", {
+            onChange: (e) => {
+              setQuery(e.target.value);
+              // setValue("corpLegalAddress", e.target.value);
+              setIsAddressValid(false);
+            },
+          })}
+          isDisabled={isDisabledData}
+          onBlur={() => setSuggestions([])}
+        />
+        <ErrorMessage error={errors.merchAddress?.message} />
+        {suggestions.length > 0 && (
+          <List>
+            {suggestions.map((suggestion, index) => (
+              <ListItem
+                key={index}
+                onMouseDown={() => {
+                  console.log("Suggestion clicked:", suggestion);
+                  handleAddressSelect(suggestion);
+                }}
+                cursor="pointer"
+                _hover={{ backgroundColor: "brand.primary" }}
+                p={2}
+                borderWidth="1px"
+                borderRadius="md"
+                mb={0}
+                boxShadow="sm"
+              >
+                {suggestion.formatted_address}
+              </ListItem>
+            ))}
+          </List>
+        )}
+      </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.merchCity}>
           <FormLabel htmlFor="merchCity">Location City</FormLabel>
@@ -164,6 +298,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             type="text"
             placeholder="Enter your location city"
             {...register("merchCity")}
+            value={merchCity}
             isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.merchCity?.message} />
@@ -177,18 +312,34 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             type="text"
             placeholder="Enter your location state"
             {...register("merchState")}
+            value={merchState}
             isDisabled={isDisabledData}
           />
           <ErrorMessage error={errors.merchState?.message} />
         </FormControl>
 
-        <ZipInput
+        <FormControl isInvalid={!!errors.merchZip}>
+          <FormLabel htmlFor="merchZip" color={theme.colors.gray[700]}>
+            Legal ZIP Code
+          </FormLabel>
+          <Input
+            id="merchZip"
+            type="text"
+            placeholder="Enter your legal ZIP code"
+            isDisabled={isDisabledData}
+            value={merchZip}
+            {...register("merchZip")}
+          />
+          <ErrorMessage error={errors.merchZip?.message} />
+        </FormControl>
+
+        {/* <ZipInput
           label="Location Zip"
           id="merchZip"
           errors={errors}
           register={register}
           isDisabled={isDisabledData}
-        />
+        /> */}
       </HStack>
     </Box>
   );

@@ -20,10 +20,12 @@ import {
   Button,
   ModalFooter,
   Select,
+  List,
+  ListItem,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
-import { FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, useTheme } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
@@ -31,6 +33,8 @@ import ZipInput from "../../FormComponents/ZipInputField";
 import { ownerInformationScheme } from "./ownerInformationScheme";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import AllDataForm from "../../../utils/AllDataForm";
+import useAddressGoogle from "../../../hooks/address/useAddressGoogle";
+import { Address, AddressComponent } from "../../../interfaces/Address";
 
 // TODO Validar que la suma de todos los owners sea del 50%
 
@@ -74,6 +78,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
   formRef,
   formDataAll,
 }) => {
+  const theme = useTheme();
   const {
     register,
     control,
@@ -81,12 +86,96 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     setValue,
     formState: { errors },
     trigger,
-    getValues,
+    getValues
   } = useForm<OwnerInformationDataForm>({
     resolver: zodResolver(validationSchema),
     defaultValues: formData,
     mode: "onChange",
   });
+
+  const { fetchAddress } = useAddressGoogle();
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<Address[]>([]);
+  const [isAddressValid, setIsAddressValid] = useState(false);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (query.length > 2) {
+        const response = await fetchAddress(query);
+        if (response && response.results) {
+          setSuggestions(response.results);
+          setIsAddressValid(false);
+          console.log("Suggestions fetched:", response.results);
+        }
+      } else {
+        setSuggestions([]);
+        setIsAddressValid(false);
+      }
+    };
+
+    fetchSuggestions();
+  }, [query]);
+
+  const handleAddressSelect = (address: Address, index: number) => {
+    try {
+      console.log("Address selected:", address);
+      const selectedAddress = address.formatted_address;
+      const addressComponents = address.address_components;
+
+      if (!addressComponents || addressComponents.length === 0) {
+        console.error("No address components found");
+        return;
+      }
+
+      const getAddressComponent = (type: string, useShortName = false) => {
+        const component = addressComponents.find(
+          (component: AddressComponent) => component.types.includes(type)
+        );
+        console.log(`Looking for ${type}:`, component);
+        return component?.[useShortName ? "short_name" : "long_name"] || "";
+      };
+
+      setSuggestions([]);
+
+      // Obtener ciudad con múltiples alternativas
+      const city =
+        getAddressComponent("locality") ||
+        getAddressComponent("sublocality") ||
+        getAddressComponent("administrative_area_level_2") ||
+        "";
+
+      // Obtener estado (siempre usar short name para el estado)
+      const state =
+        getAddressComponent("administrative_area_level_1", true) || "";
+
+      // Obtener ZIP code
+      const zip = getAddressComponent("postal_code") || "";
+
+      console.table({ selectedAddress, city, state, zip });
+
+      // Establecer valores del formulario sin importar la validez completa
+      setValue(`owners.${index}.ownerAddress`, selectedAddress);
+      setValue(`owners.${index}.ownerCity`, city);
+      // setValue(`owners.${index}.ownerAddress`, state);
+      setValue(`owners.${index}.ownerZip`, zip);
+
+      // Actualizar el estado del query
+      setQuery("");
+
+      // Validar solo los campos disponibles (por ejemplo, estado es obligatorio)
+      setIsAddressValid(true);
+
+      // Limpiar sugerencias
+
+    } catch (error) {
+      if (!isAddressValid) {
+        alert("Please enter a valid state in the address.");
+        return;
+      }
+      console.error("Error processing address:", error);
+      setIsAddressValid(false);
+    }
+  };
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalError, setModalError] = useState<string | null>(null);
@@ -148,32 +237,30 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
       (sum, owner) => sum + owner.ownerPercentOwnership,
       0
     );
-    debugger
-
     if (formDataAll?.businessProfileOwnershipType !== "Partnership") {
       if (totalOwnership < 49) {
         setModalError("The sum of the ownership percentages must be 51%");
         setIsModalOpen(true);
-        return; 
+        return;
       }
       if (totalOwnership > 100) {
         setModalError("The sum of the percentages must be 100%");
         setIsModalOpen(true);
-        return; 
+        return;
       }
-    }else{
+    } else {
       if (data.owners.length !== 2) {
         setModalError("The Partnership must have 2 owners");
         setIsModalOpen(true);
-        return; 
+        return;
       }
       if (totalOwnership !== 100) {
         setModalError("The sum of the percentages must be 100%");
         setIsModalOpen(true);
-        return; 
+        return;
       }
     }
-    
+
     console.log("data", data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
@@ -416,7 +503,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                     />
                   </FormControl>
 
-                  <FormControl
+                  {/* <FormControl
                     mb={4}
                     isInvalid={!!errors.owners?.[index]?.ownerAddress}
                   >
@@ -432,7 +519,53 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                     <ErrorMessage
                       error={errors.owners?.[index]?.ownerAddress?.message}
                     />
+                  </FormControl> */}
+
+                  <FormControl mb={4} isInvalid={!!errors.owners?.[index]?.ownerAddress}>
+                    <FormLabel htmlFor={`owners.${index}.ownerAddress`} color={theme.colors.gray[700]}>
+                      Legal Address
+                    </FormLabel>
+                    <Input
+                      id={`owners.${index}.ownerAddress`}
+                      type="text"
+                      placeholder="Enter your owner address"
+                      {...register(`owners.${index}.ownerAddress`, {
+                        onChange: (e) => {
+                          setQuery(e.target.value);
+                          // setValue("corpLegalAddress", e.target.value);
+                          setIsAddressValid(false);
+                        },
+                      })}
+                      onBlur={() => setSuggestions([])}
+                    />
+                    <ErrorMessage error={errors.owners?.[index]?.ownerAddress?.message} />
+                    {suggestions.length > 0 && (
+                      <List>
+                        {suggestions.map((suggestion, sugestion_index) => (
+                          <ListItem
+                            key={sugestion_index}
+                            onMouseDown={() => {
+                              console.log("Suggestion clicked:", suggestion);
+                              handleAddressSelect(suggestion, index);
+                            }}
+                            cursor="pointer"
+                            _hover={{ backgroundColor: "brand.primary" }}
+                            p={2}
+                            borderWidth="1px"
+                            borderRadius="md"
+                            mb={0}
+                            boxShadow="sm"
+                          >
+                            {suggestion.formatted_address}
+                          </ListItem>
+                        ))}
+                      </List>
+                    )}
                   </FormControl>
+
+
+
+
                 </HStack>
 
                 <HStack spacing={4}>
@@ -448,18 +581,34 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       type="text"
                       placeholder="Enter owner city"
                       {...register(`owners.${index}.ownerCity`)}
+                      readOnly
                     />
                     <ErrorMessage
                       error={errors.owners?.[index]?.ownerCity?.message}
                     />
                   </FormControl>
 
-                  <ZipInput
+                  {/* <ZipInput
                     label="Owner zip code"
                     id={`owners.${index}.ownerZip`}
                     errors={errors}
                     register={register}
-                  />
+                  /> */}
+
+                  <FormControl isInvalid={!!errors.owners?.[index]?.ownerZip}>
+                    <FormLabel htmlFor={`owners.${index}.ownerZip`} color={theme.colors.gray[700]}>
+                      Owner ZIP Code
+                    </FormLabel>
+                    <Input
+                      id={`owners.${index}.ownerZip`}
+                      type="text"
+                      placeholder="Enter your owner ZIP code"
+                      // value={corpLegalZip}
+                      readOnly
+                      {...register(`owners.${index}.ownerZip`)}
+                    />
+                    <ErrorMessage error={errors.owners?.[index]?.ownerZip?.message} />
+                  </FormControl>
                 </HStack>
 
                 <HStack spacing={4}>

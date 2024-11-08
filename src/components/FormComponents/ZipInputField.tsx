@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import {
   FieldErrors,
@@ -13,7 +13,8 @@ interface ZipInputProps<T extends FieldValues> {
   id: string;
   placeholder?: string;
   isDisabled?: boolean;
-  errors: FieldErrors<T>;
+  value?: string;
+  errors: any;
   register: UseFormRegister<T>;
 }
 
@@ -22,6 +23,7 @@ const ZipInput = <T extends FieldValues>({
   id,
   placeholder,
   isDisabled,
+  value,
   errors,
   register,
 }: ZipInputProps<T>) => {
@@ -33,18 +35,41 @@ const ZipInput = <T extends FieldValues>({
     e.target.value = value;
   };
 
+  type ErrorObject = {
+    [key: string]: any;
+  };
+
+  function getValue(obj: ErrorObject, path: string): any {
+    return path.split('.').reduce((acc, part) => {
+      if (acc && acc[part] !== undefined) {
+        return acc[part];
+      }
+      return undefined;
+    }, obj);
+  }
+  
+  useEffect(() => {
+    // debugger
+    console.log("errors", errors);
+    console.log("id", id);
+    
+    console.log("igetValued", getValue(errors,id));
+  });
+  
+
   return (
-    <FormControl mb={4} isInvalid={!!errors[id]}>
+    <FormControl mb={4} isInvalid={!!errors}>
       <FormLabel htmlFor={id}>{label}</FormLabel>
       <Input
         maxLength={10}
         id={id}
         type="text"
+        value={value}
         placeholder={placeholder || `Enter your ${label}`}
         {...register(id as Path<T>, { onChange: handleZipChange })}
         isDisabled={isDisabled}
       />
-      <ErrorMessage error={errors[id]?.message as string} />
+      <ErrorMessage error={getValue(errors,id)?.message as string} />
     </FormControl>
   );
 };

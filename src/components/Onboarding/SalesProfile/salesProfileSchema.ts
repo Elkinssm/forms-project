@@ -7,7 +7,7 @@ export const salesProfileSchema = z.object({
     .min(1, "The Retail Chip Swipe must be at least 1 chars"),
   salesProfileCurrentProcessor: z
     .string()
-    .min(1, "The Current Processorp must be at least 1 chars"),
+    .optional(),
   salesProfileAvgTicket: z
     .string()
     .min(1, "The Avg Ticket must be at least 1 chars"),

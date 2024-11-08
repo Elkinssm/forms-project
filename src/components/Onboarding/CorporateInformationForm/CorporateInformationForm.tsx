@@ -158,9 +158,9 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
     if (onNext) onNext();
   };
 
-  const corpLegalCity = watch("corpLegalCity");
-  const corpLegalState = watch("corpLegalState");
-  const corpLegalZip = watch("corpLegalZip");
+  // const corpLegalCity = watch("corpLegalCity");
+  // const corpLegalState = watch("corpLegalState");
+  // const corpLegalZip = watch("corpLegalZip");
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
@@ -177,6 +177,7 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
             type="text"
             placeholder="Enter your federal tax ID"
             {...register("corpLegalFedTaxId")}
+            
           />
           <ErrorMessage error={errors.corpLegalFedTaxId?.message} />
         </FormControl>
@@ -285,7 +286,7 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
           id="corpLegalCity"
           type="text"
           placeholder="Enter your legal city"
-          value={corpLegalCity}
+          // value={corpLegalCity}
           readOnly
           {...register("corpLegalCity")}
         />
@@ -301,7 +302,7 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
             id="corpLegalState"
             type="text"
             placeholder="Enter your legal state"
-            value={corpLegalState}
+            // value={corpLegalState}
             readOnly
             {...register("corpLegalState")}
           />
@@ -316,7 +317,7 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
             id="corpLegalZip"
             type="text"
             placeholder="Enter your legal ZIP code"
-            value={corpLegalZip}
+            // value={corpLegalZip}
             readOnly
             {...register("corpLegalZip")}
           />

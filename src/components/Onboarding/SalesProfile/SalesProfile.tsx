@@ -1,6 +1,6 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, set } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -49,8 +49,36 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
     resolver: zodResolver(validationSchema),
     defaultValues: formData,
   });
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalError, setModalError] = useState<string | null>(null);
+
+
   const onSubmit: SubmitHandler<SalesProfileDataForm> = (data) => {
     console.log(data);
+
+    const { salesProfileRetailChipSwipe, salesProfileMailPhone, salesProfileInternetPerc, salesProfileB2BPerc, salesProfileB2CPerc, salesProfileB2GPerc } = data;
+    const sumPercentages = 
+      Number(salesProfileRetailChipSwipe) + 
+      Number(salesProfileMailPhone) + 
+      Number(salesProfileInternetPerc);
+    if(sumPercentages !== 100) {
+      setModalError("The sum of Retail Chip Swipe %, Mail Phone % and Internet % must be 100");
+      setIsModalOpen(true);
+      return;
+    }
+
+    const sumPercentagesB2X  = 
+      Number(salesProfileB2BPerc) + 
+      Number(salesProfileB2CPerc) + 
+      Number(salesProfileB2GPerc);
+    if(sumPercentagesB2X !== 100) {
+      setModalError("The sum of B2B %, B2C % and B2G % must be 100");
+      setIsModalOpen(true);
+      return;
+    }
+
+
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
@@ -206,6 +234,26 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
           </HStack>
         </FormControl>
       </HStack>
+
+      {/* Modal de validación */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Incomplete Form</ModalHeader>
+          <ModalBody>
+            {modalError}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={() => setIsModalOpen(false)}>
+              Got it
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

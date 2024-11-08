@@ -194,7 +194,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
           isInvalid={!!errors.businessProfileBusinessCheckRoutingCheck}
         >
           <FormLabel htmlFor="businessProfileBusinessCheckRoutingCheck">
-            Business Check Routing
+          Recheck Business Check Routing
           </FormLabel>
           <Input
             id="businessProfileBusinessCheckRoutingCheck"
@@ -232,7 +232,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
           isInvalid={!!errors.businessProfileBusinessCheckingAccountCheck}
         >
           <FormLabel htmlFor="businessProfileBusinessCheckingAccountCheck">
-            Business Checking Account
+            Recheck Business Checking Account
           </FormLabel>
           <Input
             id="businessProfileBusinessCheckingAccountCheck"

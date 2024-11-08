@@ -75,7 +75,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   };
 
   // const handlePageChange = async (nextPage: number) => {
-  //   debugger;
   //   if (formRef.current) {
   //     try {
   //       // Obtener el formulario actual

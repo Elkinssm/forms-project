@@ -1,4 +1,4 @@
-import { Box, HStack, Select, Text } from "@chakra-ui/react";
+import { Box, HStack, List, ListItem, Select, Text, useTheme } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, UseFormSetValue } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
@@ -8,6 +8,8 @@ import ZipInput from "../../FormComponents/ZipInputField";
 import { controllingOfficerSchema } from "./controllingOfficerSchema";
 import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
+import useAddressGoogle from "../../../hooks/address/useAddressGoogle";
+import { Address, AddressComponent } from "../../../interfaces/Address";
 
 type ControllingOfficerDataForm = z.infer<typeof controllingOfficerSchema>;
 
@@ -44,10 +46,12 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
   validationSchema = controllingOfficerSchema,
   formRef,
 }) => {
+  const theme = useTheme();
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<ControllingOfficerDataForm>({
     resolver: zodResolver(validationSchema),
@@ -60,6 +64,90 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
   };
 
   const [isDisabledData, setIsDisabledData] = useState(true);
+  const { fetchAddress } = useAddressGoogle();
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<Address[]>([]);
+  const [isAddressValid, setIsAddressValid] = useState(false);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (query.length > 2) {
+        const response = await fetchAddress(query);
+        if (response && response.results) {
+          setSuggestions(response.results);
+          setIsAddressValid(false);
+          console.log("Suggestions fetched:", response.results);
+        }
+      } else {
+        setSuggestions([]);
+        setIsAddressValid(false);
+      }
+    };
+
+    fetchSuggestions();
+  }, [query]);
+
+  const handleAddressSelect = (address: Address) => {
+    try {
+      console.log("Address selected:", address);
+      const selectedAddress = address.formatted_address;
+      const addressComponents = address.address_components;
+
+      if (!addressComponents || addressComponents.length === 0) {
+        console.error("No address components found");
+        return;
+      }
+
+      const getAddressComponent = (type: string, useShortName = false) => {
+        const component = addressComponents.find(
+          (component: AddressComponent) => component.types.includes(type)
+        );
+        console.log(`Looking for ${type}:`, component);
+        return component?.[useShortName ? "short_name" : "long_name"] || "";
+      };
+
+      setSuggestions([]);
+
+      // Obtener ciudad con múltiples alternativas
+      const city =
+        getAddressComponent("locality") ||
+        getAddressComponent("sublocality") ||
+        getAddressComponent("administrative_area_level_2") ||
+        "";
+
+      // Obtener estado (siempre usar short name para el estado)
+      const state =
+        getAddressComponent("administrative_area_level_1", true) || "";
+
+      // Obtener ZIP code
+      const zip = getAddressComponent("postal_code") || "";
+
+      console.table({ selectedAddress, city, state, zip });
+
+      // Establecer valores del formulario sin importar la validez completa
+      setValue("controllerOfficerAddress", selectedAddress);
+      setValue("controllerOfficerCity", city);
+      // setValue("corpLegalState", state);
+      setValue("controllerOfficerZip", zip);
+
+      // Actualizar el estado del query
+      setQuery("");
+
+      // Validar solo los campos disponibles (por ejemplo, estado es obligatorio)
+      setIsAddressValid(true);
+
+      // Limpiar sugerencias
+
+    } catch (error) {
+      if (!isAddressValid) {
+        alert("Please enter a valid state in the address.");
+        return;
+      }
+      console.error("Error processing address:", error);
+      setIsAddressValid(false);
+    }
+  };
+
 
   const handleFormattedDate = (
     dateValidate: string | undefined,
@@ -99,18 +187,13 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
     setIsChecked(checked);
-
-    // Actualiza el valor del checkbox en el formulario
     setValue("controllerOfficerOfficerIsOwner", checked ? "yes" : "no");
-
     setIsDisabledData(checked)
-
-
-
-
-
-
   };
+
+  const controllerOfficerCity = watch("controllerOfficerCity");
+  // const corpLegalState = watch("corpLegalState");
+  const controllerOfficerZip = watch("controllerOfficerZip");
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
@@ -212,6 +295,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
         </FormControl>
       </HStack>
 
+      {/* 
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerAddress}>
         <FormLabel htmlFor="controllerOfficerAddress">Address</FormLabel>
         <Input
@@ -222,6 +306,50 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           isDisabled={isDisabledData}
         />
         <ErrorMessage error={errors.controllerOfficerAddress?.message} />
+      </FormControl> */}
+
+
+      <FormControl mb={4} isInvalid={!!errors.controllerOfficerAddress}>
+        <FormLabel htmlFor="controllerOfficerAddress" color={theme.colors.gray[700]}>
+          Address
+        </FormLabel>
+        <Input
+          id="controllerOfficerAddress"
+          type="text"
+          placeholder="Enter your legal address"
+          {...register("controllerOfficerAddress", {
+            onChange: (e) => {
+              setQuery(e.target.value);
+              // setValue("controllerOfficerAddress", e.target.value);
+              setIsAddressValid(false);
+            },
+          })}
+          isDisabled={isDisabledData}
+          onBlur={() => setSuggestions([])}
+        />
+        <ErrorMessage error={errors.controllerOfficerAddress?.message} />
+        {suggestions.length > 0 && (
+          <List>
+            {suggestions.map((suggestion, index) => (
+              <ListItem
+                key={index}
+                onMouseDown={() => {
+                  console.log("Suggestion clicked:", suggestion);
+                  handleAddressSelect(suggestion);
+                }}
+                cursor="pointer"
+                _hover={{ backgroundColor: "brand.primary" }}
+                p={2}
+                borderWidth="1px"
+                borderRadius="md"
+                mb={0}
+                boxShadow="sm"
+              >
+                {suggestion.formatted_address}
+              </ListItem>
+            ))}
+          </List>
+        )}
       </FormControl>
 
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerCity}>
@@ -230,19 +358,36 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           id="controllerOfficerCity"
           type="text"
           placeholder="Enter controller officer city"
+          value={controllerOfficerCity}
           {...register("controllerOfficerCity")}
           isDisabled={isDisabledData}
         />
         <ErrorMessage error={errors.controllerOfficerCity?.message} />
       </FormControl>
       <HStack spacing={4} mb={4}>
-        <ZipInput
+        {/* <ZipInput
           label="Zip Code"
           id="controllerOfficerZip"
+          value={controllerOfficerZip}
           errors={errors}
           register={register}
           isDisabled={isDisabledData}
-        />
+        /> */}
+
+        <FormControl isInvalid={!!errors.controllerOfficerZip}>
+          <FormLabel htmlFor="controllerOfficerZip" color={theme.colors.gray[700]}>
+            Legal ZIP Code
+          </FormLabel>
+          <Input
+            id="controllerOfficerZip"
+            type="text"
+            placeholder="Enter your controller officer ZIP code"
+            // value={corpLegalZip}
+            isDisabled={isDisabledData}
+            {...register("controllerOfficerZip")}
+          />
+          <ErrorMessage error={errors.controllerOfficerZip?.message} />
+        </FormControl>
 
         <FormControl mb={4} isInvalid={!!errors.controllerOfficerHomePhone}>
           <FormLabel htmlFor="controllerOfficerHomePhone">Home phone</FormLabel>
