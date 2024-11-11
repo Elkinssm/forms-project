@@ -339,6 +339,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             formRef={formRef}
             showBackButton={selectedPage > 0}
             isFirstPage={selectedPage === 0}
+            isLastPage={selectedPage === totalSteps - 1}
           />
         </Box>
       </Box>

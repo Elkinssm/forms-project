@@ -29,12 +29,13 @@ import { FormControl, FormLabel, Input, useTheme } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import ZipInput from "../../FormComponents/ZipInputField";
 import { ownerInformationScheme } from "./ownerInformationScheme";
+import InputMask from "react-input-mask";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import AllDataForm from "../../../utils/AllDataForm";
 import useAddressGoogle from "../../../hooks/address/useAddressGoogle";
 import { Address, AddressComponent } from "../../../interfaces/Address";
+import { handleMaxInput } from "../../../utils/MaxLengthInput";
 
 // TODO Validar que la suma de todos los owners sea del 50%
 
@@ -387,7 +388,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                     <Input
                       id={`owners.${index}.ownerStateID`}
                       type="text"
-                      placeholder="Enter the State ID"
+                      placeholder="Enter the Driver Licence / State ID / Passport Number"
                       {...register(`owners.${index}.ownerStateID`)}
                     />
                     <ErrorMessage
@@ -405,6 +406,9 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       SSN
                     </FormLabel>
                     <Input
+                      as={InputMask}
+                      mask="***-**-****"
+                      maskChar={null}
                       id={`owners.${index}.ownerSSN`}
                       type="text"
                       placeholder="Enter SSN"
@@ -428,6 +432,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       id={`owners.${index}.ownerPercentOwnership`}
                       type="number"
                       placeholder="Enter ownership %"
+                      onInput={(e) => handleMaxInput(e,3)}
                       {...register(`owners.${index}.ownerPercentOwnership`)}
                     />
                     <ErrorMessage
@@ -503,24 +508,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                     />
                   </FormControl>
 
-                  {/* <FormControl
-                    mb={4}
-                    isInvalid={!!errors.owners?.[index]?.ownerAddress}
-                  >
-                    <FormLabel htmlFor={`owners.${index}.ownerAddress`}>
-                      Address
-                    </FormLabel>
-                    <Input
-                      id={`owners.${index}.ownerAddress`}
-                      type="text"
-                      placeholder="Enter owner address"
-                      {...register(`owners.${index}.ownerAddress`)}
-                    />
-                    <ErrorMessage
-                      error={errors.owners?.[index]?.ownerAddress?.message}
-                    />
-                  </FormControl> */}
-
                   <FormControl mb={4} isInvalid={!!errors.owners?.[index]?.ownerAddress}>
                     <FormLabel htmlFor={`owners.${index}.ownerAddress`} color={theme.colors.gray[700]}>
                       Legal Address
@@ -562,10 +549,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       </List>
                     )}
                   </FormControl>
-
-
-
-
                 </HStack>
 
                 <HStack spacing={4}>
@@ -587,13 +570,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       error={errors.owners?.[index]?.ownerCity?.message}
                     />
                   </FormControl>
-
-                  {/* <ZipInput
-                    label="Owner zip code"
-                    id={`owners.${index}.ownerZip`}
-                    errors={errors}
-                    register={register}
-                  /> */}
 
                   <FormControl isInvalid={!!errors.owners?.[index]?.ownerZip}>
                     <FormLabel htmlFor={`owners.${index}.ownerZip`} color={theme.colors.gray[700]}>
@@ -623,6 +599,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                       id={`owners.${index}.ownerPhone`}
                       type="number"
                       placeholder="Enter owner phone"
+                      onInput={(e) => handleMaxInput(e,10)}
                       {...register(`owners.${index}.ownerPhone`)}
                     />
                     <ErrorMessage

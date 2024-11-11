@@ -21,6 +21,7 @@ import AllDataForm from "../../../utils/AllDataForm";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import useAddressGoogle from "../../../hooks/address/useAddressGoogle";
 import { Address, AddressComponent } from "../../../interfaces/Address";
+import { handleMaxInput } from "../../../utils/MaxLengthInput";
 
 type BusinessDataForm = z.infer<typeof corporateInformationFormSchema>;
 
@@ -61,7 +62,6 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<BusinessDataForm>({
     resolver: zodResolver(validationSchema),
@@ -162,6 +162,10 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
   // const corpLegalState = watch("corpLegalState");
   // const corpLegalZip = watch("corpLegalZip");
 
+  
+
+
+
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <HStack spacing={4} mb={4}>
@@ -184,8 +188,10 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
         <FormControl mb={4} isInvalid={!!errors.yearsInBusiness}>
           <FormLabel htmlFor="yearsInBusiness">Years in Business</FormLabel>
           <Input
+            maxLength={3}
             id="yearsInBusiness"
             type="number"
+            onInput={(e) => handleMaxInput(e,3)}
             placeholder="Enter your years in business"
             {...register("yearsInBusiness")}
           />
@@ -215,7 +221,8 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
           </FormLabel>
           <Input
             id="corpLegalPhone"
-            type="number"
+            type="number"            
+            onInput={(e) => handleMaxInput(e,10)}
             placeholder="Enter your Legal Phone"
             {...register("corpLegalPhone")}
           />
@@ -333,6 +340,7 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
           <Input
             id="aditionalDetailsLocations"
             type="number"
+            onInput={(e) => handleMaxInput(e,3)}
             placeholder="Enter the number of locations"
             {...register("aditionalDetailsLocations")}
           />

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import {
-  FieldErrors,
   FieldValues,
   Path,
   UseFormRegister,

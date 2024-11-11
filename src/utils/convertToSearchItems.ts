@@ -4,7 +4,7 @@ import { SearchItem } from "../components/FormComponents/Interfaces/SearchItem";
 
 
 
-export const convertToSearchItemsForSearchInput = (bankData: Bank[]): SearchItem[] => {
+export const ConvertToSearchItemsForSearchInput = (bankData: Bank[]): SearchItem[] => {
     return bankData.map((bank) => ({
         name: bank.NAME + " - " + bank.CHARTER_NO,
     }));

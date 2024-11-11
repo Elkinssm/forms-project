@@ -1,12 +1,13 @@
 import { Box, Button, HStack, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { useForm, SubmitHandler, set } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { salesProfileSchema } from "./salesProfileSchema";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
+import { handleMaxInput } from "../../../utils/MaxLengthInput";
 
 type SalesProfileDataForm = z.infer<typeof salesProfileSchema>;
 
@@ -122,6 +123,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             id="salesProfileRetailChipSwipe"
             type="number"
             placeholder="Enter retail chip swipe %"
+            onInput={(e) => handleMaxInput(e,3)}
             {...register("salesProfileRetailChipSwipe")}
           />
           <ErrorMessage error={errors.salesProfileRetailChipSwipe?.message} />
@@ -133,6 +135,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             id="salesProfileMailPhone"
             type="number"
             placeholder="Enter Mail Phone %"
+            onInput={(e) => handleMaxInput(e,3)}
             {...register("salesProfileMailPhone")}
           />
           <ErrorMessage error={errors.salesProfileMailPhone?.message} />
@@ -143,6 +146,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             id="salesProfileInternetPerc"
             type="number"
             placeholder="Enter Internet %"
+            onInput={(e) => handleMaxInput(e,3)}
             {...register("salesProfileInternetPerc")}
           />
           <ErrorMessage error={errors.salesProfileInternetPerc?.message} />
@@ -156,6 +160,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             id="salesProfileAvgTicket"
             type="number"
             placeholder="Enter avg ticket"
+            onInput={(e) => handleMaxInput(e,7)}
             {...register("salesProfileAvgTicket")}
           />
           <ErrorMessage error={errors.salesProfileAvgTicket?.message} />
@@ -167,6 +172,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             id="salesProfileMaxTicket"
             type="number"
             placeholder="Enter max ticket"
+            onInput={(e) => handleMaxInput(e,7)}
             {...register("salesProfileMaxTicket")}
           />
           <ErrorMessage error={errors.salesProfileMaxTicket?.message} />
@@ -180,6 +186,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             id="salesProfileMonthlyVolume"
             type="number"
             placeholder="Enter monthly volume"
+            onInput={(e) => handleMaxInput(e,7)}
             {...register("salesProfileMonthlyVolume")}
           />
           <ErrorMessage error={errors.salesProfileMonthlyVolume?.message} />
@@ -193,6 +200,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             id="salesProfileB2BPerc"
             type="number"
             placeholder="Enter B2B"
+            onInput={(e) => handleMaxInput(e,3)}
             {...register("salesProfileB2BPerc")}
           />
           <ErrorMessage error={errors.salesProfileB2BPerc?.message} />
@@ -204,6 +212,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             id="salesProfileB2CPerc"
             type="number"
             placeholder="Enter B2C"
+            onInput={(e) => handleMaxInput(e,3)}
             {...register("salesProfileB2CPerc")}
           />
           <ErrorMessage error={errors.salesProfileB2CPerc?.message} />
@@ -215,6 +224,7 @@ const SalesProfileForm: React.FC<SalesProfileFormProps> = ({
             id="salesProfileB2GPerc"
             type="number"
             placeholder="Enter B2G"
+            onInput={(e) => handleMaxInput(e,3)}
             {...register("salesProfileB2GPerc")}
           />
           <ErrorMessage error={errors.salesProfileB2GPerc?.message} />

@@ -9,6 +9,7 @@ import ErrorMessage from "../../FormComponents/ErrorMessage";
 import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
 import useAddressGoogle from "../../../hooks/address/useAddressGoogle";
 import { Address, AddressComponent } from "../../../interfaces/Address";
+import { handleMaxInput } from "../../../utils/MaxLengthInput";
 
 type BusinessDataForm = z.infer<typeof DBAInformationScheme>;
 
@@ -229,6 +230,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             id="merchPhone"
             type="number"
             placeholder="Enter your location phone"
+            onInput={(e) => handleMaxInput(e,3)}
             {...register("merchPhone")}
             isDisabled={isDisabledData}
           />
@@ -236,18 +238,6 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
         </FormControl>
       </HStack>
       <HStack spacing={4} mb={4}>
-        {/* <FormControl mb={4} isInvalid={!!errors.merchAddress}>
-          <FormLabel htmlFor="merchAddress">Location Address</FormLabel>
-          <Input
-            id="merchAddress"
-            type="text"
-            placeholder="Enter your location address"
-            {...register("merchAddress")}
-            isDisabled={isDisabledData}
-          />
-          <ErrorMessage error={errors.merchAddress?.message} />
-        </FormControl> */}
-
         <FormControl mb={4} isInvalid={!!errors.merchAddress}>
         <FormLabel htmlFor="merchAddress" color={theme.colors.gray[700]}>
           Location Address

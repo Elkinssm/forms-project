@@ -4,12 +4,12 @@ import { useForm, SubmitHandler, UseFormSetValue } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import ZipInput from "../../FormComponents/ZipInputField";
 import { controllingOfficerSchema } from "./controllingOfficerSchema";
 import ReusableCheckbox from "../../FormComponents/ReusableCheckbox";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import useAddressGoogle from "../../../hooks/address/useAddressGoogle";
 import { Address, AddressComponent } from "../../../interfaces/Address";
+import { handleMaxInput } from "../../../utils/MaxLengthInput";
 
 type ControllingOfficerDataForm = z.infer<typeof controllingOfficerSchema>;
 
@@ -295,20 +295,6 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
         </FormControl>
       </HStack>
 
-      {/* 
-      <FormControl mb={4} isInvalid={!!errors.controllerOfficerAddress}>
-        <FormLabel htmlFor="controllerOfficerAddress">Address</FormLabel>
-        <Input
-          id="controllerOfficerAddress"
-          type="text"
-          placeholder="Enter controller officer address"
-          {...register("controllerOfficerAddress")}
-          isDisabled={isDisabledData}
-        />
-        <ErrorMessage error={errors.controllerOfficerAddress?.message} />
-      </FormControl> */}
-
-
       <FormControl mb={4} isInvalid={!!errors.controllerOfficerAddress}>
         <FormLabel htmlFor="controllerOfficerAddress" color={theme.colors.gray[700]}>
           Address
@@ -365,14 +351,6 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
         <ErrorMessage error={errors.controllerOfficerCity?.message} />
       </FormControl>
       <HStack spacing={4} mb={4}>
-        {/* <ZipInput
-          label="Zip Code"
-          id="controllerOfficerZip"
-          value={controllerOfficerZip}
-          errors={errors}
-          register={register}
-          isDisabled={isDisabledData}
-        /> */}
 
         <FormControl isInvalid={!!errors.controllerOfficerZip}>
           <FormLabel htmlFor="controllerOfficerZip" color={theme.colors.gray[700]}>
@@ -382,7 +360,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             id="controllerOfficerZip"
             type="text"
             placeholder="Enter your controller officer ZIP code"
-            // value={corpLegalZip}
+            value={controllerOfficerZip}
             isDisabled={isDisabledData}
             {...register("controllerOfficerZip")}
           />
@@ -395,6 +373,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             id="controllerOfficerHomePhone"
             type="number"
             placeholder="Enter controller officer home phone"
+            onInput={(e) => handleMaxInput(e,10)}
             {...register("controllerOfficerHomePhone")}
             isDisabled={isDisabledData}
           />
@@ -410,6 +389,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             id="controllerOfficerLicenseNumber"
             type="text"
             placeholder="Enter the driver license number"
+            onInput={(e) => handleMaxInput(e,15)}
             {...register("controllerOfficerLicenseNumber", {
               valueAsDate: false,
             })}

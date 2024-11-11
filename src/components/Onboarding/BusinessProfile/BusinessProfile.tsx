@@ -7,7 +7,7 @@ import { z } from "zod";
 import { businessProfileSchema } from "./businessProfileSchema";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import { SearchItem } from "../../FormComponents/Interfaces/SearchItem";
-import { convertToSearchItemsForSearchInput } from "../../../utils/convertToSearchItems";
+import { ConvertToSearchItemsForSearchInput } from "../../../utils/ConvertToSearchItems";
 import { bankData } from "../../../utils/data/Banks";
 import SearchInput from "../../FormComponents/SearchInput";
 import { validOwnershipTypes } from "../../../utils/data/OwnerShipTypes";
@@ -61,7 +61,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
 
 
   const searchItems: SearchItem[] =
-    convertToSearchItemsForSearchInput(bankData);
+    ConvertToSearchItemsForSearchInput(bankData);
 
   const handleItemSelect = (itemName: string) => {
     setValue("businessProfileBankName", itemName); // Actualiza el valor en el formulario
