@@ -37,6 +37,8 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     businessProfileBusinessCheckingAccountCheck: "",
     businessProfileBusinessCheckRouting: "",
     businessProfileBusinessCheckRoutingCheck: "",
+    businessProfileDriverLicenseImage: "",
+    businessProfileVoidedCheckImage: "",
   },
   validationSchema = businessProfileSchema,
   formRef,

@@ -32,7 +32,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
     controllerOfficerMiddleName: "",
     controllerOfficerLastName: "",
     controllerOfficerTitle: "",
-    controllerOfficerOfficerIsOwner: "no",
+    controllerOfficerOfficerIsOwner: "yes",
     controllerOfficerAddress: "",
     controllerOfficerCity: "",
     controllerOfficerZip: "",
@@ -213,7 +213,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter the first name"
             {...register("controllerOfficerFirstName")}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerFirstName?.message} />
         </FormControl>
@@ -227,7 +227,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter the middle name"
             {...register("controllerOfficerMiddleName")}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerMiddleName?.message} />
         </FormControl>
@@ -240,7 +240,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter the last name"
             {...register("controllerOfficerLastName")}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerLastName?.message} />
         </FormControl>
@@ -253,7 +253,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             {...register("controllerOfficerDob", {
               valueAsDate: false,
             })}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerDob?.message} />
         </FormControl>
@@ -266,7 +266,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             id={`controllerOfficerTitle`}
             placeholder="Select your Job Title"
             {...register(`controllerOfficerTitle`)}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isReadOnlyData}
           >
             <option value="CEO">CEO</option>
             <option value="Owner">Owner</option>
@@ -285,7 +285,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter controller officer email"
             {...register("controllerOfficerEmail")}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerEmail?.message} />
         </FormControl>
@@ -306,7 +306,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
               setIsAddressValid(false);
             },
           })}
-          isReadOnly={isReadOnlyData}
+          isDisabled={isReadOnlyData}
           onBlur={() => setSuggestions([])}
         />
         <ErrorMessage error={errors.controllerOfficerAddress?.message} />
@@ -341,7 +341,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           placeholder="Enter controller officer city"
           value={controllerOfficerCity}
           {...register("controllerOfficerCity")}
-          isReadOnly={isReadOnlyData}
+          isDisabled={isReadOnlyData}
         />
         <ErrorMessage error={errors.controllerOfficerCity?.message} />
       </FormControl>
@@ -356,7 +356,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter your controller officer ZIP code"
             value={controllerOfficerZip}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isReadOnlyData}
             {...register("controllerOfficerZip")}
           />
           <ErrorMessage error={errors.controllerOfficerZip?.message} />
@@ -370,7 +370,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             placeholder="Enter controller officer home phone"
             onInput={(e) => handleMaxInput(e,10)}
             {...register("controllerOfficerHomePhone")}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerHomePhone?.message} />
         </FormControl>
@@ -388,13 +388,13 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             {...register("controllerOfficerLicenseNumber", {
               valueAsDate: false,
             })}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isReadOnlyData}
           />
           <ErrorMessage
             error={errors.controllerOfficerLicenseNumber?.message}
           />
         </FormControl>
-
+            
         <FormControl
           mb={4}
           isInvalid={!!errors.controllerOfficerLicenseNumberExpires}
@@ -407,7 +407,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="date"
             placeholder="Enter driver license number expiration date"
             {...register("controllerOfficerLicenseNumberExpires")}
-            isReadOnly={isReadOnlyData}
+            isDisabled={isReadOnlyData}
           />
           <ErrorMessage
             error={errors.controllerOfficerLicenseNumberExpires?.message}

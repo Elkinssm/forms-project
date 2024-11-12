@@ -107,6 +107,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   // };
 
   const handlePageChange = async (nextPage: number) => {
+    debugger
     if (nextPage < selectedPage) {
       setSelectedPage(nextPage);
       return;
@@ -131,7 +132,12 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
           if (validationSchema) {
             const formData = new FormData(formRef.current);
-            const formValues = Object.fromEntries(formData.entries());
+            const formValues: { [key: string]: string | FileList } = {};
+
+            for (let [key, value] of formData.entries()) {
+              // Si el valor es una instancia de File, se conserva tal cual, si no, se convierte a cadena
+              formValues[key] = value instanceof FileList ? value : String(value);
+            }
 
             // Filtrar y crear el array de owners
             const owners = Object.keys(formValues)
@@ -155,7 +161,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             const otherFields = Object.keys(formValues)
               .filter((key) => !key.startsWith("owners."))
               .reduce((acc, key) => {
-                acc[key] = formValues[key]; // Asignar el campo al nuevo objeto
+                acc[key] = formValues[key] instanceof FileList ? formValues[key][0] : formValues[key]; // Asignar el campo al nuevo objeto
                 return acc;
               }, {} as Record<string, string | File>);
 
