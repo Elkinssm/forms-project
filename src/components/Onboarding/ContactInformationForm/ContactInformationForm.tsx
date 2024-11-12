@@ -85,7 +85,7 @@ const ContactInformationForm: React.FC<ContactInformationFormFormProps> = ({
   }, [useInformationFrom, reset]);
 
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
-    console.log(data);
+    //console.log(data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };

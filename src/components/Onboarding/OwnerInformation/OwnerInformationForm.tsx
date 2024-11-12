@@ -86,8 +86,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
     handleSubmit,
     setValue,
     formState: { errors },
-    trigger,
-    getValues
+    trigger
   } = useForm<OwnerInformationDataForm>({
     resolver: zodResolver(validationSchema),
     defaultValues: formData,
@@ -106,7 +105,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
         if (response && response.results) {
           setSuggestions(response.results);
           setIsAddressValid(false);
-          console.log("Suggestions fetched:", response.results);
         }
       } else {
         setSuggestions([]);
@@ -119,7 +117,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
 
   const handleAddressSelect = (address: Address, index: number) => {
     try {
-      console.log("Address selected:", address);
       const selectedAddress = address.formatted_address;
       const addressComponents = address.address_components;
 
@@ -132,7 +129,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
         const component = addressComponents.find(
           (component: AddressComponent) => component.types.includes(type)
         );
-        console.log(`Looking for ${type}:`, component);
         return component?.[useShortName ? "short_name" : "long_name"] || "";
       };
 
@@ -146,13 +142,12 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
         "";
 
       // Obtener estado (siempre usar short name para el estado)
-      const state =
-        getAddressComponent("administrative_area_level_1", true) || "";
+      // const state = getAddressComponent("administrative_area_level_1", true) || "";
 
       // Obtener ZIP code
       const zip = getAddressComponent("postal_code") || "";
 
-      console.table({ selectedAddress, city, state, zip });
+      // console.table({ selectedAddress, city, state, zip });
 
       // Establecer valores del formulario sin importar la validez completa
       setValue(`owners.${index}.ownerAddress`, selectedAddress);
@@ -225,15 +220,11 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
         ownerZip: "",
         ownerPhone: "",
       });
-      setOpenIndex([fields.length]); // Abrir el nuevo propietario agregado
-      console.log("Current form data:", getValues());
-    } else {
-      console.log("Form validation failed. Cannot add new owner.");
-    }
+      setOpenIndex([fields.length]); 
+    } 
   };
 
   const onSubmit: SubmitHandler<OwnerInformationDataForm> = (data) => {
-    console.log("data", data);
     const totalOwnership = data.owners.reduce(
       (sum, owner) => sum + owner.ownerPercentOwnership,
       0
@@ -262,7 +253,7 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
       }
     }
 
-    console.log("data", data);
+    //console.log("data", data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
@@ -532,7 +523,6 @@ const OwnerInformationForm: React.FC<OwnerInformationFormProps> = ({
                           <ListItem
                             key={sugestion_index}
                             onMouseDown={() => {
-                              console.log("Suggestion clicked:", suggestion);
                               handleAddressSelect(suggestion, index);
                             }}
                             cursor="pointer"

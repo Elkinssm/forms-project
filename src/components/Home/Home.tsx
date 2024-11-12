@@ -36,7 +36,7 @@ const Home = () => {
   });
 
   const onSubmit = (data: BusinessDataForm) => {
-    console.log(data);
+    // console.log(data);
     alert(`Corporate: ${data.corporate}, Merchant: ${data.merchant}`);
   };
 

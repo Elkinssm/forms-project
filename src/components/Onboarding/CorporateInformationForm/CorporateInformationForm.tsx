@@ -80,7 +80,6 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
         if (response && response.results) {
           setSuggestions(response.results);
           setIsAddressValid(false);
-          console.log("Suggestions fetched:", response.results);
         }
       } else {
         setSuggestions([]);
@@ -93,7 +92,6 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
 
   const handleAddressSelect = (address: Address) => {
     try {
-      console.log("Address selected:", address);
       const selectedAddress = address.formatted_address;
       const addressComponents = address.address_components;
 
@@ -106,7 +104,6 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
         const component = addressComponents.find(
           (component: AddressComponent) => component.types.includes(type)
         );
-        console.log(`Looking for ${type}:`, component);
         return component?.[useShortName ? "short_name" : "long_name"] || "";
       };
 
@@ -126,7 +123,7 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
       // Obtener ZIP code
       const zip = getAddressComponent("postal_code") || "";
 
-      console.table({ selectedAddress, city, state, zip });
+      // console.table({ selectedAddress, city, state, zip });
 
       // Establecer valores del formulario sin importar la validez completa
       setValue("corpLegalAddress", selectedAddress);
@@ -153,7 +150,7 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
   };
 
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
-    console.log(data);
+    //console.log(data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
@@ -267,7 +264,6 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
               <ListItem
                 key={index}
                 onMouseDown={() => {
-                  console.log("Suggestion clicked:", suggestion);
                   handleAddressSelect(suggestion);
                 }}
                 cursor="pointer"

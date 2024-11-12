@@ -56,14 +56,14 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
   } = useForm<ControllingOfficerDataForm>({
     resolver: zodResolver(validationSchema),
     defaultValues: formData,
-  });
+  }); 
   const onSubmit: SubmitHandler<ControllingOfficerDataForm> = (data) => {
-    console.log(data);
+    // console.log(data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
 
-  const [isDisabledData, setIsDisabledData] = useState(true);
+  const [isReadOnlyData, setisReadOnlyData] = useState(true);
   const { fetchAddress } = useAddressGoogle();
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Address[]>([]);
@@ -76,7 +76,6 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
         if (response && response.results) {
           setSuggestions(response.results);
           setIsAddressValid(false);
-          console.log("Suggestions fetched:", response.results);
         }
       } else {
         setSuggestions([]);
@@ -89,7 +88,6 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
 
   const handleAddressSelect = (address: Address) => {
     try {
-      console.log("Address selected:", address);
       const selectedAddress = address.formatted_address;
       const addressComponents = address.address_components;
 
@@ -102,7 +100,6 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
         const component = addressComponents.find(
           (component: AddressComponent) => component.types.includes(type)
         );
-        console.log(`Looking for ${type}:`, component);
         return component?.[useShortName ? "short_name" : "long_name"] || "";
       };
 
@@ -116,13 +113,12 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
         "";
 
       // Obtener estado (siempre usar short name para el estado)
-      const state =
-        getAddressComponent("administrative_area_level_1", true) || "";
+      // const state = getAddressComponent("administrative_area_level_1", true) || "";
 
       // Obtener ZIP code
       const zip = getAddressComponent("postal_code") || "";
 
-      console.table({ selectedAddress, city, state, zip });
+      // console.table({ selectedAddress, city, state, zip });
 
       // Establecer valores del formulario sin importar la validez completa
       setValue("controllerOfficerAddress", selectedAddress);
@@ -188,7 +184,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
     const checked = e.target.checked;
     setIsChecked(checked);
     setValue("controllerOfficerOfficerIsOwner", checked ? "yes" : "no");
-    setIsDisabledData(checked)
+    setisReadOnlyData(checked)
   };
 
   const controllerOfficerCity = watch("controllerOfficerCity");
@@ -217,7 +213,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter the first name"
             {...register("controllerOfficerFirstName")}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerFirstName?.message} />
         </FormControl>
@@ -231,7 +227,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter the middle name"
             {...register("controllerOfficerMiddleName")}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerMiddleName?.message} />
         </FormControl>
@@ -244,7 +240,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter the last name"
             {...register("controllerOfficerLastName")}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerLastName?.message} />
         </FormControl>
@@ -257,7 +253,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             {...register("controllerOfficerDob", {
               valueAsDate: false,
             })}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerDob?.message} />
         </FormControl>
@@ -270,7 +266,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             id={`controllerOfficerTitle`}
             placeholder="Select your Job Title"
             {...register(`controllerOfficerTitle`)}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           >
             <option value="CEO">CEO</option>
             <option value="Owner">Owner</option>
@@ -289,7 +285,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter controller officer email"
             {...register("controllerOfficerEmail")}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerEmail?.message} />
         </FormControl>
@@ -310,7 +306,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
               setIsAddressValid(false);
             },
           })}
-          isDisabled={isDisabledData}
+          isReadOnly={isReadOnlyData}
           onBlur={() => setSuggestions([])}
         />
         <ErrorMessage error={errors.controllerOfficerAddress?.message} />
@@ -320,7 +316,6 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
               <ListItem
                 key={index}
                 onMouseDown={() => {
-                  console.log("Suggestion clicked:", suggestion);
                   handleAddressSelect(suggestion);
                 }}
                 cursor="pointer"
@@ -346,7 +341,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
           placeholder="Enter controller officer city"
           value={controllerOfficerCity}
           {...register("controllerOfficerCity")}
-          isDisabled={isDisabledData}
+          isReadOnly={isReadOnlyData}
         />
         <ErrorMessage error={errors.controllerOfficerCity?.message} />
       </FormControl>
@@ -361,7 +356,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="text"
             placeholder="Enter your controller officer ZIP code"
             value={controllerOfficerZip}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
             {...register("controllerOfficerZip")}
           />
           <ErrorMessage error={errors.controllerOfficerZip?.message} />
@@ -375,7 +370,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             placeholder="Enter controller officer home phone"
             onInput={(e) => handleMaxInput(e,10)}
             {...register("controllerOfficerHomePhone")}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage error={errors.controllerOfficerHomePhone?.message} />
         </FormControl>
@@ -393,7 +388,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             {...register("controllerOfficerLicenseNumber", {
               valueAsDate: false,
             })}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage
             error={errors.controllerOfficerLicenseNumber?.message}
@@ -412,7 +407,7 @@ const ControllingOfficerForm: React.FC<ControllingOfficerFormProps> = ({
             type="date"
             placeholder="Enter driver license number expiration date"
             {...register("controllerOfficerLicenseNumberExpires")}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage
             error={errors.controllerOfficerLicenseNumberExpires?.message}

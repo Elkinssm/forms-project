@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import {
   FieldValues,
@@ -11,7 +11,7 @@ interface ZipInputProps<T extends FieldValues> {
   label: string;
   id: string;
   placeholder?: string;
-  isDisabled?: boolean;
+  isReadOnly?: boolean;
   value?: string;
   errors: any;
   register: UseFormRegister<T>;
@@ -21,7 +21,7 @@ const ZipInput = <T extends FieldValues>({
   label,
   id,
   placeholder,
-  isDisabled,
+  isReadOnly,
   value,
   errors,
   register,
@@ -47,13 +47,12 @@ const ZipInput = <T extends FieldValues>({
     }, obj);
   }
   
-  useEffect(() => {
-    // debugger
-    console.log("errors", errors);
-    console.log("id", id);
+  // useEffect(() => {
+  //   console.log("errors", errors);
+  //   console.log("id", id);
     
-    console.log("igetValued", getValue(errors,id));
-  });
+  //   console.log("igetValued", getValue(errors,id));
+  // });
   
 
   return (
@@ -66,7 +65,7 @@ const ZipInput = <T extends FieldValues>({
         value={value}
         placeholder={placeholder || `Enter your ${label}`}
         {...register(id as Path<T>, { onChange: handleZipChange })}
-        isDisabled={isDisabled}
+        isReadOnly={isReadOnly}
       />
       <ErrorMessage error={getValue(errors,id)?.message as string} />
     </FormControl>

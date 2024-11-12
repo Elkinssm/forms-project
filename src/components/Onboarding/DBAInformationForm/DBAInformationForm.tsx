@@ -67,7 +67,6 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
         if (response && response.results) {
           setSuggestions(response.results);
           setIsAddressValid(false);
-          console.log("Suggestions fetched:", response.results);
         }
       } else {
         setSuggestions([]);
@@ -80,7 +79,6 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
 
   const handleAddressSelect = (address: Address) => {
     try {
-      console.log("Address selected:", address);
       const selectedAddress = address.formatted_address;
       const addressComponents = address.address_components;
 
@@ -93,7 +91,6 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
         const component = addressComponents.find(
           (component: AddressComponent) => component.types.includes(type)
         );
-        console.log(`Looking for ${type}:`, component);
         return component?.[useShortName ? "short_name" : "long_name"] || "";
       };
 
@@ -113,7 +110,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
       // Obtener ZIP code
       const zip = getAddressComponent("postal_code") || "";
 
-      console.table({ selectedAddress, city, state, zip });
+      // console.table({ selectedAddress, city, state, zip });
 
       // Establecer valores del formulario sin importar la validez completa
       setValue("merchAddress", selectedAddress);
@@ -140,13 +137,13 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
   };
 
   const onSubmit: SubmitHandler<BusinessDataForm> = (data, event) => {
-    console.log(data);
+    //console.log(data);
     if (event) event.preventDefault();
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
 
-  const [isDisabledData, setIsDisabledData] = useState(false);
+  const [isReadOnlyData, setisReadOnlyData] = useState(false);
 
   // Efecto para actualizar variables cuando isLoading es true
   useEffect(() => {
@@ -157,7 +154,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
       formData.merchState = formDataAll.corpLegalState;
       formData.merchZip = formDataAll.corpLegalZip;
       formData.merchPhone = formDataAll.corpLegalPhone;
-      setIsDisabledData(true);
+      setisReadOnlyData(true);
       setIsChecked(true);
     }
     reset(formData);
@@ -187,7 +184,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
       formData.merchPhone = "";
     }
     setValue("controllerOfficerIsOwner", checked ? "yes" : "no");
-    setIsDisabledData(checked);
+    setisReadOnlyData(checked);
     reset(formData);
   };
 
@@ -219,7 +216,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             type="text"
             placeholder="Enter your DBA name"
             {...register("merchDBAName")}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage error={errors.merchDBAName?.message} />
         </FormControl>
@@ -232,7 +229,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             placeholder="Enter your location phone"
             onInput={(e) => handleMaxInput(e,3)}
             {...register("merchPhone")}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage error={errors.merchPhone?.message} />
         </FormControl>
@@ -253,7 +250,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
               setIsAddressValid(false);
             },
           })}
-          isDisabled={isDisabledData}
+          isReadOnly={isReadOnlyData}
           onBlur={() => setSuggestions([])}
         />
         <ErrorMessage error={errors.merchAddress?.message} />
@@ -263,7 +260,6 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
               <ListItem
                 key={index}
                 onMouseDown={() => {
-                  console.log("Suggestion clicked:", suggestion);
                   handleAddressSelect(suggestion);
                 }}
                 cursor="pointer"
@@ -289,7 +285,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             placeholder="Enter your location city"
             {...register("merchCity")}
             value={merchCity}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage error={errors.merchCity?.message} />
         </FormControl>
@@ -303,7 +299,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             placeholder="Enter your location state"
             {...register("merchState")}
             value={merchState}
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
           />
           <ErrorMessage error={errors.merchState?.message} />
         </FormControl>
@@ -316,7 +312,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
             id="merchZip"
             type="text"
             placeholder="Enter your legal ZIP code"
-            isDisabled={isDisabledData}
+            isReadOnly={isReadOnlyData}
             value={merchZip}
             {...register("merchZip")}
           />
@@ -328,7 +324,7 @@ const DBAInformationForm: React.FC<DBAInformationFormProps> = ({
           id="merchZip"
           errors={errors}
           register={register}
-          isDisabled={isDisabledData}
+          isReadOnly={isReadOnlyData}
         /> */}
       </HStack>
     </Box>

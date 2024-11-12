@@ -53,8 +53,8 @@ function App() {
             validationSchema={salesProfileSchema}
           />
           <SendConfirm
-            title="Send Confirm"
-            description="Your request is being processed."
+            title="Confirmation and Validation"
+            description="Confirm your information and validate your identity."
           />
         </Sidebar>
       </Box>

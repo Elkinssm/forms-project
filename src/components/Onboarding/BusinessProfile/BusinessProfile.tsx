@@ -51,7 +51,7 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     defaultValues: formData,
   });
   const onSubmit: SubmitHandler<BusinessProfileDataForm> = (data) => {
-    console.log(data);
+    // console.log(data);
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
@@ -92,7 +92,6 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     } else {
       setShowOtherInput(false);
     }
-    console.log("formData", formData.businessProfileOwnershipType);
   }, []);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

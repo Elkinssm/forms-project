@@ -107,7 +107,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   // };
 
   const handlePageChange = async (nextPage: number) => {
-    // si se esta devolviendo
     if (nextPage < selectedPage) {
       setSelectedPage(nextPage);
       return;
@@ -191,7 +190,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     }
   };
 
-  const progressValue = ((selectedPage ) / (totalSteps-1)) * 100;
+  const progressValue = ((selectedPage) / (totalSteps - 1)) * 100;
 
   // Obtener el título y la descripción del formulario seleccionado
   const currentChild = children[selectedPage];

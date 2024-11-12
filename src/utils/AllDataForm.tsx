@@ -33,6 +33,7 @@ type AllDataForm = {
   merchState: string;
   merchZip: string;
   merchPhone: string;
+  merchEmail: string;
   controllerOfficerIsOwner: string;
   controllerOfficerFirstName: string;
   controllerOfficerMiddleName: string;

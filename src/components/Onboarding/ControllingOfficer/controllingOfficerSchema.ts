@@ -7,7 +7,6 @@ const controllingOfficerSchema = z.object({
     .optional(),
   controllerOfficerMiddleName: z
     .string()
-    .min(2, "The Middle Name must be at least 2 chars")
     .optional(),
   controllerOfficerLastName: z
     .string()
@@ -66,7 +65,6 @@ const controllingOfficerSchema = z.object({
   if (data.controllerOfficerOfficerIsOwner === "no") {
     return (
       data.controllerOfficerFirstName &&
-      data.controllerOfficerMiddleName &&
       data.controllerOfficerLastName &&
       data.controllerOfficerTitle &&
       data.controllerOfficerAddress &&
