@@ -62,7 +62,6 @@ const controllingOfficerSchema = z.object({
   controllerOfficerEmail: z.string().email("A valid email is required")
   .optional(),
 }).refine(data => {
-  debugger
   if (data.controllerOfficerOfficerIsOwner === "no") {
     return (
       data.controllerOfficerFirstName &&

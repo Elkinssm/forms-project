@@ -107,7 +107,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   // };
 
   const handlePageChange = async (nextPage: number) => {
-    debugger
     if (nextPage < selectedPage) {
       setSelectedPage(nextPage);
       return;
