@@ -135,7 +135,8 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
             for (let [key, value] of formData.entries()) {
               // Si el valor es una instancia de File, se conserva tal cual, si no, se convierte a cadena
-              formValues[key] = value instanceof FileList ? value : String(value);
+              formValues[key] =
+                value instanceof FileList ? value : String(value);
             }
 
             // Filtrar y crear el array de owners
@@ -160,7 +161,10 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             const otherFields = Object.keys(formValues)
               .filter((key) => !key.startsWith("owners."))
               .reduce((acc, key) => {
-                acc[key] = formValues[key] instanceof FileList ? formValues[key][0] : formValues[key]; // Asignar el campo al nuevo objeto
+                acc[key] =
+                  formValues[key] instanceof FileList
+                    ? formValues[key][0]
+                    : formValues[key]; // Asignar el campo al nuevo objeto
                 return acc;
               }, {} as Record<string, string | File>);
 
@@ -195,7 +199,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     }
   };
 
-  const progressValue = ((selectedPage) / (totalSteps - 1)) * 100;
+  const progressValue = (selectedPage / (totalSteps - 1)) * 100;
 
   // Obtener el título y la descripción del formulario seleccionado
   const currentChild = children[selectedPage];
@@ -268,13 +272,27 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
               alignItems="center"
               fontWeight={index === selectedPage ? "bold" : "regular"}
               cursor="pointer"
-              color={index <= selectedPage ? "brand.primary" : "neutral.800"}
+              // *? Cambiar el color del ícono y el texto según la página actual
+              // color={index <= selectedPage ? "brand.primary" : "neutral.800"}
+              color={
+                index === selectedPage
+                  ? "semantic.success.DEFAULT"
+                  : index < selectedPage
+                  ? "brand.primary"
+                  : "neutral.800"
+              }
               onClick={() => handlePageChange(index)}
             >
               <Icon
-                as={index <= selectedPage ? CheckIcon : CircleIcon}
+                as={index < selectedPage ? CheckIcon : CircleIcon}
                 boxSize={4}
-                color={index <= selectedPage ? "brand.primary" : "neutral.500"}
+                color={
+                  index < selectedPage
+                    ? "brand.primary"
+                    : index === selectedPage
+                    ? "semantic.success.DEFAULT"
+                    : "neutral.500"
+                }
                 mr={2}
               />
               {React.isValidElement(child)
