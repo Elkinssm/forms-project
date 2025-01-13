@@ -12,13 +12,6 @@ import {
   VStack,
   Spacer,
   Image,
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import { AnimatePresence, motion } from "framer-motion";
@@ -42,9 +35,10 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const [formDataAll, setFormDataAll] = useState<FormData>({});
   const [direction, setDirection] = useState<"next" | "back">("next");
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   const totalSteps = React.Children.count(children);
   const formRef = useRef<HTMLFormElement>(null);
+  const [validationErrors, setValidationErrors] = useState<number[]>([]);
 
   useEffect(() => {
     setIsFirstRender(false);
@@ -106,97 +100,183 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   //   }
   // };
 
+  // const handlePageChange = async (nextPage: number) => {
+  //   if (nextPage < selectedPage) {
+  //     setSelectedPage(nextPage);
+  //     return;
+  //   }
+  //   if (nextPage === selectedPage) {
+  //     return;
+  //   }
+  //   // se valida que solo avance al siguiente formulario
+  //   if (nextPage != selectedPage + 1) {
+  //     nextPage = selectedPage + 1;
+  //   }
+  //   // Si el usuario está intentando avanzar
+  //   if (nextPage > selectedPage) {
+  //     // Validar el formulario actual antes de permitir avanzar
+  //     if (formRef.current) {
+  //       try {
+  //         // Obtener el formulario actual
+  //         const currentChild = children[selectedPage];
+
+  //         // Acceder a la prop `validationSchema` del formulario actual
+  //         const validationSchema = currentChild?.props?.validationSchema;
+
+  //         if (validationSchema) {
+  //           const formData = new FormData(formRef.current);
+  //           const formValues: { [key: string]: string | FileList } = {};
+
+  //           for (let [key, value] of formData.entries()) {
+  //             // Si el valor es una instancia de File, se conserva tal cual, si no, se convierte a cadena
+  //             formValues[key] =
+  //               value instanceof FileList ? value : String(value);
+  //           }
+
+  //           // Filtrar y crear el array de owners
+  //           const owners = Object.keys(formValues)
+  //             .filter((key) => key.startsWith("owners."))
+  //             .reduce((acc: Array<Record<string, string>>, key) => {
+  //               // Extraer el índice del owner
+  //               const ownerIndex = Number(key.split(".")[1]); // Convertir a número
+  //               const field = key.split(".")[2]; // 'ownerFirstName' en 'owners.0.ownerFirstName'
+
+  //               // Asegurarte de que el array existe
+  //               if (!acc[ownerIndex]) {
+  //                 acc[ownerIndex] = {};
+  //               }
+
+  //               // Asignar el valor al campo correspondiente
+  //               acc[ownerIndex][field] = String(formValues[key]);
+  //               return acc;
+  //             }, [] as Array<Record<string, string>>);
+
+  //           // Crear un nuevo objeto para campos que no sean de owners
+  //           const otherFields = Object.keys(formValues)
+  //             .filter((key) => !key.startsWith("owners."))
+  //             .reduce((acc, key) => {
+  //               acc[key] =
+  //                 formValues[key] instanceof FileList
+  //                   ? formValues[key][0]
+  //                   : formValues[key]; // Asignar el campo al nuevo objeto
+  //               return acc;
+  //             }, {} as Record<string, string | File>);
+
+  //           // Crear el objeto final
+  //           const transformedValues = {
+  //             ...otherFields, // Incluir otros campos
+  //             owners, // Incluir el array de owners
+  //           };
+  //           // Validar usando Zod con el esquema proporcionado por el formulario actual
+  //           await validationSchema.parseAsync(transformedValues);
+
+  //           handleDataChange(formValues);
+
+  //           // Si la validación es exitosa, cambiar de página
+  //           setSelectedPage(nextPage);
+  //         } else {
+  //           // Si no hay esquema de validación, permitir el cambio
+  //           setSelectedPage(nextPage);
+  //         }
+  //       } catch (error) {
+  //         if (error instanceof ZodError) {
+  //           // Manejar los errores de validación y evitar el cambio de página
+  //           console.error("Errores de validación:", error.errors);
+  //           console.error(formDataAll);
+  //           setIsModalOpen(true);
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     // Si el usuario está retrocediendo, permitir el cambio sin validar
+  //     setSelectedPage(nextPage);
+  //   }
+  // };
   const handlePageChange = async (nextPage: number) => {
-    if (nextPage < selectedPage) {
-      setSelectedPage(nextPage);
-      return;
-    }
     if (nextPage === selectedPage) {
       return;
     }
-    // se valida que solo avance al siguiente formulario
-    if (nextPage != selectedPage + 1) {
-      nextPage = selectedPage + 1;
-    }
-    // Si el usuario está intentando avanzar
-    if (nextPage > selectedPage) {
-      // Validar el formulario actual antes de permitir avanzar
-      if (formRef.current) {
-        try {
-          // Obtener el formulario actual
-          const currentChild = children[selectedPage];
 
-          // Acceder a la prop `validationSchema` del formulario actual
-          const validationSchema = currentChild?.props?.validationSchema;
+    // Permitir la navegación sin restricciones
+    setSelectedPage(nextPage);
 
-          if (validationSchema) {
-            const formData = new FormData(formRef.current);
-            const formValues: { [key: string]: string | FileList } = {};
+    // Validar el formulario actual si el usuario está intentando avanzar
+    if (nextPage > selectedPage && formRef.current) {
+      try {
+        // Obtener el formulario actual
+        const currentChild = children[selectedPage];
 
-            for (let [key, value] of formData.entries()) {
-              // Si el valor es una instancia de File, se conserva tal cual, si no, se convierte a cadena
-              formValues[key] =
-                value instanceof FileList ? value : String(value);
-            }
+        // Acceder a la prop `validationSchema` del formulario actual
+        const validationSchema = currentChild?.props?.validationSchema;
 
-            // Filtrar y crear el array de owners
-            const owners = Object.keys(formValues)
-              .filter((key) => key.startsWith("owners."))
-              .reduce((acc: Array<Record<string, string>>, key) => {
-                // Extraer el índice del owner
-                const ownerIndex = Number(key.split(".")[1]); // Convertir a número
-                const field = key.split(".")[2]; // 'ownerFirstName' en 'owners.0.ownerFirstName'
+        if (validationSchema) {
+          const formData = new FormData(formRef.current);
+          const formValues: { [key: string]: string | FileList } = {};
 
-                // Asegurarte de que el array existe
-                if (!acc[ownerIndex]) {
-                  acc[ownerIndex] = {};
-                }
-
-                // Asignar el valor al campo correspondiente
-                acc[ownerIndex][field] = String(formValues[key]);
-                return acc;
-              }, [] as Array<Record<string, string>>);
-
-            // Crear un nuevo objeto para campos que no sean de owners
-            const otherFields = Object.keys(formValues)
-              .filter((key) => !key.startsWith("owners."))
-              .reduce((acc, key) => {
-                acc[key] =
-                  formValues[key] instanceof FileList
-                    ? formValues[key][0]
-                    : formValues[key]; // Asignar el campo al nuevo objeto
-                return acc;
-              }, {} as Record<string, string | File>);
-
-            // Crear el objeto final
-            const transformedValues = {
-              ...otherFields, // Incluir otros campos
-              owners, // Incluir el array de owners
-            };
-            // Validar usando Zod con el esquema proporcionado por el formulario actual
-            await validationSchema.parseAsync(transformedValues);
-
-            handleDataChange(formValues);
-
-            // Si la validación es exitosa, cambiar de página
-            setSelectedPage(nextPage);
-          } else {
-            // Si no hay esquema de validación, permitir el cambio
-            setSelectedPage(nextPage);
+          for (let [key, value] of formData.entries()) {
+            // Si el valor es una instancia de File, se conserva tal cual, si no, se convierte a cadena
+            formValues[key] = value instanceof FileList ? value : String(value);
           }
-        } catch (error) {
-          if (error instanceof ZodError) {
-            // Manejar los errores de validación y evitar el cambio de página
-            console.error("Errores de validación:", error.errors);
-            console.error(formDataAll);
-            setIsModalOpen(true);
-          }
+
+          // Filtrar y crear el array de owners
+          const owners = Object.keys(formValues)
+            .filter((key) => key.startsWith("owners."))
+            .reduce((acc: Array<Record<string, string>>, key) => {
+              // Extraer el índice del owner
+              const ownerIndex = Number(key.split(".")[1]); // Convertir a número
+              const field = key.split(".")[2]; // 'ownerFirstName' en 'owners.0.ownerFirstName'
+
+              // Asegurarte de que el array existe
+              if (!acc[ownerIndex]) {
+                acc[ownerIndex] = {};
+              }
+
+              // Asignar el valor al campo correspondiente
+              acc[ownerIndex][field] = String(formValues[key]);
+              return acc;
+            }, [] as Array<Record<string, string>>);
+
+          // Crear un nuevo objeto para campos que no sean de owners
+          const otherFields = Object.keys(formValues)
+            .filter((key) => !key.startsWith("owners."))
+            .reduce((acc, key) => {
+              acc[key] =
+                formValues[key] instanceof FileList
+                  ? formValues[key][0]
+                  : formValues[key]; // Asignar el campo al nuevo objeto
+              return acc;
+            }, {} as Record<string, string | File>);
+
+          // Crear el objeto final
+          const transformedValues = {
+            ...otherFields, // Incluir otros campos
+            owners, // Incluir el array de owners
+          };
+
+          // Validar usando Zod con el esquema proporcionado por el formulario actual
+          await validationSchema.parseAsync(transformedValues);
+
+          handleDataChange(formValues);
+
+          // Si la validación es exitosa, eliminar los errores de validación para esta página
+          setValidationErrors((prevErrors) =>
+            prevErrors.filter((errorIndex) => errorIndex !== selectedPage)
+          );
+        }
+      } catch (error) {
+        if (error instanceof ZodError) {
+          // Manejar los errores de validación y continuar con el cambio de página
+          console.error("Errores de validación:", error.errors);
+
+          // Agregar la página actual a la lista de errores de validación
+          setValidationErrors((prevErrors) => [...prevErrors, selectedPage]);
         }
       }
-    } else {
-      // Si el usuario está retrocediendo, permitir el cambio sin validar
-      setSelectedPage(nextPage);
     }
+  };
+
+  const isFormFilled = (index: number) => {
+    return !validationErrors.includes(index);
   };
 
   const progressValue = (selectedPage / (totalSteps - 1)) * 100;
@@ -267,16 +347,17 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         <List spacing={3} pl={4} pt={2}>
           {React.Children.map(children, (child, index) => (
             <ListItem
-              key={index}
               display="flex"
               alignItems="center"
               fontWeight={index === selectedPage ? "bold" : "regular"}
               cursor="pointer"
-              // *? Cambiar el color del ícono y el texto según la página actual
-              // color={index <= selectedPage ? "brand.primary" : "neutral.800"}
               color={
-                index === selectedPage
-                  ? "semantic.success.DEFAULT"
+                validationErrors.includes(index)
+                  ? "semantic.warning.DEFAULT"
+                  : index === selectedPage
+                  ? isFormFilled(index)
+                    ? "semantic.success.DEFAULT"
+                    : "semantic.warning.DEFAULT"
                   : index < selectedPage
                   ? "brand.primary"
                   : "neutral.800"
@@ -284,13 +365,25 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
               onClick={() => handlePageChange(index)}
             >
               <Icon
-                as={index < selectedPage ? CheckIcon : CircleIcon}
+                as={
+                  validationErrors.includes(index)
+                    ? CircleIcon
+                    : index < selectedPage
+                    ? CheckIcon
+                    : isFormFilled(index)
+                    ? CircleIcon
+                    : CircleIcon
+                }
                 boxSize={4}
                 color={
-                  index < selectedPage
+                  validationErrors.includes(index)
+                    ? "semantic.warning.DEFAULT"
+                    : index < selectedPage
                     ? "brand.primary"
                     : index === selectedPage
-                    ? "semantic.success.DEFAULT"
+                    ? isFormFilled(index)
+                      ? "semantic.success.DEFAULT"
+                      : "semantic.warning.DEFAULT"
                     : "neutral.500"
                 }
                 mr={2}
@@ -366,7 +459,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         </Box>
       </Box>
       {/* Modal de validación */}
-      <Modal
+      {/* <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         isCentered
@@ -384,7 +477,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </Box>
   );
 };
