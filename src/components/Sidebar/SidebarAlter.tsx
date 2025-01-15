@@ -1,4 +1,3 @@
-// Sidebar.tsx
 import React, { useState, ReactElement, useEffect, useRef } from "react";
 import {
   Text,
@@ -35,271 +34,200 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const [formDataAll, setFormDataAll] = useState<FormData>({});
   const [direction, setDirection] = useState<"next" | "back">("next");
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
+  const [isSummary, setIsSummary] = useState<boolean>(false);
 
   const totalSteps = React.Children.count(children);
   const formRef = useRef<HTMLFormElement>(null);
+
+  // Páginas con errores.
   const [validationErrors, setValidationErrors] = useState<number[]>([]);
+
+  // Páginas que el usuario visitó.
+  const [visitedPages, setVisitedPages] = useState<Set<number>>(new Set([0]));
+
+  // Páginas que realmente se validaron exitosamente.
+  const [validatedPages, setValidatedPages] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     setIsFirstRender(false);
+    // No valide el primer formulario de inmediato
   }, []);
-  const handleNext = () => {
-    if (formRef.current) {
-      formRef.current.requestSubmit();
+
+  const validateForm = async (index: number) => {
+    const currentChild = children[index];
+    const validationSchema = currentChild?.props?.validationSchema;
+    if (!validationSchema || !formRef.current) return;
+
+    const currentFormData = new FormData(formRef.current);
+    const formValues: { [key: string]: string | FileList } = {};
+
+    for (const [key, value] of currentFormData.entries()) {
+      formValues[key] = value instanceof FileList ? value : String(value);
+    }
+
+    const owners = Object.keys(formValues)
+      .filter((k) => k.startsWith("owners."))
+      .reduce((acc: Array<Record<string, string>>, key) => {
+        const [, ownerIndex, field] = key.split(".");
+        if (!acc[Number(ownerIndex)]) acc[Number(ownerIndex)] = {};
+        acc[Number(ownerIndex)][field] = String(formValues[key]);
+        return acc;
+      }, []);
+
+    const otherFields = Object.keys(formValues)
+      .filter((k) => !k.startsWith("owners."))
+      .reduce((acc, key) => {
+        acc[key] =
+          formValues[key] instanceof FileList
+            ? formValues[key][0]
+            : formValues[key];
+        return acc;
+      }, {} as Record<string, string | File>);
+
+    const transformedValues = {
+      ...otherFields,
+      owners,
+    };
+
+    try {
+      await validationSchema.parseAsync(transformedValues);
+      // Quitar la página de errores y añadirla a validadas
+      setValidationErrors((prev) => prev.filter((e) => e !== index));
+      setValidatedPages((prev) => new Set([...prev, index]));
+    } catch (error) {
+      if (error instanceof ZodError) {
+        // Añadir a errores y quitar de validadas
+        setValidationErrors((prev) =>
+          prev.includes(index) ? prev : [...prev, index]
+        );
+        setValidatedPages((prev) => {
+          const next = new Set(prev);
+          next.delete(index);
+          return next;
+        });
+      }
     }
   };
 
-  const handleFormValidationSuccess = () => {
+  const handleNext = () => {
+    // Forzar submit
+    formRef.current?.requestSubmit();
+  };
+
+  const handleFormValidationSuccess = async () => {
     if (selectedPage < totalSteps - 1) {
       setDirection("next");
-      setSelectedPage((prevPage) => prevPage + 1);
+      // Validar la página actual antes de avanzar
+      await validateForm(selectedPage);
+      const nextPage = selectedPage + 1;
+      setSelectedPage(nextPage);
+      setVisitedPages((prev) => new Set([...prev, nextPage]));
+    } else {
+      setIsSummary(true);
     }
   };
 
   const handleBack = () => {
     if (selectedPage > 0) {
       setDirection("back");
-      setSelectedPage(selectedPage - 1);
+      setSelectedPage((p) => p - 1);
+      setIsSummary(false);
     }
   };
 
   const handleDataChange = (data: FormData) => {
-    setFormData((prevData) => ({ ...prevData, ...data }));
-    setFormDataAll((prevData) => ({ ...prevData, ...data }));
+    setFormData((prev) => ({ ...prev, ...data }));
+    setFormDataAll((prev) => ({ ...prev, ...data }));
   };
 
-  // const handlePageChange = async (nextPage: number) => {
-  //   if (formRef.current) {
-  //     try {
-  //       // Obtener el formulario actual
-  //       const currentChild = children[selectedPage];
-
-  //       // Aquí extraemos las props, incluyendo validationSchema, title, description, etc.
-  //       const validationSchema = currentChild?.props?.validationSchema;
-
-  //       if (validationSchema) {
-  //         const formData = new FormData(formRef.current);
-  //         const formValues = Object.fromEntries(formData.entries());
-
-  //         // Validar usando Zod con el esquema proporcionado por el formulario actual
-  //         await validationSchema.parseAsync(formValues);
-
-  //         // Si la validación es exitosa, cambiar de página
-  //         setSelectedPage(nextPage);
-  //       } else {
-  //         // Si no hay esquema de validación, permitir el cambio
-  //         setSelectedPage(nextPage);
-  //       }
-  //     } catch (error) {
-  //       if (error instanceof ZodError) {
-  //         // Manejar los errores de validación
-  //         console.error("Errores de validación:", error.errors);
-  //         setIsModalOpen(true);
-  //       }
-  //     }
-  //   }
-  // };
-
-  // const handlePageChange = async (nextPage: number) => {
-  //   if (nextPage < selectedPage) {
-  //     setSelectedPage(nextPage);
-  //     return;
-  //   }
-  //   if (nextPage === selectedPage) {
-  //     return;
-  //   }
-  //   // se valida que solo avance al siguiente formulario
-  //   if (nextPage != selectedPage + 1) {
-  //     nextPage = selectedPage + 1;
-  //   }
-  //   // Si el usuario está intentando avanzar
-  //   if (nextPage > selectedPage) {
-  //     // Validar el formulario actual antes de permitir avanzar
-  //     if (formRef.current) {
-  //       try {
-  //         // Obtener el formulario actual
-  //         const currentChild = children[selectedPage];
-
-  //         // Acceder a la prop `validationSchema` del formulario actual
-  //         const validationSchema = currentChild?.props?.validationSchema;
-
-  //         if (validationSchema) {
-  //           const formData = new FormData(formRef.current);
-  //           const formValues: { [key: string]: string | FileList } = {};
-
-  //           for (let [key, value] of formData.entries()) {
-  //             // Si el valor es una instancia de File, se conserva tal cual, si no, se convierte a cadena
-  //             formValues[key] =
-  //               value instanceof FileList ? value : String(value);
-  //           }
-
-  //           // Filtrar y crear el array de owners
-  //           const owners = Object.keys(formValues)
-  //             .filter((key) => key.startsWith("owners."))
-  //             .reduce((acc: Array<Record<string, string>>, key) => {
-  //               // Extraer el índice del owner
-  //               const ownerIndex = Number(key.split(".")[1]); // Convertir a número
-  //               const field = key.split(".")[2]; // 'ownerFirstName' en 'owners.0.ownerFirstName'
-
-  //               // Asegurarte de que el array existe
-  //               if (!acc[ownerIndex]) {
-  //                 acc[ownerIndex] = {};
-  //               }
-
-  //               // Asignar el valor al campo correspondiente
-  //               acc[ownerIndex][field] = String(formValues[key]);
-  //               return acc;
-  //             }, [] as Array<Record<string, string>>);
-
-  //           // Crear un nuevo objeto para campos que no sean de owners
-  //           const otherFields = Object.keys(formValues)
-  //             .filter((key) => !key.startsWith("owners."))
-  //             .reduce((acc, key) => {
-  //               acc[key] =
-  //                 formValues[key] instanceof FileList
-  //                   ? formValues[key][0]
-  //                   : formValues[key]; // Asignar el campo al nuevo objeto
-  //               return acc;
-  //             }, {} as Record<string, string | File>);
-
-  //           // Crear el objeto final
-  //           const transformedValues = {
-  //             ...otherFields, // Incluir otros campos
-  //             owners, // Incluir el array de owners
-  //           };
-  //           // Validar usando Zod con el esquema proporcionado por el formulario actual
-  //           await validationSchema.parseAsync(transformedValues);
-
-  //           handleDataChange(formValues);
-
-  //           // Si la validación es exitosa, cambiar de página
-  //           setSelectedPage(nextPage);
-  //         } else {
-  //           // Si no hay esquema de validación, permitir el cambio
-  //           setSelectedPage(nextPage);
-  //         }
-  //       } catch (error) {
-  //         if (error instanceof ZodError) {
-  //           // Manejar los errores de validación y evitar el cambio de página
-  //           console.error("Errores de validación:", error.errors);
-  //           console.error(formDataAll);
-  //           setIsModalOpen(true);
-  //         }
-  //       }
-  //     }
-  //   } else {
-  //     // Si el usuario está retrocediendo, permitir el cambio sin validar
-  //     setSelectedPage(nextPage);
-  //   }
-  // };
   const handlePageChange = async (nextPage: number) => {
-    if (nextPage === selectedPage) {
-      return;
+    if (nextPage === selectedPage) return;
+
+    // Si saltas hacia adelante, marca las intermedias como visitadas
+    if (nextPage > selectedPage) {
+      const pagesToMark = Array.from(
+        { length: nextPage - selectedPage },
+        (_, i) => selectedPage + i + 1
+      );
+      setVisitedPages((prev) => new Set([...prev, ...pagesToMark]));
     }
 
-    // Permitir la navegación sin restricciones
-    setSelectedPage(nextPage);
+    // Guardar datos actuales
+    if (formRef.current) {
+      const currentFormData = new FormData(formRef.current);
+      const formValues: { [key: string]: string | FileList } = {};
+      for (const [key, value] of currentFormData.entries()) {
+        formValues[key] = value instanceof FileList ? value : String(value);
+      }
+      handleDataChange(formValues);
+    }
 
-    // Validar el formulario actual si el usuario está intentando avanzar
+    // Validar la página actual antes de cambiar
     if (nextPage > selectedPage && formRef.current) {
       try {
-        // Obtener el formulario actual
-        const currentChild = children[selectedPage];
-
-        // Acceder a la prop `validationSchema` del formulario actual
-        const validationSchema = currentChild?.props?.validationSchema;
-
-        if (validationSchema) {
-          const formData = new FormData(formRef.current);
-          const formValues: { [key: string]: string | FileList } = {};
-
-          for (let [key, value] of formData.entries()) {
-            // Si el valor es una instancia de File, se conserva tal cual, si no, se convierte a cadena
-            formValues[key] = value instanceof FileList ? value : String(value);
-          }
-
-          // Filtrar y crear el array de owners
-          const owners = Object.keys(formValues)
-            .filter((key) => key.startsWith("owners."))
-            .reduce((acc: Array<Record<string, string>>, key) => {
-              // Extraer el índice del owner
-              const ownerIndex = Number(key.split(".")[1]); // Convertir a número
-              const field = key.split(".")[2]; // 'ownerFirstName' en 'owners.0.ownerFirstName'
-
-              // Asegurarte de que el array existe
-              if (!acc[ownerIndex]) {
-                acc[ownerIndex] = {};
-              }
-
-              // Asignar el valor al campo correspondiente
-              acc[ownerIndex][field] = String(formValues[key]);
-              return acc;
-            }, [] as Array<Record<string, string>>);
-
-          // Crear un nuevo objeto para campos que no sean de owners
-          const otherFields = Object.keys(formValues)
-            .filter((key) => !key.startsWith("owners."))
-            .reduce((acc, key) => {
-              acc[key] =
-                formValues[key] instanceof FileList
-                  ? formValues[key][0]
-                  : formValues[key]; // Asignar el campo al nuevo objeto
-              return acc;
-            }, {} as Record<string, string | File>);
-
-          // Crear el objeto final
-          const transformedValues = {
-            ...otherFields, // Incluir otros campos
-            owners, // Incluir el array de owners
-          };
-
-          // Validar usando Zod con el esquema proporcionado por el formulario actual
-          await validationSchema.parseAsync(transformedValues);
-
-          handleDataChange(formValues);
-
-          // Si la validación es exitosa, eliminar los errores de validación para esta página
-          setValidationErrors((prevErrors) =>
-            prevErrors.filter((errorIndex) => errorIndex !== selectedPage)
-          );
-        }
-      } catch (error) {
-        if (error instanceof ZodError) {
-          // Manejar los errores de validación y continuar con el cambio de página
-          console.error("Errores de validación:", error.errors);
-
-          // Agregar la página actual a la lista de errores de validación
-          setValidationErrors((prevErrors) => [...prevErrors, selectedPage]);
-        }
+        await validateForm(selectedPage);
+      } catch {
+        // Ignora errores controlados
       }
     }
+
+    // Marcar la nueva página como visitada
+    setVisitedPages((prev) => new Set([...prev, nextPage]));
+    setSelectedPage(nextPage);
   };
 
-  const isFormFilled = (index: number) => {
-    return !validationErrors.includes(index);
+  // Determina el color de cada ListItem según visitado/validado/errores
+  const getListItemColor = (index: number) => {
+    // No visitado => gris neutro
+    if (!visitedPages.has(index)) return "neutral.800";
+
+    // Tiene errores => amarillo
+    if (validationErrors.includes(index)) return "semantic.warning.DEFAULT";
+
+    // Página actual => verde
+    if (index === selectedPage) {
+      return "semantic.success.DEFAULT";
+    }
+
+    // Página anterior validada => azul brand.primary
+    if (validatedPages.has(index) && index < selectedPage) {
+      return "brand.primary";
+    }
+
+    // Visitada pero no validada => amarillo
+    return "semantic.warning.DEFAULT";
+  };
+
+  // Determina el ícono según estados
+  const getListItemIcon = (index: number) => {
+    if (!visitedPages.has(index)) {
+      // No visitada => círculo gris
+      return CircleIcon;
+    }
+    if (validationErrors.includes(index)) {
+      // Visitada con errores => círculo amarillo
+      return CircleIcon;
+    }
+    if (validatedPages.has(index)) {
+      // Validada:
+      if (index < selectedPage) return CheckIcon; // Anterior validado => check azul
+      if (index === selectedPage) return CircleIcon; // Actual validado => círculo verde
+    }
+    // Visitada pero no validada => círculo amarillo
+    return CircleIcon;
   };
 
   const progressValue = (selectedPage / (totalSteps - 1)) * 100;
-
-  // Obtener el título y la descripción del formulario seleccionado
   const currentChild = children[selectedPage];
-
-  // Verificar si el currentChild tiene title y description
   const title = currentChild?.props?.title || "Default Title";
   const description = currentChild?.props?.description || "Default Description";
 
-  // Añadir logs para depuración
-  // console.log("Current Child:", currentChild);
-  // console.log("Title:", title);
-  // console.log("Description:", description);
-
   return (
     <Box display="flex" flexDirection={{ base: "column", md: "row" }} h="100vh">
-      {/* Sidebar */}
       <Box
         as="aside"
         w={{ base: "100%", md: "420px" }}
-        h={{ base: "auto", md: "100vh" }} // Asegurar que el sidebar tenga la altura completa de la pantalla
+        h={{ base: "auto", md: "100vh" }}
         p={4}
         borderRight="1px solid"
         borderColor="neutral.300"
@@ -307,7 +235,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         flexDirection="column"
       >
         <Image src={logo} alt="Logo" pb={2} width="auto" height="45px" />
-        <VStack align="start" spacing={4} mb={6} flexDirection={"row"}>
+        <VStack align="start" spacing={4} mb={6} flexDirection="row">
           <Box
             display="flex"
             alignItems="center"
@@ -344,6 +272,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             </CircularProgress>
           </Box>
         </VStack>
+
         <List spacing={3} pl={4} pt={2}>
           {React.Children.map(children, (child, index) => (
             <ListItem
@@ -351,41 +280,13 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
               alignItems="center"
               fontWeight={index === selectedPage ? "bold" : "regular"}
               cursor="pointer"
-              color={
-                validationErrors.includes(index)
-                  ? "semantic.warning.DEFAULT"
-                  : index === selectedPage
-                  ? isFormFilled(index)
-                    ? "semantic.success.DEFAULT"
-                    : "semantic.warning.DEFAULT"
-                  : index < selectedPage
-                  ? "brand.primary"
-                  : "neutral.800"
-              }
+              color={getListItemColor(index)}
               onClick={() => handlePageChange(index)}
             >
               <Icon
-                as={
-                  validationErrors.includes(index)
-                    ? CircleIcon
-                    : index < selectedPage
-                    ? CheckIcon
-                    : isFormFilled(index)
-                    ? CircleIcon
-                    : CircleIcon
-                }
+                as={getListItemIcon(index)}
                 boxSize={4}
-                color={
-                  validationErrors.includes(index)
-                    ? "semantic.warning.DEFAULT"
-                    : index < selectedPage
-                    ? "brand.primary"
-                    : index === selectedPage
-                    ? isFormFilled(index)
-                      ? "semantic.success.DEFAULT"
-                      : "semantic.warning.DEFAULT"
-                    : "neutral.500"
-                }
+                color={getListItemColor(index)}
                 mr={2}
               />
               {React.isValidElement(child)
@@ -396,7 +297,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         </List>
       </Box>
 
-      {/* Main Content */}
       <Box display="flex" flexDirection="column" w="100%" h="100%">
         <Box
           flex="0"
@@ -408,7 +308,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           borderColor="gray.200"
           zIndex={1}
         >
-          {/* Usar título y descripción del formulario actual */}
           <FormHeader title={title} description={description} />
         </Box>
         <Box
@@ -434,13 +333,12 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
                   {React.cloneElement(child as React.ReactElement, {
-                    onNext: handleFormValidationSuccess, // Llamado si el formulario es válido
+                    onNext: handleFormValidationSuccess,
                     onBack: handleBack,
                     onDataChange: handleDataChange,
                     formData: formData,
                     formRef: formRef,
-                    formDataAll: formData,
-                    // No sobreescribir title o description aquí
+                    formDataAll: formDataAll,
                   })}
                 </motion.div>
               ) : null
@@ -458,26 +356,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           />
         </Box>
       </Box>
-      {/* Modal de validación */}
-      {/* <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        isCentered
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Incomplete Form</ModalHeader>
-          <ModalBody>
-            Please fill out all required fields before proceeding to the next
-            step.
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" onClick={() => setIsModalOpen(false)}>
-              Got it
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal> */}
     </Box>
   );
 };
