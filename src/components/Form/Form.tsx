@@ -33,7 +33,7 @@ const Form = () => {
   });
 
   const onSubmit = (data: LoginDataForm) => {
-    console.log(data);
+    // console.log(data);
     alert(`Correo: ${data.email}, Contraseña: ${data.password}`);
   };
 

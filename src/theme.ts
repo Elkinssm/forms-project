@@ -71,6 +71,7 @@ const theme = extendTheme({
           _invalid: {
             borderColor: "semantic.error.DEFAULT",
             boxShadow: "0 0 0 1px #E53935",
+
             _focus: {
               borderColor: "semantic.error.DEFAULT",
               boxShadow: "0 0 0 1px #E53935",
@@ -113,7 +114,7 @@ const theme = extendTheme({
           color: "text.disabled",
         },
         _invalid: {
-          color: "semantic.error.DEFAULT",
+          // color: "semantic.error.DEFAULT",
         },
       },
     },
@@ -236,6 +237,42 @@ const theme = extendTheme({
         size: "md",
         variant: "solid",
         border: "none",
+      },
+    },
+    Accordion: {
+      baseStyle: {
+        container: {
+          borderTop: "none",
+          borderColor: "neutral.300",
+          _default: {
+            borderColor: "neutral.300",
+          },
+          _hover: {
+            borderColor: "neutral.300",
+          },
+        },
+        button: {
+          borderLeft: "none",
+          borderRight: "none",
+          borderTop: "none",
+          borderColor: "neutral.300",
+          bg: "neutral.100",
+          borderRadius: "none",
+          _hover: {
+            borderLeft: "none",
+            borderRight: "none",
+            borderTop: "none",
+            borderBottom: "1px solid",
+            borderColor: "neutral.300",
+            bg: "neutral.100",
+          },
+          _focus: {
+            border: "none",
+            outline: "none",
+            borderBottom: "1px solid",
+            borderColor: "neutral.300",
+          },
+        },
       },
     },
   },

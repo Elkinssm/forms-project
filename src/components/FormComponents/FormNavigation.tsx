@@ -9,15 +9,16 @@ interface FormNavigationProps {
   showBackButton?: boolean;
   buttonSize?: string;
   isFirstPage?: boolean;
+  isLastPage?: boolean;
 }
 
 const FormNavigation: React.FC<FormNavigationProps> = ({
   onBack,
-  // onNext,
   formRef,
   showBackButton = true,
   isFirstPage = false,
   buttonSize = "md",
+  isLastPage = false,
 }) => {
   const handleNextClick = () => {
     if (formRef.current) {
@@ -28,30 +29,34 @@ const FormNavigation: React.FC<FormNavigationProps> = ({
   };
 
   return (
-    <Box display="flex" justifyContent="space-between" p={4} gap={4}>
-      {showBackButton && onBack && (
-        <Button
-          onClick={onBack}
-          colorScheme="gray"
-          leftIcon={<ChevronLeftIcon />}
-          variant="outline"
-          width={isFirstPage ? "0%" : "45%"}
-          size={buttonSize}
-        >
-          Back
-        </Button>
+    <>
+      {!isLastPage && (
+        <Box display="flex" justifyContent="space-between" p={4} gap={4}>
+          {showBackButton && onBack && (
+            <Button
+              onClick={onBack}
+              colorScheme="gray"
+              leftIcon={<ChevronLeftIcon />}
+              variant="outline"
+              width={isFirstPage ? "0%" : "45%"}
+              size={buttonSize}
+            >
+              Back
+            </Button>
+          )}
+          <Button
+            type="button"
+            colorScheme="blue"
+            onClick={handleNextClick}
+            rightIcon={<ChevronRightIcon />}
+            width={isFirstPage ? "100%" : "45%"}
+            size={buttonSize}
+          >
+            Next
+          </Button>
+        </Box>
       )}
-      <Button
-        type="button"
-        colorScheme="blue"
-        onClick={handleNextClick}
-        rightIcon={<ChevronRightIcon />}
-        width={isFirstPage ? "100%" : "45%"}
-        size={buttonSize}
-      >
-        Next
-      </Button>
-    </Box>
+    </>
   );
 };
 

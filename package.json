@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "npm cache clean --force && vite",
+    "build": "npm cache clean --force && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
