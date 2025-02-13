@@ -1,20 +1,14 @@
 import { Box, ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 import "./App.css";
-import DBAInformationForm from "./components/Onboarding/DBAInformationForm/DBAInformationForm";
 import CorporateInformationForm from "./components/Onboarding/CorporateInformationForm/CorporateInformationForm";
-import OwnerInformationForm from "./components/Onboarding/OwnerInformation/OwnerInformationForm";
-import BusinessProfileForm from "./components/Onboarding/BusinessProfile/BusinessProfile";
+
 import Sidebar from "./components/Sidebar/SidebarAlter";
-import ControllingOfficerForm from "./components/Onboarding/ControllingOfficer/ControllingOfficer";
-import SalesProfileForm from "./components/Onboarding/SalesProfile/SalesProfile";
+
 import { corporateInformationFormSchema } from "./components/Onboarding/CorporateInformationForm/corporateInformationFormSchema";
-import { DBAInformationScheme } from "./components/Onboarding/DBAInformationForm/DBAInformationSchema";
-import { ownerInformationScheme } from "./components/Onboarding/OwnerInformation/ownerInformationScheme";
-import { businessProfileSchema } from "./components/Onboarding/BusinessProfile/businessProfileSchema";
-import { controllingOfficerSchema } from "./components/Onboarding/ControllingOfficer/controllingOfficerSchema";
-import { salesProfileSchema } from "./components/Onboarding/SalesProfile/salesProfileSchema";
-import SendConfirm from "./components/Onboarding/SendConfirm/SendConfirm";
+
+import BusinessForm from "./components/Mozart/BusinessForm/BusinessForm";
+import { businessSchema } from "./components/Mozart/BusinessForm/businessSchema";
 
 function App() {
   return (
@@ -22,7 +16,21 @@ function App() {
       <Box maxW={"1200px"} mx="auto" overflow={"auto"}>
         {/* Pasamos los formularios como children del Sidebar */}
         <Sidebar>
+          <BusinessForm
+            title="Business"
+            description="Enter the business information for your company."
+            validationSchema={businessSchema}
+          />
           <CorporateInformationForm
+            title="Corporate Information"
+            description="Enter the Information where your company is legally registered."
+            validationSchema={corporateInformationFormSchema}
+          />
+
+
+
+
+          {/* <CorporateInformationForm
             title="Corporate Information"
             description="Enter the Information where your company is legally registered."
             validationSchema={corporateInformationFormSchema}
@@ -55,7 +63,7 @@ function App() {
           <SendConfirm
             title="Confirmation and Validation"
             description="Confirm your information and validate your identity."
-          />
+          /> */}
         </Sidebar>
       </Box>
     </ChakraProvider>
