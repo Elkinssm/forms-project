@@ -1,3 +1,4 @@
+import { a } from "framer-motion/client";
 import { z } from "zod";
 
 export const businessSchema = z.object({
@@ -22,9 +23,18 @@ export const businessSchema = z.object({
   businessIncorporationDate: z
     .string()
     .min(1, 'The Incorporation Date is required'),
-  businessBusinessAddress: z
-    .string()
-    .min(1, 'The business address is required'),
+  // businessBusinessAddress: z
+  //   .string()
+  //   .min(1, 'The business address is required'),
+  businessBusinessAddress: z.object({
+      address: z.string().min(5, { message: "Address is required" }),
+      city: z.string(),
+      state: z.string(),
+      zip: z.string(),
+      country: z.string(),
+      apartment: z.string(),
+    }),
+
   businessCorporateAddress: z
     .string()
     .min(1, 'The corporate address is required'),
@@ -72,5 +82,8 @@ export const businessSchema = z.object({
     .min(1, 'The Number of Locations is required'),
   businessNumberOfOutlets: z
     .number()
-    .min(1, 'The Number of Outlets is required')
+    .min(1, 'The Number of Outlets is required'),
+    businessBusinessDetailsDocuments: z
+    .string()
+    .min(1, 'The Email Address for Notices is required'),
 });

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FormControl,
   FormLabel,
@@ -11,7 +11,7 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
-import { useFormContext, FieldError } from "react-hook-form";
+import { useFormContext, FieldError, set } from "react-hook-form";
 import ErrorMessage from "./ErrorMessage";
 import useAddressGoogle from "../../hooks/address/useAddressGoogle";
 import { Address, AddressComponent } from "../../interfaces/Address";
@@ -34,11 +34,14 @@ const AddressInput: React.FC<AddressInputProps> = ({
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Address[]>([]);
   const [isAddressValid, setIsAddressValid] = useState(false);
+  const labelRef = useRef<HTMLLabelElement>(null);
 
   const address = watch(`${name}.address`);
   const city = watch(`${name}.city`);
-  const state = watch(`${name}.state`);
+  const stateCode = watch(`${name}.stateCode`);
   const zip = watch(`${name}.zip`);
+  const country = watch(`${name}.country`);
+  const apartment = watch(`${name}.apartment`);
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -82,15 +85,27 @@ const AddressInput: React.FC<AddressInputProps> = ({
         getAddressComponent("administrative_area_level_2") ||
         "";
 
-      const state =
+      const stateCode =
         getAddressComponent("administrative_area_level_1", true) || "";
 
       const zip = getAddressComponent("postal_code") || "";
 
+      const zip_suffix = getAddressComponent("postal_code_suffix") || "";
+
+      const country = getAddressComponent("country") || "";
+
+      const apartment = getAddressComponent("subpremise") || "";
+
       setValue(`${name}.address`, selectedAddress);
       setValue(`${name}.city`, city);
-      setValue(`${name}.state`, state);
-      setValue(`${name}.zip`, zip);
+      setValue(`${name}.stateCode`, stateCode);
+      if (zip_suffix) {
+        setValue(`${name}.zip`, `${zip}-${zip_suffix}`);
+      }else {
+        setValue(`${name}.zip`, zip);
+      }
+      setValue(`${name}.country`, country);
+      setValue(`${name}.apartment`, apartment);
 
       setQuery("");
       setIsAddressValid(true);
@@ -102,21 +117,24 @@ const AddressInput: React.FC<AddressInputProps> = ({
 
   return (
     <FormControl mb={4} isInvalid={!!error}>
-      <FormLabel htmlFor={name} color="gray.700">
+      <FormLabel htmlFor={name} color="gray.700" ref={labelRef}>
         {label}
       </FormLabel>
       <InputGroup>
         <InputLeftElement>
           <Tooltip
-            label={`City: ${city || "N/A"}, State: ${state || "N/A"}, ZIP: ${
-              zip || "N/A"
-            }`}
+            label={`Country: ${country || "N/A"}, 
+            StateCode: ${stateCode || "N/A"}, 
+            City: ${city || "N/A"}, 
+            ${apartment ? `Apartment: ${apartment},` : ""} 
+            ZIP: ${zip || "N/A"}`}
             aria-label="Address details"
             placement="bottom-start"
             hasArrow
-            isDisabled={!city && !state && !zip}
+            isDisabled={!city && !stateCode && !zip}
             bg={"brand.primary"}
             fontSize={"md"}
+            minWidth={labelRef.current ? labelRef.current.offsetWidth : "fit-content"}
           >
             <IconButton
               aria-label="Show address details"
