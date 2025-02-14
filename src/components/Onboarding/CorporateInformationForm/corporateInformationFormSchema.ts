@@ -7,18 +7,17 @@ export const corporateInformationFormSchema = z.object({
     .string()
     .min(6, "The fed tax id must be at least 6 characters long"),
   corpLegalName: z.string().min(5, { message: "Name is required" }),
-  corpLegalAddress: z.string().min(5, { message: "Address is required" }),
-  corpLegalCity: z.string().min(1, { message: "City is required" }),
-
-  corpLegalState: z.string().min(1, { message: "State is required" }),
-  corpLegalZip: z
-    .string()
-    .min(5, { message: "ZIP code must be at least 5 characters long" }),
-
+  corpLegalAddress: z.object({
+    address: z.string().min(5, { message: "Address is required" }),
+    city: z.string().min(1, { message: "City is required" }),
+    state: z.string().min(1, { message: "State is required" }),
+    zip: z
+      .string()
+      .min(5, { message: "ZIP code must be at least 5 characters long" }),
+  }),
   corpLegalPhone: z
     .string()
     .min(10, "The phone number must be at least 10 characters long"),
-
   corpLegalEmail: z.string().email("A valid email is required"),
   yearsInBusiness: z.preprocess(
     (val) => Number(val),
