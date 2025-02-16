@@ -19,6 +19,7 @@ import { SearchItem } from "../../FormComponents/Interfaces/SearchItem";
 import { bankData } from "../../../utils/data/Banks";
 import SearchInput from "../../FormComponents/SearchInput";
 import { validOwnershipTypes } from "../../../utils/data/OwnerShipTypes";
+import { ConvertToSearchItemsForSearchInput } from "../../../utils/convertToSearchItems";
 
 type BusinessProfileDataForm = z.infer<typeof businessProfileSchema>;
 

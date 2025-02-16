@@ -150,7 +150,7 @@ const AddressInput: React.FC<AddressInputProps> = ({
           id={name}
           type="text"
           placeholder={placeholder}
-          {...register(`${name}.address`, {
+          {...register(`${name}.street`, {
             onChange: (e) => {
               setQuery(e.target.value);
               setIsAddressValid(false);

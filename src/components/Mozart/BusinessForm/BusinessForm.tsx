@@ -8,6 +8,7 @@ import { businessSchema } from "./businessSchema";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import { formDataBusiness } from "./businessData";
 import AddressInput from "../../FormComponents/AddressInput";
+import AllDataMozartForm from "../../../utils/AllDataMozartForm";
 
 type BusinessDataForm = z.infer<typeof businessSchema>;
 
@@ -20,6 +21,7 @@ interface BusinessFormProps {
   formData?: BusinessDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
   validationSchema?: typeof businessSchema;
+  formDataAll?: AllDataMozartForm;
 }
 
 const BusinessForm: React.FC<BusinessFormProps> = ({
@@ -28,6 +30,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
   formData = formDataBusiness,
   validationSchema = businessSchema,
   formRef,
+  formDataAll,
 }) => {
   const theme = useTheme();
   const methods = useForm<BusinessDataForm>({
@@ -59,7 +62,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
-        console.log(base64String);
+        console.log(id, base64String);
       };
       reader.readAsDataURL(file);
     }
@@ -154,6 +157,11 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           placeholder="Enter your corporate address"
           error={errors.businessCorporateAddress?.street}
         />
+
+        {/* Boton para poder ver los campos en el clg comentar o descomentar */}
+        <Button onClick={handleDebug} colorScheme="blue" mb={4}>
+          Debug
+        </Button>
         <FormControl mb={4} isInvalid={!!errors.businessCompanyWebsiteUrl}>
           <FormLabel htmlFor="businessCompanyWebsiteUrl">
             Company Website URL

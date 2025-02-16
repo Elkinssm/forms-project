@@ -1,16 +1,14 @@
 import { Box, ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 import "./App.css";
-import CorporateInformationForm from "./components/Onboarding/CorporateInformationForm/CorporateInformationForm";
-
 import Sidebar from "./components/Sidebar/SidebarAlter";
-
-import { corporateInformationFormSchema } from "./components/Onboarding/CorporateInformationForm/corporateInformationFormSchema";
-
 import BusinessForm from "./components/Mozart/BusinessForm/BusinessForm";
 import { businessSchema } from "./components/Mozart/BusinessForm/businessSchema";
 import BankingForm from "./components/Mozart/BankingForm/BankingForm";
 import { bankingSchema } from "./components/Mozart/BankingForm/bankingShema";
+import SendConfirm from "./components/Onboarding/SendConfirm/SendConfirm";
+import ContactForm from "./components/Mozart/ContactForm/ContactForm";
+import contactSchema from "./components/Mozart/ContactForm/contactSchema";
 
 function App() {
   return (
@@ -27,6 +25,12 @@ function App() {
             title="Banking Information"
             description="Enter the Bank Information."
             validationSchema={bankingSchema}
+          />
+
+          <ContactForm
+            title="Contact Information"
+            description="Enter the Contact Information."
+            validationSchema={contactSchema}
           />
 
           {/* <CorporateInformationForm
@@ -58,11 +62,11 @@ function App() {
             title="Sales Profile"
             description="Provide information about your sales operations."
             validationSchema={salesProfileSchema}
-          />
+          />*/}
           <SendConfirm
             title="Confirmation and Validation"
             description="Confirm your information and validate your identity."
-          /> */}
+          />
         </Sidebar>
       </Box>
     </ChakraProvider>
