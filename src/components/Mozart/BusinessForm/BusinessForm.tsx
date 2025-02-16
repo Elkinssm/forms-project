@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button, VisuallyHidden, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { FormControl, FormLabel, Input, useTheme } from "@chakra-ui/react";
@@ -52,14 +52,24 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
     console.log(values);
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const id = e.target.id;
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        console.log(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <FormProvider {...methods}>
       <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-
         <FormControl mb={4} isInvalid={!!errors.businessName}>
-          <FormLabel htmlFor="businessName">
-            Business Name
-          </FormLabel>
+          <FormLabel htmlFor="businessName">Business Name</FormLabel>
           <Input
             id="businessName"
             type="text"
@@ -68,11 +78,8 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessName?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessLegalName}>
-          <FormLabel htmlFor="businessLegalName">
-            Business Legal Name
-          </FormLabel>
+          <FormLabel htmlFor="businessLegalName">Business Legal Name</FormLabel>
           <Input
             id="businessLegalName"
             type="text"
@@ -81,7 +88,6 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessLegalName?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessRegistrationNumber}>
           <FormLabel htmlFor="businessRegistrationNumber">
             Business registration number
@@ -94,11 +100,8 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessRegistrationNumber?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessOwnershipType}>
-          <FormLabel htmlFor="businessOwnershipType">
-            Ownership type
-          </FormLabel>
+          <FormLabel htmlFor="businessOwnershipType">Ownership type</FormLabel>
           <Input
             id="businessOwnershipType"
             type="text"
@@ -107,11 +110,8 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessRegistrationNumber?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessTaxId}>
-          <FormLabel htmlFor="businessTaxId">
-            Tax ID
-          </FormLabel>
+          <FormLabel htmlFor="businessTaxId">Tax ID</FormLabel>
           <Input
             id="businessTaxId"
             type="text"
@@ -120,11 +120,8 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessRegistrationNumber?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessTaxId}>
-          <FormLabel htmlFor="businessGiin">
-            GIIN
-          </FormLabel>
+          <FormLabel htmlFor="businessGiin">GIIN</FormLabel>
           <Input
             id="businessGiin"
             type="text"
@@ -133,7 +130,6 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessGiin?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessIncorporationDate}>
           <FormLabel htmlFor="businessIncorporationDate">
             Incorporation Date
@@ -146,27 +142,18 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessIncorporationDate?.message} />
         </FormControl>
-
         <AddressInput
           name="businessBusinessAddress"
           label="Business Adrress"
           placeholder="Enter your business address"
-          error={errors.businessBusinessAddress?.address}
+          error={errors.businessBusinessAddress?.street}
         />
-
-        <FormControl mb={4} isInvalid={!!errors.businessCorporateAddress}>
-          <FormLabel htmlFor="businessCorporateAddress">
-            Corporate Adrress
-          </FormLabel>
-          <Input
-            id="businessCorporateAddress"
-            type="text"
-            placeholder="Enter the corporate address"
-            {...methods.register("businessCorporateAddress")}
-          />
-          <ErrorMessage error={errors.businessCorporateAddress?.message} />
-        </FormControl>
-
+        <AddressInput
+          name="businessCorporateAddress"
+          label="Business Adrress"
+          placeholder="Enter your corporate address"
+          error={errors.businessCorporateAddress?.street}
+        />
         <FormControl mb={4} isInvalid={!!errors.businessCompanyWebsiteUrl}>
           <FormLabel htmlFor="businessCompanyWebsiteUrl">
             Company Website URL
@@ -179,11 +166,8 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessCompanyWebsiteUrl?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessCompanyWebsiteUrl}>
-          <FormLabel htmlFor="businessDbaName">
-            DBA Name
-          </FormLabel>
+          <FormLabel htmlFor="businessDbaName">DBA Name</FormLabel>
           <Input
             id="businessDbaName"
             type="text"
@@ -192,11 +176,8 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessDbaName?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessDbaWebsiteUrl}>
-          <FormLabel htmlFor="businessDbaWebsiteUrl">
-            DBA website URL
-          </FormLabel>
+          <FormLabel htmlFor="businessDbaWebsiteUrl">DBA website URL</FormLabel>
           <Input
             id="businessDbaWebsiteUrl"
             type="text"
@@ -205,7 +186,6 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessDbaWebsiteUrl?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessDynamicDescriptor}>
           <FormLabel htmlFor="businessDynamicDescriptor">
             Dynamic descriptor
@@ -218,7 +198,6 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessDynamicDescriptor?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessDescription}>
           <FormLabel htmlFor="businessDescription">
             Business Description
@@ -231,7 +210,6 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessDescription?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessCustomerServicePhone}>
           <FormLabel htmlFor="businessCustomerServicePhone">
             Customer service phone
@@ -244,7 +222,6 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessCustomerServicePhone?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessCustomerServiceEmail}>
           <FormLabel htmlFor="businessCustomerServiceEmail">
             Customer service email
@@ -257,11 +234,8 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessCustomerServiceEmail?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessFax}>
-          <FormLabel htmlFor="businessFax">
-            Fax
-          </FormLabel>
+          <FormLabel htmlFor="businessFax">Fax</FormLabel>
           <Input
             id="businessFax"
             type="text"
@@ -270,11 +244,15 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessFax?.message} />
         </FormControl>
-
+        {/*TODO: add social media
+         "socialMediaAccounts": [
+        {
+          "socialNetwork": "Facebook",
+          "accountName": "string"
+        }
+      ], */}
         <FormControl mb={4} isInvalid={!!errors.businessAgreement}>
-          <FormLabel htmlFor="businessAgreement">
-            Aggremment
-          </FormLabel>
+          <FormLabel htmlFor="businessAgreement">Aggremment</FormLabel>
           <Input
             id="businessAgreement"
             type="text"
@@ -283,11 +261,8 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessAgreement?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessCustomField1}>
-          <FormLabel htmlFor="businessCustomField1">
-            Custom field 1
-          </FormLabel>
+          <FormLabel htmlFor="businessCustomField1">Custom field 1</FormLabel>
           <Input
             id="businessCustomField1"
             type="text"
@@ -296,11 +271,8 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessCustomField1?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessCustomField2}>
-          <FormLabel htmlFor="businessCustomField2">
-            Custom field 2
-          </FormLabel>
+          <FormLabel htmlFor="businessCustomField2">Custom field 2</FormLabel>
           <Input
             id="businessCustomField2"
             type="text"
@@ -309,11 +281,8 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessCustomField2?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessCustomField3}>
-          <FormLabel htmlFor="businessCustomField3">
-            Custom field 3
-          </FormLabel>
+          <FormLabel htmlFor="businessCustomField3">Custom field 3</FormLabel>
           <Input
             id="businessCustomField3"
             type="text"
@@ -322,7 +291,6 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessCustomField3?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessPhoneNumber}>
           <FormLabel htmlFor="businessPhoneNumber">
             Business Phone Number
@@ -335,7 +303,6 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessPhoneNumber?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessEmailAddressForNotices}>
           <FormLabel htmlFor="businessEmailAddressForNotices">
             Email address for notices
@@ -346,9 +313,10 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
             placeholder="Enter the email address for notices"
             {...methods.register("businessEmailAddressForNotices")}
           />
-          <ErrorMessage error={errors.businessEmailAddressForNotices?.message} />
+          <ErrorMessage
+            error={errors.businessEmailAddressForNotices?.message}
+          />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessNumberOfLocations}>
           <FormLabel htmlFor="businessNumberOfLocations">
             Number of locations
@@ -361,7 +329,6 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessNumberOfLocations?.message} />
         </FormControl>
-
         <FormControl mb={4} isInvalid={!!errors.businessNumberOfOutlets}>
           <FormLabel htmlFor="businessNumberOfOutlets">
             Number of outlets
@@ -374,7 +341,185 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessNumberOfOutlets?.message} />
         </FormControl>
-
+        {/* upload documents */}
+        <FormControl
+          isInvalid={!!errors.businessDetailsDocumentsRegistrationCertificate}
+          mt={4}
+        >
+          <FormLabel htmlFor="businessDetailsDocumentsRegistrationCertificate">
+            Registration certificate Image
+          </FormLabel>
+          <VStack spacing={4} align="center">
+            <Button
+              as="label"
+              htmlFor="businessDetailsDocumentsRegistrationCertificate"
+              colorScheme="teal"
+              cursor="pointer"
+            >
+              Choose File
+            </Button>
+            <VisuallyHidden>
+              <Input
+                id="businessDetailsDocumentsRegistrationCertificate"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </VisuallyHidden>
+            <ErrorMessage
+              error={
+                errors.businessDetailsDocumentsRegistrationCertificate?.message
+              }
+            />
+          </VStack>
+        </FormControl>
+        <FormControl
+          isInvalid={!!errors.businessDetailsDocumentsProofOfAddress}
+          mt={4}
+        >
+          <FormLabel htmlFor="businessDetailsDocumentsProofOfAddress">
+            Proof of address Image
+          </FormLabel>
+          <VStack spacing={4} align="center">
+            <Button
+              as="label"
+              htmlFor="businessDetailsDocumentsProofOfAddress"
+              colorScheme="teal"
+              cursor="pointer"
+            >
+              Choose File
+            </Button>
+            <VisuallyHidden>
+              <Input
+                id="businessDetailsDocumentsProofOfAddress"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </VisuallyHidden>
+            <ErrorMessage
+              error={errors.businessDetailsDocumentsProofOfAddress?.message}
+            />
+          </VStack>
+        </FormControl>
+        <FormControl
+          isInvalid={!!errors.businessDetailsDocumentsArticleOfIncorporation}
+          mt={4}
+        >
+          <FormLabel htmlFor="businessDetailsDocumentsArticleOfIncorporation">
+            Article of incorporation Image
+          </FormLabel>
+          <VStack spacing={4} align="center">
+            <Button
+              as="label"
+              htmlFor="businessDetailsDocumentsArticleOfIncorporation"
+              colorScheme="teal"
+              cursor="pointer"
+            >
+              Choose File
+            </Button>
+            <VisuallyHidden>
+              <Input
+                id="businessDetailsDocumentsArticleOfIncorporation"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </VisuallyHidden>
+            <ErrorMessage
+              error={
+                errors.businessDetailsDocumentsArticleOfIncorporation?.message
+              }
+            />
+          </VStack>
+        </FormControl>
+        <FormControl
+          isInvalid={!!errors.businessDetailsDocumentsCustomDocument1}
+          mt={4}
+        >
+          <FormLabel htmlFor="businessDetailsDocumentsCustomDocument1">
+            Custom Image document 1
+          </FormLabel>
+          <VStack spacing={4} align="center">
+            <Button
+              as="label"
+              htmlFor="businessDetailsDocumentsCustomDocument1"
+              colorScheme="teal"
+              cursor="pointer"
+            >
+              Choose File
+            </Button>
+            <VisuallyHidden>
+              <Input
+                id="businessDetailsDocumentsCustomDocument1"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </VisuallyHidden>
+            <ErrorMessage
+              error={errors.businessDetailsDocumentsCustomDocument1?.message}
+            />
+          </VStack>
+        </FormControl>
+        <FormControl
+          isInvalid={!!errors.businessDetailsDocumentsCustomDocument2}
+          mt={4}
+        >
+          <FormLabel htmlFor="businessDetailsDocumentsCustomDocument2">
+            Custom Image document 2
+          </FormLabel>
+          <VStack spacing={4} align="center">
+            <Button
+              as="label"
+              htmlFor="businessDetailsDocumentsCustomDocument2"
+              colorScheme="teal"
+              cursor="pointer"
+            >
+              Choose File
+            </Button>
+            <VisuallyHidden>
+              <Input
+                id="businessDetailsDocumentsCustomDocument2"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </VisuallyHidden>
+            <ErrorMessage
+              error={errors.businessDetailsDocumentsCustomDocument2?.message}
+            />
+          </VStack>
+        </FormControl>
+        <FormControl
+          isInvalid={!!errors.businessDetailsDocumentsCustomDocument3}
+          mt={4}
+        >
+          <FormLabel htmlFor="businessDetailsDocumentsCustomDocument3">
+            Custom Image document 3
+          </FormLabel>
+          <VStack spacing={4} align="center">
+            <Button
+              as="label"
+              htmlFor="businessDetailsDocumentsCustomDocument3"
+              colorScheme="teal"
+              cursor="pointer"
+            >
+              Choose File
+            </Button>
+            <VisuallyHidden>
+              <Input
+                id="businessDetailsDocumentsCustomDocument3"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </VisuallyHidden>
+            <ErrorMessage
+              error={errors.businessDetailsDocumentsCustomDocument3?.message}
+            />
+          </VStack>
+        </FormControl>
       </Box>
     </FormProvider>
   );

@@ -36,7 +36,7 @@ const AddressInput: React.FC<AddressInputProps> = ({
   const [isAddressValid, setIsAddressValid] = useState(false);
   const labelRef = useRef<HTMLLabelElement>(null);
 
-  const address = watch(`${name}.address`);
+  const street = watch(`${name}.street`);
   const city = watch(`${name}.city`);
   const stateCode = watch(`${name}.stateCode`);
   const zip = watch(`${name}.zip`);
@@ -96,12 +96,12 @@ const AddressInput: React.FC<AddressInputProps> = ({
 
       const apartment = getAddressComponent("subpremise") || "";
 
-      setValue(`${name}.address`, selectedAddress);
+      setValue(`${name}.street`, selectedAddress);
       setValue(`${name}.city`, city);
       setValue(`${name}.stateCode`, stateCode);
       if (zip_suffix) {
         setValue(`${name}.zip`, `${zip}-${zip_suffix}`);
-      }else {
+      } else {
         setValue(`${name}.zip`, zip);
       }
       setValue(`${name}.country`, country);
@@ -134,7 +134,9 @@ const AddressInput: React.FC<AddressInputProps> = ({
             isDisabled={!city && !stateCode && !zip}
             bg={"brand.primary"}
             fontSize={"md"}
-            minWidth={labelRef.current ? labelRef.current.offsetWidth : "fit-content"}
+            minWidth={
+              labelRef.current ? labelRef.current.offsetWidth : "fit-content"
+            }
           >
             <IconButton
               aria-label="Show address details"

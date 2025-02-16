@@ -1,4 +1,3 @@
-import { a } from "framer-motion/client";
 import { z } from "zod";
 
 export const businessSchema = z.object({
@@ -23,21 +22,23 @@ export const businessSchema = z.object({
   businessIncorporationDate: z
     .string()
     .min(1, 'The Incorporation Date is required'),
-  // businessBusinessAddress: z
-  //   .string()
-  //   .min(1, 'The business address is required'),
   businessBusinessAddress: z.object({
-      address: z.string().min(5, { message: "Address is required" }),
-      city: z.string(),
-      state: z.string(),
-      zip: z.string(),
-      country: z.string(),
-      apartment: z.string(),
-    }),
+    street: z.string().min(5, { message: "Address is required" }),
+    country: z.string(),
+    stateCode: z.string(),
+    apartment: z.string(),
+    city: z.string(),
+    zip: z.string(),
+  }),
 
-  businessCorporateAddress: z
-    .string()
-    .min(1, 'The corporate address is required'),
+  businessCorporateAddress: z.object({
+    street: z.string().min(5, { message: "Address is required" }),
+    country: z.string(),
+    stateCode: z.string(),
+    apartment: z.string(),
+    city: z.string(),
+    zip: z.string(),
+  }),
   businessCompanyWebsiteUrl: z
     .string()
     .min(1, 'The Company Website URL is required'),
@@ -59,6 +60,7 @@ export const businessSchema = z.object({
   businessCustomerServiceEmail: z
     .string()
     .min(1, 'The Customer Service Email is required'),
+  businessSocialMediaAccounts: z.string(),
   businessFax: z
     .string()
     .min(1, 'The Fax is required'),
@@ -83,7 +85,19 @@ export const businessSchema = z.object({
   businessNumberOfOutlets: z
     .number()
     .min(1, 'The Number of Outlets is required'),
-    businessBusinessDetailsDocuments: z
+  businessDetailsDocumentsRegistrationCertificate: z
     .string()
-    .min(1, 'The Email Address for Notices is required'),
+    .min(1, 'The Registration certificate is required'),
+  businessDetailsDocumentsProofOfAddress: z
+    .string()
+    .min(1, 'The proof of address is required'),
+  businessDetailsDocumentsArticleOfIncorporation: z
+    .string()
+    .min(1, 'The Article of incorporation is required'),
+  businessDetailsDocumentsCustomDocument1: z
+    .string(),
+  businessDetailsDocumentsCustomDocument2: z
+    .string(),
+  businessDetailsDocumentsCustomDocument3: z
+    .string(),
 });

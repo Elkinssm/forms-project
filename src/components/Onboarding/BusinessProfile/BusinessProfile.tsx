@@ -1,4 +1,13 @@
-import { Box, HStack, Select, Textarea, Text, Button, VisuallyHidden, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Select,
+  Textarea,
+  Text,
+  Button,
+  VisuallyHidden,
+  VStack,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
@@ -7,7 +16,6 @@ import { z } from "zod";
 import { businessProfileSchema } from "./businessProfileSchema";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import { SearchItem } from "../../FormComponents/Interfaces/SearchItem";
-import { ConvertToSearchItemsForSearchInput } from "../../../utils/ConvertToSearchItems";
 import { bankData } from "../../../utils/data/Banks";
 import SearchInput from "../../FormComponents/SearchInput";
 import { validOwnershipTypes } from "../../../utils/data/OwnerShipTypes";
@@ -58,9 +66,12 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     if (onNext) onNext();
   };
 
-  const [driverLicenseImagePreview, setDriverLicenseImagePreview] = useState<string | null>(null);
-  const [voidedCheckImagePreview, updateVoidedCheckImagePreview] = useState<string | null>(null);
-
+  const [driverLicenseImagePreview, setDriverLicenseImagePreview] = useState<
+    string | null
+  >(null);
+  const [voidedCheckImagePreview, updateVoidedCheckImagePreview] = useState<
+    string | null
+  >(null);
 
   const searchItems: SearchItem[] =
     ConvertToSearchItemsForSearchInput(bankData);
@@ -271,13 +282,22 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
         </FormControl>
       </HStack>
 
-
       {/* New image upload field */}
       <HStack spacing={4} mb={4}>
-        <FormControl isInvalid={!!errors.businessProfileDriverLicenseImage} mt={4}>
-          <FormLabel htmlFor="businessProfileDriverLicenseImage">Upload Driver License Image</FormLabel>
+        <FormControl
+          isInvalid={!!errors.businessProfileDriverLicenseImage}
+          mt={4}
+        >
+          <FormLabel htmlFor="businessProfileDriverLicenseImage">
+            Upload Driver License Image
+          </FormLabel>
           <VStack spacing={4} align="center">
-            <Button as="label" htmlFor="businessProfileDriverLicenseImage" colorScheme="teal" cursor="pointer">
+            <Button
+              as="label"
+              htmlFor="businessProfileDriverLicenseImage"
+              colorScheme="teal"
+              cursor="pointer"
+            >
               Choose File
             </Button>
             <VisuallyHidden>
@@ -294,16 +314,30 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
             {driverLicenseImagePreview && (
               <Box mt={4}>
                 <Text>Image Preview:</Text>
-                <img src={driverLicenseImagePreview} alt="Driver License Preview" style={{ maxWidth: "200px" }} />
+                <img
+                  src={driverLicenseImagePreview}
+                  alt="Driver License Preview"
+                  style={{ maxWidth: "200px" }}
+                />
               </Box>
             )}
           </VStack>
         </FormControl>
 
-        <FormControl isInvalid={!!errors.businessProfileVoidedCheckImage} mt={4}>
-          <FormLabel htmlFor="businessProfileVoidedCheckImage">Upload Voided Check Image</FormLabel>
+        <FormControl
+          isInvalid={!!errors.businessProfileVoidedCheckImage}
+          mt={4}
+        >
+          <FormLabel htmlFor="businessProfileVoidedCheckImage">
+            Upload Voided Check Image
+          </FormLabel>
           <VStack spacing={4} align="center">
-            <Button as="label" htmlFor="businessProfileVoidedCheckImage" colorScheme="teal" cursor="pointer">
+            <Button
+              as="label"
+              htmlFor="businessProfileVoidedCheckImage"
+              colorScheme="teal"
+              cursor="pointer"
+            >
               Choose File
             </Button>
             <VisuallyHidden>
@@ -320,7 +354,11 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
             {voidedCheckImagePreview && (
               <Box mt={4}>
                 <Text>Image Preview:</Text>
-                <img src={voidedCheckImagePreview} alt="Driver License Preview" style={{ maxWidth: "200px" }} />
+                <img
+                  src={voidedCheckImagePreview}
+                  alt="Driver License Preview"
+                  style={{ maxWidth: "200px" }}
+                />
               </Box>
             )}
           </VStack>
