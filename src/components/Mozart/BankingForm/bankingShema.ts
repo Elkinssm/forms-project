@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const formDataBankingSchema = z.object({
+export const bankingSchema = z.object({
     bankingBankAccountAccountNumber: z.string().min(1, "Account number is required"),
     bankingBankAccountAccountType: z.string().min(1, "Account type is required"),
     bankingBankAccountAccountHolderName: z.string().min(1, "Account holder name is required"),

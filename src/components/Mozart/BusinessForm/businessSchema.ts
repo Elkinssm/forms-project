@@ -79,25 +79,27 @@ export const businessSchema = z.object({
   businessEmailAddressForNotices: z
     .string()
     .min(1, 'The Email Address for Notices is required'),
-  businessNumberOfLocations: z
-    .number()
-    .min(1, 'The Number of Locations is required'),
-  businessNumberOfOutlets: z
-    .number()
-    .min(1, 'The Number of Outlets is required'),
+  businessNumberOfLocations: z.preprocess(
+    (val) => Number(val),
+    z.number().min(1, "The Number of Locations is required")
+  ),
+  businessNumberOfOutlets: z.preprocess(
+    (val) => Number(val),
+    z.number().min(1, "The Number of Outlets is required")
+  ),
   businessDetailsDocumentsRegistrationCertificate: z
-    .string()
-    .min(1, 'The Registration certificate is required'),
+    .string().optional(),
+  // .min(1, 'The Registration certificate is required'),
   businessDetailsDocumentsProofOfAddress: z
-    .string()
-    .min(1, 'The proof of address is required'),
+    .string().optional(),
+  // .min(1, 'The proof of address is required'),
   businessDetailsDocumentsArticleOfIncorporation: z
-    .string()
-    .min(1, 'The Article of incorporation is required'),
+    .string().optional(),
+  // .min(1, 'The Article of incorporation is required'),
   businessDetailsDocumentsCustomDocument1: z
-    .string(),
+    .string().optional(),
   businessDetailsDocumentsCustomDocument2: z
-    .string(),
+    .string().optional(),
   businessDetailsDocumentsCustomDocument3: z
-    .string(),
+    .string().optional()
 });

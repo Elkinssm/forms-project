@@ -9,6 +9,8 @@ import { corporateInformationFormSchema } from "./components/Onboarding/Corporat
 
 import BusinessForm from "./components/Mozart/BusinessForm/BusinessForm";
 import { businessSchema } from "./components/Mozart/BusinessForm/businessSchema";
+import BankingForm from "./components/Mozart/BankingForm/BankingForm";
+import { bankingSchema } from "./components/Mozart/BankingForm/bankingShema";
 
 function App() {
   return (
@@ -17,18 +19,15 @@ function App() {
         {/* Pasamos los formularios como children del Sidebar */}
         <Sidebar>
           <BusinessForm
-            title="Business"
+            title="Business Information"
             description="Enter the business information for your company."
             validationSchema={businessSchema}
           />
-          <CorporateInformationForm
-            title="Corporate Information"
-            description="Enter the Information where your company is legally registered."
-            validationSchema={corporateInformationFormSchema}
+          <BankingForm
+            title="Banking Information"
+            description="Enter the Bank Information."
+            validationSchema={bankingSchema}
           />
-
-
-
 
           {/* <CorporateInformationForm
             title="Corporate Information"
