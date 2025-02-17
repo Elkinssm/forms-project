@@ -1,105 +1,95 @@
-import { z } from "zod";
+import * as yup from "yup";
 
-export const businessSchema = z.object({
-  businessName: z
+export const businessSchemaYup = yup.object().shape({
+  businessName: yup.string().required("The Name is required"),
+  businessLegalName: yup.string().required("The Legal Name is required"),
+  businessRegistrationNumber: yup
     .string()
-    .min(1, "The Name is required"),
-  businessLegalName: z
+    .required("The Registration Number is required"),
+  businessOwnershipType: yup
     .string()
-    .min(1, "The Legal Name is required"),
-  businessRegistrationNumber: z
+    .required("The Ownership type is required"),
+  businessTaxId: yup.string().required("The Tax ID is required"),
+  businessGiin: yup.string().required("The GIIN is required"),
+  businessIncorporationDate: yup
     .string()
-    .min(1, "The Registration Number is required"),
-  businessOwnershipType: z
+    .required("The Incorporation Date is required"),
+  businessBusinessAddress: yup
+    .object()
+    .shape({
+      street: yup.string().min(5, "Address is required"),
+      country: yup.string(),
+      stateCode: yup.string(),
+      apartment: yup.string(),
+      city: yup.string(),
+      zip: yup.string(),
+    })
+    .default({
+      street: "",
+      country: "",
+      stateCode: "",
+      apartment: "",
+      city: "",
+      zip: "",
+    }),
+  businessCorporateAddress: yup
+    .object()
+    .shape({
+      street: yup.string().min(5, "Address is required"),
+      country: yup.string(),
+      stateCode: yup.string(),
+      apartment: yup.string(),
+      city: yup.string(),
+      zip: yup.string(),
+    })
+    .default({
+      street: "",
+      country: "",
+      stateCode: "",
+      apartment: "",
+      city: "",
+      zip: "",
+    }),
+  businessCompanyWebsiteUrl: yup
     .string()
-    .min(1, "The Ownership type is required"),
-  businessTaxId: z
+    .required("The Company Website URL is required"),
+  businessDbaName: yup.string().required("The DBA Name is required"),
+  businessDbaWebsiteUrl: yup
     .string()
-    .min(1, "The Tax ID is required"),
-  businessGiin: z
+    .required("The DBA Website URL is required"),
+  businessDynamicDescriptor: yup
     .string()
-    .min(1, "The GIIN is required"),
-  businessIncorporationDate: z
+    .required("The Dynamic Descriptor is required"),
+  businessDescription: yup.string().required("The Description is required"),
+  businessCustomerServicePhone: yup
     .string()
-    .min(1, 'The Incorporation Date is required'),
-  businessBusinessAddress: z.object({
-    street: z.string().min(5, { message: "Address is required" }),
-    country: z.string(),
-    stateCode: z.string(),
-    apartment: z.string(),
-    city: z.string(),
-    zip: z.string(),
-  }),
-
-  businessCorporateAddress: z.object({
-    street: z.string().min(5, { message: "Address is required" }),
-    country: z.string(),
-    stateCode: z.string(),
-    apartment: z.string(),
-    city: z.string(),
-    zip: z.string(),
-  }),
-  businessCompanyWebsiteUrl: z
+    .required("The Customer Service Phone is required"),
+  businessCustomerServiceEmail: yup
     .string()
-    .min(1, 'The Company Website URL is required'),
-  businessDbaName: z
+    .email("Must be a valid email")
+    .required("The Customer Service Email is required"),
+  businessFax: yup.string().required("The Fax is required"),
+  businessAgreement: yup.string().required("The Agreement is required"),
+  businessCustomField1: yup.string().notRequired(), // Hacer opcional
+  businessCustomField2: yup.string().notRequired(), // Hacer opcional
+  businessCustomField3: yup.string().notRequired(), // Hacer opcional
+  businessPhoneNumber: yup
     .string()
-    .min(1, 'The DBA Name is required'),
-  businessDbaWebsiteUrl: z
+    .required("The Business Phone Number is required"),
+  businessEmailAddressForNotices: yup
     .string()
-    .min(1, 'The DBA Website URL is required'),
-  businessDynamicDescriptor: z
-    .string()
-    .min(1, 'The Dynamic Descriptor is required'),
-  businessDescription: z
-    .string()
-    .min(1, 'The Description is required'),
-  businessCustomerServicePhone: z
-    .string()
-    .min(1, 'The Customer Service Phone is required'),
-  businessCustomerServiceEmail: z
-    .string()
-    .min(1, 'The Customer Service Email is required'),
-  businessSocialMediaAccounts: z.string(),
-  businessFax: z
-    .string()
-    .min(1, 'The Fax is required'),
-  businessAgreement: z
-    .string()
-    .min(1, 'The Agreement is required'),
-  businessCustomField1: z
-    .string(),
-  businessCustomField2: z
-    .string(),
-  businessCustomField3: z
-    .string(),
-  businessPhoneNumber: z
-    .string()
-    .min(1, 'The Phone Number is required'),
-  businessEmailAddressForNotices: z
-    .string()
-    .min(1, 'The Email Address for Notices is required'),
-  businessNumberOfLocations: z.preprocess(
-    (val) => Number(val),
-    z.number().min(1, "The Number of Locations is required")
-  ),
-  businessNumberOfOutlets: z.preprocess(
-    (val) => Number(val),
-    z.number().min(1, "The Number of Outlets is required")
-  ),
-  businessDetailsDocumentsRegistrationCertificate: z
-    .string().optional(),
-  // .min(1, 'The Registration certificate is required'),
-  businessDetailsDocumentsProofOfAddress: z
-    .string().optional(),
-  // .min(1, 'The proof of address is required'),
-  businessDetailsDocumentsArticleOfIncorporation: z
-    .string().optional(),
-  // .min(1, 'The Article of incorporation is required'),
-  businessDetailsDocumentsCustomDocument1: z
-    .string().optional(),
-  businessDetailsDocumentsCustomDocument2: z
-    .string().optional(),
-  businessDetailsDocumentsCustomDocument3: z
-    .string().optional()
+    .email("Must be a valid email")
+    .required("The Email Address for Notices is required"),
+  businessNumberOfLocations: yup
+    .number()
+    .required("The Number of Locations is required"),
+  businessNumberOfOutlets: yup
+    .number()
+    .required("The Number of Outlets is required"),
+  businessDetailsDocumentsRegistrationCertificate: yup.mixed().notRequired(), // Hacer opcional
+  businessDetailsDocumentsProofOfAddress: yup.mixed().notRequired(), // Hacer opcional
+  businessDetailsDocumentsArticleOfIncorporation: yup.mixed().notRequired(), // Hacer opcional
+  businessDetailsDocumentsCustomDocument1: yup.mixed().notRequired(), // Hacer opcional
+  businessDetailsDocumentsCustomDocument2: yup.mixed().notRequired(), // Hacer opcional
+  businessDetailsDocumentsCustomDocument3: yup.mixed().notRequired(), // Hacer opcional
 });

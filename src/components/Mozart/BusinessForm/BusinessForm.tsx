@@ -2,15 +2,15 @@ import { Box, Button, VisuallyHidden, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { FormControl, FormLabel, Input, useTheme } from "@chakra-ui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { businessSchema } from "./businessSchema";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { businessSchemaYup } from "./businessSchema"; // Asegúrate de importar el esquema correcto
+import * as yup from "yup";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import { formDataBusiness } from "./businessData";
 import AddressInput from "../../FormComponents/AddressInput";
 import AllDataMozartForm from "../../../utils/AllDataMozartForm";
 
-type BusinessDataForm = z.infer<typeof businessSchema>;
+type BusinessDataForm = yup.InferType<typeof businessSchemaYup>;
 
 interface BusinessFormProps {
   title: string;
@@ -20,7 +20,7 @@ interface BusinessFormProps {
   onDataChange?: (data: BusinessDataForm) => void;
   formData?: BusinessDataForm;
   formRef?: React.RefObject<HTMLFormElement>;
-  validationSchema?: typeof businessSchema;
+  validationSchema?: typeof businessSchemaYup;
   formDataAll?: AllDataMozartForm;
 }
 
@@ -28,13 +28,13 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
   onNext,
   onDataChange,
   formData = formDataBusiness,
-  validationSchema = businessSchema,
+  validationSchema = businessSchemaYup, // Asegúrate de usar el esquema de Yup
   formRef,
   formDataAll,
 }) => {
   const theme = useTheme();
   const methods = useForm<BusinessDataForm>({
-    resolver: zodResolver(validationSchema),
+    resolver: yupResolver(validationSchema), // Cambia zodResolver por yupResolver
     defaultValues: formData,
   });
 
@@ -67,7 +67,6 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
       reader.readAsDataURL(file);
     }
   };
-
   return (
     <FormProvider {...methods}>
       <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
@@ -111,7 +110,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
             placeholder="Enter the ownership type"
             {...methods.register("businessOwnershipType")}
           />
-          <ErrorMessage error={errors.businessRegistrationNumber?.message} />
+          <ErrorMessage error={errors.businessOwnershipType?.message} />
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessTaxId}>
           <FormLabel htmlFor="businessTaxId">Tax ID</FormLabel>
@@ -121,9 +120,9 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
             placeholder="Enter the business tax ID"
             {...methods.register("businessTaxId")}
           />
-          <ErrorMessage error={errors.businessRegistrationNumber?.message} />
+          <ErrorMessage error={errors.businessTaxId?.message} />
         </FormControl>
-        <FormControl mb={4} isInvalid={!!errors.businessTaxId}>
+        <FormControl mb={4} isInvalid={!!errors.businessGiin}>
           <FormLabel htmlFor="businessGiin">GIIN</FormLabel>
           <Input
             id="businessGiin"
@@ -147,18 +146,16 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
         </FormControl>
         <AddressInput
           name="businessBusinessAddress"
-          label="Business Adrress"
+          label="Business Address"
           placeholder="Enter your business address"
           error={errors.businessBusinessAddress?.street}
         />
         <AddressInput
           name="businessCorporateAddress"
-          label="Business Adrress"
+          label="Corporate Address"
           placeholder="Enter your corporate address"
           error={errors.businessCorporateAddress?.street}
         />
-
-        {/* Boton para poder ver los campos en el clg comentar o descomentar */}
         <Button onClick={handleDebug} colorScheme="blue" mb={4}>
           Debug
         </Button>
@@ -174,7 +171,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessCompanyWebsiteUrl?.message} />
         </FormControl>
-        <FormControl mb={4} isInvalid={!!errors.businessCompanyWebsiteUrl}>
+        <FormControl mb={4} isInvalid={!!errors.businessDbaName}>
           <FormLabel htmlFor="businessDbaName">DBA Name</FormLabel>
           <Input
             id="businessDbaName"
@@ -185,7 +182,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           <ErrorMessage error={errors.businessDbaName?.message} />
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessDbaWebsiteUrl}>
-          <FormLabel htmlFor="businessDbaWebsiteUrl">DBA website URL</FormLabel>
+          <FormLabel htmlFor="businessDbaWebsiteUrl">DBA Website URL</FormLabel>
           <Input
             id="businessDbaWebsiteUrl"
             type="text"
@@ -196,7 +193,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessDynamicDescriptor}>
           <FormLabel htmlFor="businessDynamicDescriptor">
-            Dynamic descriptor
+            Dynamic Descriptor
           </FormLabel>
           <Input
             id="businessDynamicDescriptor"
@@ -220,7 +217,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessCustomerServicePhone}>
           <FormLabel htmlFor="businessCustomerServicePhone">
-            Customer service phone
+            Customer Service Phone
           </FormLabel>
           <Input
             id="businessCustomerServicePhone"
@@ -232,7 +229,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessCustomerServiceEmail}>
           <FormLabel htmlFor="businessCustomerServiceEmail">
-            Customer service email
+            Customer Service Email
           </FormLabel>
           <Input
             id="businessCustomerServiceEmail"
@@ -252,15 +249,8 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessFax?.message} />
         </FormControl>
-        {/*TODO: add social media
-         "socialMediaAccounts": [
-        {
-          "socialNetwork": "Facebook",
-          "accountName": "string"
-        }
-      ], */}
         <FormControl mb={4} isInvalid={!!errors.businessAgreement}>
-          <FormLabel htmlFor="businessAgreement">Aggremment</FormLabel>
+          <FormLabel htmlFor="businessAgreement">Agreement</FormLabel>
           <Input
             id="businessAgreement"
             type="text"
@@ -270,31 +260,31 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           <ErrorMessage error={errors.businessAgreement?.message} />
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessCustomField1}>
-          <FormLabel htmlFor="businessCustomField1">Custom field 1</FormLabel>
+          <FormLabel htmlFor="businessCustomField1">Custom Field 1</FormLabel>
           <Input
             id="businessCustomField1"
             type="text"
-            placeholder="Enter the custom field 1"
+            placeholder="Enter custom field 1"
             {...methods.register("businessCustomField1")}
           />
           <ErrorMessage error={errors.businessCustomField1?.message} />
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessCustomField2}>
-          <FormLabel htmlFor="businessCustomField2">Custom field 2</FormLabel>
+          <FormLabel htmlFor="businessCustomField2">Custom Field 2</FormLabel>
           <Input
             id="businessCustomField2"
             type="text"
-            placeholder="Enter the custom field 2"
+            placeholder="Enter custom field 2"
             {...methods.register("businessCustomField2")}
           />
           <ErrorMessage error={errors.businessCustomField2?.message} />
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessCustomField3}>
-          <FormLabel htmlFor="businessCustomField3">Custom field 3</FormLabel>
+          <FormLabel htmlFor="businessCustomField3">Custom Field 3</FormLabel>
           <Input
             id="businessCustomField3"
             type="text"
-            placeholder="Enter the custom field 3"
+            placeholder="Enter custom field 3"
             {...methods.register("businessCustomField3")}
           />
           <ErrorMessage error={errors.businessCustomField3?.message} />
@@ -313,7 +303,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessEmailAddressForNotices}>
           <FormLabel htmlFor="businessEmailAddressForNotices">
-            Email address for notices
+            Email Address for Notices
           </FormLabel>
           <Input
             id="businessEmailAddressForNotices"
@@ -327,7 +317,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessNumberOfLocations}>
           <FormLabel htmlFor="businessNumberOfLocations">
-            Number of locations
+            Number of Locations
           </FormLabel>
           <Input
             id="businessNumberOfLocations"
@@ -339,7 +329,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
         </FormControl>
         <FormControl mb={4} isInvalid={!!errors.businessNumberOfOutlets}>
           <FormLabel htmlFor="businessNumberOfOutlets">
-            Number of outlets
+            Number of Outlets
           </FormLabel>
           <Input
             id="businessNumberOfOutlets"
@@ -349,13 +339,13 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           />
           <ErrorMessage error={errors.businessNumberOfOutlets?.message} />
         </FormControl>
-        {/* upload documents */}
+        {/* Upload Documents */}
         <FormControl
           isInvalid={!!errors.businessDetailsDocumentsRegistrationCertificate}
           mt={4}
         >
           <FormLabel htmlFor="businessDetailsDocumentsRegistrationCertificate">
-            Registration certificate Image
+            Registration Certificate Image
           </FormLabel>
           <VStack spacing={4} align="center">
             <Button
@@ -386,7 +376,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           mt={4}
         >
           <FormLabel htmlFor="businessDetailsDocumentsProofOfAddress">
-            Proof of address Image
+            Proof of Address Image
           </FormLabel>
           <VStack spacing={4} align="center">
             <Button
@@ -415,7 +405,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           mt={4}
         >
           <FormLabel htmlFor="businessDetailsDocumentsArticleOfIncorporation">
-            Article of incorporation Image
+            Article of Incorporation Image
           </FormLabel>
           <VStack spacing={4} align="center">
             <Button
@@ -446,7 +436,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           mt={4}
         >
           <FormLabel htmlFor="businessDetailsDocumentsCustomDocument1">
-            Custom Image document 1
+            Custom Document Image 1
           </FormLabel>
           <VStack spacing={4} align="center">
             <Button
@@ -475,7 +465,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           mt={4}
         >
           <FormLabel htmlFor="businessDetailsDocumentsCustomDocument2">
-            Custom Image document 2
+            Custom Document Image 2
           </FormLabel>
           <VStack spacing={4} align="center">
             <Button
@@ -504,7 +494,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
           mt={4}
         >
           <FormLabel htmlFor="businessDetailsDocumentsCustomDocument3">
-            Custom Image document 3
+            Custom Document Image 3
           </FormLabel>
           <VStack spacing={4} align="center">
             <Button

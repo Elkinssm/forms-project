@@ -3,7 +3,7 @@ import theme from "./theme";
 import "./App.css";
 import Sidebar from "./components/Sidebar/SidebarAlter";
 import BusinessForm from "./components/Mozart/BusinessForm/BusinessForm";
-import { businessSchema } from "./components/Mozart/BusinessForm/businessSchema";
+import { businessSchemaYup } from "./components/Mozart/BusinessForm/businessSchema";
 import BankingForm from "./components/Mozart/BankingForm/BankingForm";
 import { bankingSchema } from "./components/Mozart/BankingForm/bankingShema";
 import SendConfirm from "./components/Onboarding/SendConfirm/SendConfirm";
@@ -19,7 +19,7 @@ function App() {
           <BusinessForm
             title="Business Information"
             description="Enter the business information for your company."
-            validationSchema={businessSchema}
+            validationSchema={businessSchemaYup}
           />
           <BankingForm
             title="Banking Information"
