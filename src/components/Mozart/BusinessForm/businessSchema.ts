@@ -24,20 +24,20 @@ export const businessSchema = z.object({
     .min(1, 'The Incorporation Date is required'),
   businessBusinessAddress: z.object({
     street: z.string().min(5, { message: "Address is required" }),
-    country: z.string(),
-    stateCode: z.string(),
-    apartment: z.string(),
-    city: z.string(),
-    zip: z.string(),
+    country: z.string().optional(),
+    stateCode: z.string().optional(),
+    apartment: z.string().optional(),
+    city: z.string().optional(),
+    zip: z.string().optional(),
   }),
 
   businessCorporateAddress: z.object({
     street: z.string().min(5, { message: "Address is required" }),
-    country: z.string(),
-    stateCode: z.string(),
-    apartment: z.string(),
-    city: z.string(),
-    zip: z.string(),
+    country: z.string().optional(),
+    stateCode: z.string().optional(),
+    apartment: z.string().optional(),
+    city: z.string().optional(),
+    zip: z.string().optional(),
   }),
   businessCompanyWebsiteUrl: z
     .string()
@@ -60,7 +60,7 @@ export const businessSchema = z.object({
   businessCustomerServiceEmail: z
     .string()
     .min(1, 'The Customer Service Email is required'),
-  businessSocialMediaAccounts: z.string(),
+  businessSocialMediaAccounts: z.string().optional(),
   businessFax: z
     .string()
     .min(1, 'The Fax is required'),
