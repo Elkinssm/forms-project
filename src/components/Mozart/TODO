@@ -1,0 +1,197 @@
+1. Formulario ownerDetails
+
+    "ownerDetails": [
+    {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "firstName": "string",
+        "lastName": "string",
+        "idNumber": "string",
+        "giin": "string",
+        "email": "string",
+        "mobilePhone": "string",
+        "homePhone": "string",
+        "address": {
+            "street": "string",
+            "apartment": "string",
+            "city": "string",
+            "country": "string",
+            "stateCode": "string",
+            "zip": "string"
+        },
+        "dateOfBirth": "2022-05-16T12:03:14.062Z",
+        "position": "string",
+        "citizenship": "string",
+        "ownershipDate": "2022-05-16T12:03:14.062Z",
+        "ownershipPercentage": 0,
+        "driversLicenceNumber": "string",
+        "driversLicenceCountry": "string",
+        "driversLicenceState": "string",
+        "customField1": "string",
+        "customField2": "string",
+        "customField3": "string",
+        "controlProng": true,
+        "ownerDetailsDocuments": {
+            "proofOfId": {
+                "fileName": "string",
+                "fileBody": "string"
+            },
+            "proofOfAddress": {
+                "fileName": "string",
+                "fileBody": "string"
+            },
+            "personalGuarantee": {
+                "fileName": "string",
+                "fileBody": "string"
+            },
+            "customDocument1": {
+                "fileName": "string",
+                "fileBody": "string"
+            },
+            "customDocument2": {
+                "fileName": "string",
+                "fileBody": "string"
+            },
+            "customDocument3": {
+                "fileName": "string",
+                "fileBody": "string"
+            },
+            "driversLicenseFront": {
+                "fileName": "string",
+                "fileBody": "string"
+            },
+            "driversLicenseBack": {
+                "fileName": "string",
+                "fileBody": "string"
+            }
+        }
+    }
+],
+
+2. Formulario business profile
+
+"businessProfile": {
+    "industry": "InformationTechnology",
+    "category": "Retail",
+    "privacyPolicyUrl": "string",
+    "returnsPolicyUrl": "string",
+    "tcPolicyUrl": "string",
+    "gstExempt": true,
+    "gstNumber": "string",
+    "descriptionOfGoods": "string",
+    "saleChannels": [
+        {
+            "channelType": "string",
+            "percentageOfSales": 0
+        }
+    ],
+    "shipping": {
+        "shippingRequired": true,
+        "inventory": true,
+        "deliveryTimePercentage": {
+            "oneToSevenDays": 0,
+            "eightToFourteenDays": 0,
+            "fifteenToThirtyDays": 0,
+            "moreThanThirtyDays": 0
+        }
+    },
+    "pciCompliance": {
+        "isEnabled": true,
+        "pciLevel": "DssLevelOne",
+        "storesSensitiveData": true,
+        "dataCompromised": true
+    },
+    "customField1": "string",
+    "customField2": "string",
+    "customField3": "string",
+    "mccCode": "string",
+    "seasonalBusiness": true,
+    "seasonalBusinessMonths": [
+        "January"
+    ],
+    "processingMethods": {
+        "deviceTerminal": 0,
+        "moTo": 0,
+        "online": 0
+    },
+    "merchantBillingType": "Debit",
+    "merchantPricingModel": "DailyDiscount"
+},
+"businessProfileDocuments": {
+    "pciCertificate": {
+        "fileName": "string",
+        "fileBody": "string"
+    },
+    "customDocument1": {
+        "fileName": "string",
+        "fileBody": "string"
+    },
+    "customDocument2": {
+        "fileName": "string",
+        "fileBody": "string"
+    },
+    "customDocument3": {
+        "fileName": "string",
+        "fileBody": "string"
+    }
+},
+
+3. Formulario businessFinancials
+"businessFinancials": {
+    "volumeProjection": {
+        "visa": "string",
+        "mastercard": "string",
+        "americanExpress": "string",
+        "localDebitCard": "string",
+        "discover": "string"
+    },
+    "avgTicketPriceProjection": "string",
+    "customField1": "string",
+    "customField2": "string",
+    "customField3": "string",
+    "annualVolumeProjection": {
+        "visa": "string",
+        "mastercard": "string",
+        "americanExpress": "string",
+        "localDebitCard": "string",
+        "discover": "string"
+    },
+    "monthlyVolumeProjection": {
+        "visa": "string",
+        "mastercard": "string",
+        "americanExpress": "string",
+        "localDebitCard": "string",
+        "discover": "string"
+    },
+    "highestTicketPriceProjection": "string",
+    "isAnnualAmexVolumeExceedMillionDollars": true
+},
+"businessProcessingHistory": {
+    "volumeHistory": {
+        "visa": "string",
+        "mastercard": "string",
+        "americanExpress": "string",
+        "localDebitCard": "string",
+        "discover": "string"
+    },
+    "avgTicketPriceHistory": "string",
+    "previousBankruptcy": true,
+    "customField1": "string",
+    "customField2": "string",
+    "customField3": "string",
+    "monthlyVolumeHistory": {
+        "visa": "string",
+        "mastercard": "string",
+        "americanExpress": "string",
+        "localDebitCard": "string",
+        "discover": "string"
+    },
+    "annualVolumeHistory": {
+        "visa": "string",
+        "mastercard": "string",
+        "americanExpress": "string",
+        "localDebitCard": "string",
+        "discover": "string"
+    },
+    "highestTicketPriceHistory": "string",
+    "previousPersonalBankruptcy": true
+}
