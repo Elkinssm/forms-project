@@ -8,40 +8,44 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Heading,
-  Text,
   VStack,
   VisuallyHidden,
 } from "@chakra-ui/react";
 import { ownerDetailsSchema } from "./ownerDetailsSchema";
 import { ownerDetailsData } from "../OwnerDetailsForm/ownerDetailData";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
+import AllDataMozartForm from "/src/utils/AllDataMozartForm";
 
 type OwnerDetailsFormValues = yup.InferType<typeof ownerDetailsSchema>;
 
 interface OwnerDetailsFormProps {
   title: string;
   description?: string;
+  onNext?: () => void;
+  onBack?: () => void;
+  onDataChange?: (data: OwnerDetailsFormValues) => void;
+  formData?: OwnerDetailsFormValues;
+  formRef?: React.RefObject<HTMLFormElement>;
   validationSchema?: typeof ownerDetailsSchema;
+  formDataAll?: AllDataMozartForm;
 }
 
 const OwnerDetailsForm: React.FC<OwnerDetailsFormProps> = ({
-  title,
-  description,
+  onNext,
+  onDataChange,
+  formData = ownerDetailsData,
+  validationSchema = ownerDetailsSchema, // Asegúrate de usar el esquema de Yup
+  formRef,
 }) => {
   const methods = useForm<OwnerDetailsFormValues>({
-    resolver: yupResolver(ownerDetailsSchema),
-    defaultValues: ownerDetailsData,
+    resolver: yupResolver(validationSchema),
+    defaultValues: formData,
   });
 
   const {
     handleSubmit,
     formState: { errors },
   } = methods;
-
-  const onSubmit: SubmitHandler<OwnerDetailsFormValues> = (data) => {
-    console.log(data);
-  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const id = e.target.id;
@@ -56,13 +60,13 @@ const OwnerDetailsForm: React.FC<OwnerDetailsFormProps> = ({
     }
   };
 
+  const onSubmit: SubmitHandler<OwnerDetailsFormValues> = (data) => {
+    if (onDataChange) onDataChange(data);
+    if (onNext) onNext();
+  };
   return (
     <FormProvider {...methods}>
-      <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-        <Heading as="h2" size="lg" mb={4}>
-          {title}
-        </Heading>
-
+      <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
         <FormControl mb={4} isInvalid={!!errors.id}>
           <FormLabel htmlFor="id">ID</FormLabel>
           <Input id="id" {...methods.register("id")} />

@@ -8,8 +8,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Heading,
-  Text,
   VStack,
   VisuallyHidden,
 } from "@chakra-ui/react";
@@ -33,22 +31,21 @@ interface BusinessProfileFormProps {
 }
 
 const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
-  title,
-  validationSchema = businessProfileSchema, // Usar businessProfileSchema como valor por defecto
+  onNext,
+  onDataChange,
+  formData = businessProfileData,
+  validationSchema = businessProfileSchema, // Asegúrate de usar el esquema de Yup
+  formRef,
 }) => {
   const methods = useForm<BusinessProfileFormValues>({
     resolver: yupResolver(validationSchema),
-    defaultValues: businessProfileData,
+    defaultValues: formData,
   });
 
   const {
     handleSubmit,
     formState: { errors },
   } = methods;
-
-  const onSubmit: SubmitHandler<BusinessProfileFormValues> = (data) => {
-    console.log(data);
-  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const id = e.target.id;
@@ -63,13 +60,14 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     }
   };
 
+  const onSubmit: SubmitHandler<BusinessProfileFormValues> = (data) => {
+    if (onDataChange) onDataChange(data);
+    if (onNext) onNext();
+  };
+
   return (
     <FormProvider {...methods}>
-      <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-        <Heading as="h2" size="lg" mb={4}>
-          {title}
-        </Heading>
-
+      <Box as="form" onSubmit={handleSubmit(onSubmit)} ref={formRef}>
         <FormControl mb={4} isInvalid={!!errors.industry}>
           <FormLabel htmlFor="industry">Industry</FormLabel>
           <Input id="industry" {...methods.register("industry")} />
