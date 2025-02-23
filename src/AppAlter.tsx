@@ -9,6 +9,10 @@ import { bankingSchema } from "./components/Mozart/BankingForm/bankingShema";
 import SendConfirm from "./components/Onboarding/SendConfirm/SendConfirm";
 import ContactForm from "./components/Mozart/ContactForm/ContactForm";
 import contactSchema from "./components/Mozart/ContactForm/contactSchema";
+import OwnerDetailsForm from "./components/Mozart/OwnerDetailsForm/OwnerDetailForm";
+import { ownerDetailsSchema } from "./components/Mozart/OwnerDetailsForm/ownerDetailsSchema";
+import BusinessProfileForm from "./components/Mozart/BusinessProfileForm/BusinessProfileForm";
+import { businessProfileSchema } from "./components/Mozart/BusinessProfileForm/businessProfileSchema";
 
 function App() {
   return (
@@ -31,6 +35,16 @@ function App() {
             title="Contact Information"
             description="Enter the Contact Information."
             validationSchema={contactSchema}
+          />
+          <OwnerDetailsForm
+            title="Owner Details"
+            description="Enter the Owner Details."
+            validationSchema={ownerDetailsSchema}
+          />
+          <BusinessProfileForm
+            title="Business Profile"
+            description="Enter the Business Profile."
+            validationSchema={businessProfileSchema}
           />
 
           {/* <CorporateInformationForm
