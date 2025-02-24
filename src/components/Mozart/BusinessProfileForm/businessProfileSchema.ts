@@ -23,6 +23,7 @@ export const businessProfileSchema = yup.object().shape({
       channelType: yup.string().required("Channel Type is required"),
       percentageOfSales: yup
         .number()
+        .typeError("Percentage of Sales must be a number")
         .required("Percentage of Sales is required"),
     })
   ),
@@ -30,15 +31,21 @@ export const businessProfileSchema = yup.object().shape({
     shippingRequired: yup.boolean().required("Shipping Required is required"),
     inventory: yup.boolean().required("Inventory is required"),
     deliveryTimePercentage: yup.object().shape({
-      oneToSevenDays: yup.number().required("One to Seven Days is required"),
+      oneToSevenDays: yup
+        .number()
+        .typeError("One to Seven Days must be a number")
+        .required("One to Seven Days is required"),
       eightToFourteenDays: yup
         .number()
+        .typeError("Eight to Fourteen Days must be a number")
         .required("Eight to Fourteen Days is required"),
       fifteenToThirtyDays: yup
         .number()
+        .typeError("Fifteen to Thirty Days must be a number")
         .required("Fifteen to Thirty Days is required"),
       moreThanThirtyDays: yup
         .number()
+        .typeError("More than Thirty Days must be a number")
         .required("More than Thirty Days is required"),
     }),
   }),
@@ -59,9 +66,18 @@ export const businessProfileSchema = yup.object().shape({
     .array()
     .of(yup.string().required("Seasonal Business Month is required")),
   processingMethods: yup.object().shape({
-    deviceTerminal: yup.number().required("Device Terminal is required"),
-    moTo: yup.number().required("MO/TO is required"),
-    online: yup.number().required("Online is required"),
+    deviceTerminal: yup
+      .number()
+      .typeError("Device Terminal must be a number")
+      .required("Device Terminal is required"),
+    moTo: yup
+      .number()
+      .typeError("MO/TO must be a number")
+      .required("MO/TO is required"),
+    online: yup
+      .number()
+      .typeError("Online must be a number")
+      .required("Online is required"),
   }),
   merchantBillingType: yup
     .string()

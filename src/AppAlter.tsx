@@ -13,6 +13,8 @@ import OwnerDetailsForm from "./components/Mozart/OwnerDetailsForm/OwnerDetailFo
 import { ownerDetailsSchema } from "./components/Mozart/OwnerDetailsForm/ownerDetailsSchema";
 import BusinessProfileForm from "./components/Mozart/BusinessProfileForm/BusinessProfileForm";
 import { businessProfileSchema } from "./components/Mozart/BusinessProfileForm/businessProfileSchema";
+import BusinessFinancialsForm from "./components/Mozart/BusinessFinancialsForm/BusinessFinancialsForm";
+import { businessFinancialsSchema } from "./components/Mozart/BusinessFinancialsForm/businessFinancialsSchema";
 
 function App() {
   return (
@@ -45,6 +47,11 @@ function App() {
             title="Business Profile"
             description="Enter the Business Profile."
             validationSchema={businessProfileSchema}
+          />
+          <BusinessFinancialsForm
+            title="Business Financials"
+            description="Enter the Business Financials."
+            validationSchema={businessFinancialsSchema}
           />
 
           {/* <CorporateInformationForm

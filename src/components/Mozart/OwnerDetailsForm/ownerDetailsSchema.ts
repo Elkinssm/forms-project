@@ -20,13 +20,22 @@ export const ownerDetailsSchema = yup.object().shape({
     stateCode: yup.string().required("State Code is required"),
     zip: yup.string().required("ZIP is required"),
   }),
-  dateOfBirth: yup.date().required("Date of Birth is required"),
+  dateOfBirth: yup
+    .date()
+    .typeError("Date of Birth must be a valid date")
+    .required("Date of Birth is required"),
   position: yup.string().required("Position is required"),
   citizenship: yup.string().required("Citizenship is required"),
-  ownershipDate: yup.date().required("Ownership Date is required"),
+  ownershipDate: yup
+    .date()
+    .typeError("Ownership Date must be a valid date")
+    .required("Ownership Date is required"),
   ownershipPercentage: yup
     .number()
-    .required("Ownership Percentage is required"),
+    .typeError("Ownership Percentage must be a number")
+    .required("Ownership Percentage is required")
+    .min(0, "Ownership Percentage must be at least 0")
+    .max(100, "Ownership Percentage cannot exceed 100"),
   driversLicenceNumber: yup
     .string()
     .required("Driver's Licence Number is required"),
