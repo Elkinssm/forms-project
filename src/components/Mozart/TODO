@@ -195,3 +195,11 @@
     "highestTicketPriceHistory": "string",
     "previousPersonalBankruptcy": true
 }
+
+
+
+20240227
+4. Arreglar formulario ownerDetails
+Este formulario funciona similar al formulario de contact information, que se reciben varios dueños.
+
+5. Hacer un formulario de login al sistema, solo login
