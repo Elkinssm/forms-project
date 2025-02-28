@@ -198,8 +198,13 @@
 
 
 
-20240227
+20250227
 4. Arreglar formulario ownerDetails
 Este formulario funciona similar al formulario de contact information, que se reciben varios dueños.
 
 5. Hacer un formulario de login al sistema, solo login
+
+
+
+20250228
+6. Hacer el formulario de resumen para Mozart, no utilizar el de Onboarding. SendConfirm para Mozart con los datos de Mozart
