@@ -15,10 +15,10 @@ export const ownerDetailsData = {
     stateCode: "",
     zip: "",
   },
-  dateOfBirth: new Date(), // Ajustar a Date
+  dateOfBirth: new Date(),
   position: "",
   citizenship: "",
-  ownershipDate: new Date(), // Ajustar a Date
+  ownershipDate: new Date(),
   ownershipPercentage: 0,
   driversLicenceNumber: "",
   driversLicenceCountry: "",
