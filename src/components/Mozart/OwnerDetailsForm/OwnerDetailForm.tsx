@@ -31,6 +31,7 @@ import { ownerDetailsSchema } from "./ownerDetailsSchema";
 import { ownerDetailsData } from "../OwnerDetailsForm/ownerDetailData";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import * as yup from "yup";
+import AllDataMozartForm from "/src/utils/AllDataMozartForm";
 
 // Definimos un esquema que engloba un array de owners
 const schema = yup.object({
@@ -40,9 +41,14 @@ const schema = yup.object({
 export type OwnerDetailsFormValues = yup.InferType<typeof schema>;
 
 interface OwnerDetailsFormProps {
+  title: string;
+  description?: string;
+  onBack?: () => void;
   onNext?: () => void;
   onDataChange?: (data: OwnerDetailsFormValues) => void;
   formRef?: React.RefObject<HTMLFormElement>;
+  validationSchema?: typeof ownerDetailsSchema;
+  formDataAll?: AllDataMozartForm;
 }
 
 const OwnerDetailsForm: React.FC<OwnerDetailsFormProps> = ({
