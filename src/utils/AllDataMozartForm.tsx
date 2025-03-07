@@ -34,26 +34,68 @@ type ContactDetails = {
   address: Address;
 };
 
-type BankingDetails = {
-  accountNumber: string;
-  accountType: string;
-  accountHolderName: string;
-  entityType: string;
-  routingNumber: string;
-  bankName: string;
-  plaidAccessToken: string;
-  billingAddress: Address;
-  documentsVoidCheck: string;
-  documentsCustomDocument1: string;
-  documentsCustomDocument2: string;
-  documentsCustomDocument3: string;
-};
+// type BankingDetails = {
+//   accountNumber: string;
+//   accountType: string;
+//   accountHolderName: string;
+//   entityType: string;
+//   routingNumber: string;
+//   bankName: string;
+//   plaidAccessToken: string;
+//   billingAddress: Address;
+//   documentsVoidCheck: string;
+//   documentsCustomDocument1: string;
+//   documentsCustomDocument2: string;
+//   documentsCustomDocument3: string;
+// };
 
 type BusinessFinancials = {
   avgTicketPriceProjection: string;
   highestTicketPriceProjection: string;
   isAnnualAmexVolumeExceedMillionDollars: boolean;
 };
+
+// type Address = {
+//   street: string;
+//   apartment: string;
+//   city: string;
+//   country: string;
+//   stateCode: string;
+//   zip: string;
+// };
+
+// type Owner = {
+//   firstName: string;
+//   middleName: string;
+//   lastName: string;
+//   stateID: string;
+//   ssn: string;
+//   percentOwnership: number;
+//   title: string;
+//   birthday: string;
+//   email: string;
+//   address: Address;
+//   city: string;
+//   zip: string;
+//   phone: string;
+// };
+
+// type ContactDetails = {
+//   contactType: string;
+//   firstName: string;
+//   lastName: string;
+//   legalName: string;
+//   email: string;
+//   mobilePhone: string;
+//   homePhone: string;
+//   address: Address;
+// };
+
+// type BusinessFinancials = {
+//   avgTicketPriceProjection: string;
+//   highestTicketPriceProjection: string;
+//   isAnnualAmexVolumeExceedMillionDollars: boolean;
+// };
 
 type AllDataMozartForm = {
   businessName: string;
@@ -95,8 +137,19 @@ type AllDataMozartForm = {
   aditionalDetailsMailing: string;
   businessFinancials: BusinessFinancials;
   contactDetails: ContactDetails[];
-  bankingDetails: BankingDetails;
   ownerDetails: Owner[];
+  bankingBankAccountAccountNumber: string;
+  bankingBankAccountAccountType: string;
+  bankingBankAccountAccountHolderName: string;
+  bankingBankAccountEntityType: string;
+  bankingBankAccountRoutingNumber: string;
+  bankingBankAccountBankName: string;
+  bankingPlaidAccessToken: string;
+  bankingBillingAddressStreet: string;
+  documentsVoidCheck: string;
+  documentsCustomDocument1: string;
+  documentsCustomDocument2: string;
+  documentsCustomDocument3: string;
 };
 
 export default AllDataMozartForm;
