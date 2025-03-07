@@ -1,4 +1,3 @@
-
 import React from "react";
 import Sidebar from "../Sidebar/SidebarAlter";
 import BusinessForm from "../Mozart/BusinessForm/BusinessForm";
@@ -13,7 +12,7 @@ import BusinessProfileForm from "../Mozart/BusinessProfileForm/BusinessProfileFo
 import { businessProfileSchema } from "../Mozart/BusinessProfileForm/businessProfileSchema";
 import BusinessFinancialsForm from "../Mozart/BusinessFinancialsForm/BusinessFinancialsForm";
 import { businessFinancialsSchema } from "../Mozart/BusinessFinancialsForm/businessFinancialsSchema";
-import SendConfirm from "../Onboarding/SendConfirm/SendConfirm";
+import SendConfirm from "../Mozart/SendConfirm/SendConfirm";
 
 const MainApp: React.FC = () => {
   return (

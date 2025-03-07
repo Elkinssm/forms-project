@@ -1,20 +1,86 @@
+type Address = {
+  street: string;
+  apartment: string;
+  city: string;
+  country: string;
+  stateCode: string;
+  zip: string;
+};
+
 type Owner = {
-  ownerFirstName: string;
-  ownerMiddleName: string;
-  ownerLastName: string;
-  ownerStateID: string;
-  ownerSSN: string;
-  ownerPercentOwnership: number;
-  ownerTitle: string;
-  ownerBirthday: string;
-  ownerEmail: string;
-  ownerAddress: string;
-  ownerCity: string;
-  ownerZip: string;
-  ownerPhone: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  stateID: string;
+  ssn: string;
+  percentOwnership: number;
+  title: string;
+  birthday: string;
+  email: string;
+  address: Address;
+  city: string;
+  zip: string;
+  phone: string;
+};
+
+type ContactDetails = {
+  contactType: string;
+  firstName: string;
+  lastName: string;
+  legalName: string;
+  email: string;
+  mobilePhone: string;
+  homePhone: string;
+  address: Address;
+};
+
+type BankingDetails = {
+  accountNumber: string;
+  accountType: string;
+  accountHolderName: string;
+  entityType: string;
+  routingNumber: string;
+  bankName: string;
+  plaidAccessToken: string;
+  billingAddress: Address;
+  documentsVoidCheck: string;
+  documentsCustomDocument1: string;
+  documentsCustomDocument2: string;
+  documentsCustomDocument3: string;
+};
+
+type BusinessFinancials = {
+  avgTicketPriceProjection: string;
+  highestTicketPriceProjection: string;
+  isAnnualAmexVolumeExceedMillionDollars: boolean;
 };
 
 type AllDataMozartForm = {
+  businessName: string;
+  businessLegalName: string;
+  businessRegistrationNumber: string;
+  businessOwnershipType: string;
+  businessTaxId: string;
+  businessGiin: string;
+  businessIncorporationDate: string;
+  businessBusinessAddress: Address;
+  businessCorporateAddress: Address;
+  businessCompanyWebsiteUrl: string;
+  businessDbaName: string;
+  businessDbaWebsiteUrl: string;
+  businessDynamicDescriptor: string;
+  businessDescription: string;
+  businessCustomerServicePhone: string;
+  businessCustomerServiceEmail: string;
+  businessFax: string;
+  businessAgreement: string;
+  businessCustomField1: string;
+  businessCustomField2: string;
+  businessCustomField3: string;
+  businessPhoneNumber: string;
+  businessEmailAddressForNotices: string;
+  businessNumberOfLocations: number;
+  businessNumberOfOutlets: number;
   corpLegalFedTaxId: string;
   corpLegalName: string;
   corpLegalAddress: string;
@@ -27,50 +93,10 @@ type AllDataMozartForm = {
   aditionalDetailsLocations: number;
   aditionalDetailsWebsite: string;
   aditionalDetailsMailing: string;
-  merchDBAName: string;
-  merchAddress: string;
-  merchCity: string;
-  merchState: string;
-  merchZip: string;
-  merchPhone: string;
-  merchEmail: string;
-  controllerOfficerIsOwner: string;
-  controllerOfficerFirstName: string;
-  controllerOfficerMiddleName: string;
-  controllerOfficerLastName: string;
-  controllerOfficerDob: string;
-  controllerOfficerTitle: string;
-  controllerOfficerEmail: string;
-  controllerOfficerAddress: string;
-  controllerOfficerCity: string;
-  controllerOfficerZip: string;
-  controllerOfficerHomePhone: string;
-  controllerOfficerLicenseNumber: string;
-  controllerOfficerLicenseNumberExpires: string;
-
-  businessProfileOwnershipType: string;
-  businessProfileBusinessType: string;
-  businessProfileGoodsServices: string;
-  businessProfileBankName: string;
-  businessProfileBusinessCheckingAccount: string;
-  businessProfileBusinessCheckRouting: string;
-  businessProfileBusinessCheckRoutingCheck: string;
-  businessProfileBusinessCheckingAccountCheck: string;
-  businessProfileDriverLicenseImage: string;
-  businessProfileVoidedCheckImage: string;
-  owners: Owner[];
-  controllerOfficerOfficerIsOwner: string;
-  salesProfileCurrentlyMCVISA: string;
-  salesProfileRetailChipSwipe: string;
-  salesProfileCurrentProcessor: string;
-  salesProfileAvgTicket: string;
-  salesProfileMaxTicket: string;
-  salesProfileMonthlyVolume: string;
-  salesProfileMailPhone: string;
-  salesProfileInternetPerc: string;
-  salesProfileB2BPerc: string;
-  salesProfileB2CPerc: string;
-  salesProfileB2GPerc: string;
+  businessFinancials: BusinessFinancials;
+  contactDetails: ContactDetails[];
+  bankingDetails: BankingDetails;
+  ownerDetails: Owner[];
 };
 
 export default AllDataMozartForm;
