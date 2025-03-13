@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import AllDataMozartForm from "../../../utils/AllDataMozartForm";
 import { ViewIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { transformNestedData } from "/src/utils/transformNestedData";
 
 interface SendConfirmProps {
   title: string;
@@ -23,8 +24,11 @@ interface SendConfirmProps {
 
 const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
   const buttonSize = "md";
+  const data = transformNestedData<AllDataMozartForm>(formDataAll || {});
+  const contacts = Array.isArray(data.contacts) ? data.contacts : [];
+  const ownersObject = data.owners || {};
+  const owners = Object.values(ownersObject);
 
-  const data = formDataAll || ({} as AllDataMozartForm);
   console.table(data);
 
   return (
@@ -301,54 +305,63 @@ const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
       <Heading as="h3" size="md" mb={3}>
         Contact Information
       </Heading>
-      {data.contactDetails && data.contactDetails.length > 0 ? (
-        data.contactDetails.map((contact, index) => (
+      {contacts.length > 0 ? (
+        contacts.map((contact, index) => (
           <Table variant="simple" mb={6} key={index}>
             <Tbody>
               <Tr>
                 <Th color="blue.500" width="40%" colSpan={2} textAlign="center">
-                  Contact:
+                  Contact {index + 1}
                 </Th>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
                   First Name:
                 </Th>
-                <Td width="60%">{contact.firstName || "N/A"}</Td>
+                <Td width="60%">{contact?.contactDetailsFirstName ?? "N/A"}</Td>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
                   Last Name:
                 </Th>
-                <Td width="60%">{contact.lastName || "N/A"}</Td>
+                <Td width="60%">{contact?.contactDetailsLastName ?? "N/A"}</Td>
+              </Tr>
+              <Tr>
+                <Th color="blue.500" width="40%">
+                  Legal Name:
+                </Th>
+                <Td width="60%">{contact?.contactDetailsLegalName ?? "N/A"}</Td>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
                   Email:
                 </Th>
-                <Td width="60%">{contact.email || "N/A"}</Td>
+                <Td width="60%">{contact?.contactDetailsEmail ?? "N/A"}</Td>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
                   Mobile Phone:
                 </Th>
-                <Td width="60%">{contact.mobilePhone || "N/A"}</Td>
+                <Td width="60%">
+                  {contact?.contactDetailsMobilePhone ?? "N/A"}
+                </Td>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
                   Home Phone:
                 </Th>
-                <Td width="60%">{contact.homePhone || "N/A"}</Td>
+                <Td width="60%">{contact?.contactDetailsHomePhone ?? "N/A"}</Td>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
                   Address:
                 </Th>
                 <Td width="60%">
-                  {contact.address?.street || "N/A"},{" "}
-                  {contact.address?.city || "N/A"},{" "}
-                  {contact.address?.stateCode || "N/A"},{" "}
-                  {contact.address?.zip || "N/A"}
+                  {contact?.contactDetailsAddress?.street ?? "N/A"},{" "}
+                  {contact?.contactDetailsAddress?.apartment ?? "N/A"},{" "}
+                  {contact?.contactDetailsAddress?.city ?? "N/A"},{" "}
+                  {contact?.contactDetailsAddress?.stateCode ?? "N/A"},{" "}
+                  {contact?.contactDetailsAddress?.zip ?? "N/A"}
                 </Td>
               </Tr>
             </Tbody>
@@ -359,38 +372,8 @@ const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
           <Tbody>
             <Tr>
               <Th color="blue.500" width="40%" colSpan={2} textAlign="center">
-                Contact:
+                No Contacts Found
               </Th>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                First Name:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Last Name:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Email:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Mobile Phone:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Home Phone:
-              </Th>
-              <Td width="60%">N/A</Td>
             </Tr>
           </Tbody>
         </Table>
@@ -402,85 +385,114 @@ const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
         Owner Details
       </Heading>
 
-      {data.ownerDetails?.length > 0 ? (
-        data.ownerDetails.map((owner, index) => (
+      {owners.length > 0 ? (
+        owners.map((owner, index) => (
           <Table variant="simple" mb={6} key={index}>
             <Tbody>
               <Tr>
                 <Th color="blue.500" width="40%" colSpan={2} textAlign="center">
-                  Owner:
+                  Owner {index + 1}
                 </Th>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
                   First Name:
                 </Th>
-                <Td width="60%">{owner.firstName || "N/A"}</Td>
-              </Tr>
-              <Tr>
-                <Th color="blue.500" width="40%">
-                  Middle Name:
-                </Th>
-                <Td width="60%">{owner.middleName || "N/A"}</Td>
+                <Td width="60%">{owner.firstName ?? "N/A"}</Td>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
                   Last Name:
                 </Th>
-                <Td width="60%">{owner.lastName || "N/A"}</Td>
-              </Tr>
-              <Tr>
-                <Th color="blue.500" width="40%">
-                  State ID:
-                </Th>
-                <Td width="60%">{owner.stateID || "N/A"}</Td>
-              </Tr>
-              <Tr>
-                <Th color="blue.500" width="40%">
-                  SSN:
-                </Th>
-                <Td width="60%">{owner.ssn || "N/A"}</Td>
-              </Tr>
-              <Tr>
-                <Th color="blue.500" width="40%">
-                  Percent Ownership:
-                </Th>
-                <Td width="60%">{owner.percentOwnership || "N/A"}%</Td>
-              </Tr>
-              <Tr>
-                <Th color="blue.500" width="40%">
-                  Title:
-                </Th>
-                <Td width="60%">{owner.title || "N/A"}</Td>
-              </Tr>
-              <Tr>
-                <Th color="blue.500" width="40%">
-                  Birthday:
-                </Th>
-                <Td width="60%">{owner.birthday || "N/A"}</Td>
+                <Td width="60%">{owner.lastName ?? "N/A"}</Td>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
                   Email:
                 </Th>
-                <Td width="60%">{owner.email || "N/A"}</Td>
+                <Td width="60%">{owner.email ?? "N/A"}</Td>
+              </Tr>
+              <Tr>
+                <Th color="blue.500" width="40%">
+                  Citizenship:
+                </Th>
+                <Td width="60%">{owner.citizenship ?? "N/A"}</Td>
+              </Tr>
+              <Tr>
+                <Th color="blue.500" width="40%">
+                  GIIN:
+                </Th>
+                <Td width="60%">{owner.giin ?? "N/A"}</Td>
+              </Tr>
+              <Tr>
+                <Th color="blue.500" width="40%">
+                  Date of Birth:
+                </Th>
+                <Td width="60%">{owner.dateOfBirth ?? "N/A"}</Td>
+              </Tr>
+              <Tr>
+                <Th color="blue.500" width="40%">
+                  Ownership Date:
+                </Th>
+                <Td width="60%">{owner.ownershipDate ?? "N/A"}</Td>
+              </Tr>
+              <Tr>
+                <Th color="blue.500" width="40%">
+                  Ownership Percentage:
+                </Th>
+                <Td width="60%">{owner.ownershipPercentage ?? "N/A"}%</Td>
+              </Tr>
+              <Tr>
+                <Th color="blue.500" width="40%">
+                  Position:
+                </Th>
+                <Td width="60%">{owner.position ?? "N/A"}</Td>
+              </Tr>
+              <Tr>
+                <Th color="blue.500" width="40%">
+                  Control Prong:
+                </Th>
+                <Td width="60%">
+                  {owner.controlProng === "on" ? "Yes" : "No"}
+                </Td>
+              </Tr>
+              <Tr>
+                <Th color="blue.500" width="40%">
+                  Driver's Licence Number:
+                </Th>
+                <Td width="60%">{owner.driversLicenceNumber ?? "N/A"}</Td>
+              </Tr>
+              <Tr>
+                <Th color="blue.500" width="40%">
+                  Driver's Licence State:
+                </Th>
+                <Td width="60%">{owner.driversLicenceState ?? "N/A"}</Td>
+              </Tr>
+              <Tr>
+                <Th color="blue.500" width="40%">
+                  Driver's Licence Country:
+                </Th>
+                <Td width="60%">{owner.driversLicenceCountry ?? "N/A"}</Td>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
                   Address:
                 </Th>
                 <Td width="60%">
-                  {owner.address?.street || "N/A"},{" "}
-                  {owner.address?.city || "N/A"},{" "}
-                  {owner.address?.stateCode || "N/A"},{" "}
-                  {owner.address?.zip || "N/A"}
+                  {owner.address?.street ?? "N/A"},{" "}
+                  {owner.address?.apartment ?? "N/A"},{" "}
+                  {owner.address?.city ?? "N/A"},{" "}
+                  {owner.address?.stateCode ?? "N/A"},{" "}
+                  {owner.address?.zip ?? "N/A"}
                 </Td>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
                   Phone:
                 </Th>
-                <Td width="60%">{owner.phone || "N/A"}</Td>
+                <Td width="60%">
+                  {owner.mobilePhone ?? owner.homePhone ?? "N/A"}
+                </Td>
               </Tr>
             </Tbody>
           </Table>
@@ -490,74 +502,8 @@ const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
           <Tbody>
             <Tr>
               <Th color="blue.500" width="40%" colSpan={2} textAlign="center">
-                Owner:
+                No Owners Found
               </Th>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                First Name:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Middle Name:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Last Name:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                State ID:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                SSN:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Percent Ownership:
-              </Th>
-              <Td width="60%">N/A%</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Title:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Birthday:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Email:
-              </Th>
-              <Td width="60%">N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Address:
-              </Th>
-              <Td width="60%">N/A, N/A, N/A, N/A</Td>
-            </Tr>
-            <Tr>
-              <Th color="blue.500" width="40%">
-                Phone:
-              </Th>
-              <Td width="60%">N/A</Td>
             </Tr>
           </Tbody>
         </Table>
@@ -565,42 +511,323 @@ const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
 
       <Divider my={6} />
 
-      {/* Business Financials */}
+      {/* Business Profile */}
       <Heading as="h3" size="md" mb={3}>
-        Business Financials
+        Business Profile
       </Heading>
-
       <Table variant="simple" mb={6}>
         <Tbody>
           <Tr>
             <Th color="blue.500" width="40%">
-              Average Ticket Price Projection:
+              Category:
+            </Th>
+            <Td width="60%">{data?.category || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Description of Goods:
+            </Th>
+            <Td width="60%">{data?.descriptionOfGoods || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Industry:
+            </Th>
+            <Td width="60%">{data?.industry || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              MCC Code:
+            </Th>
+            <Td width="60%">{data?.mccCode || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Merchant Billing Type:
+            </Th>
+            <Td width="60%">{data?.merchantBillingType || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Merchant Pricing Model:
+            </Th>
+            <Td width="60%">{data?.merchantPricingModel || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              GST Number:
+            </Th>
+            <Td width="60%">{data?.gstNumber || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Privacy Policy URL:
+            </Th>
+            <Td width="60%">{data?.privacyPolicyUrl || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Returns Policy URL:
+            </Th>
+            <Td width="60%">{data?.returnsPolicyUrl || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Terms & Conditions URL:
+            </Th>
+            <Td width="60%">{data?.tcPolicyUrl || "N/A"}</Td>
+          </Tr>
+        </Tbody>
+      </Table>
+
+      {/* PCI Compliance */}
+      <Heading as="h3" size="md" mb={3}>
+        PCI Compliance
+      </Heading>
+      <Table variant="simple" mb={6}>
+        <Tbody>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Data Compromised:
             </Th>
             <Td width="60%">
-              {data.businessFinancials?.avgTicketPriceProjection || "N/A"}
+              {data.pciCompliance?.dataCompromised ? "Yes" : "No"}
             </Td>
           </Tr>
           <Tr>
             <Th color="blue.500" width="40%">
-              Highest Ticket Price Projection:
+              PCI Level:
+            </Th>
+            <Td width="60%">{data.pciCompliance?.pciLevel || "N/A"}</Td>
+          </Tr>
+          {/* <Tr>
+            <Th color="blue.500" width="40%">
+              Stores Sensitive Data:
             </Th>
             <Td width="60%">
-              {data.businessFinancials?.highestTicketPriceProjection || "N/A"}
+              {data.pciCompliance?.storesSensitiveData ? "Yes" : "No"}
+            </Td>
+          </Tr> */}
+        </Tbody>
+      </Table>
+
+      {/* Shipping */}
+      <Heading as="h3" size="md" mb={3}>
+        Shipping
+      </Heading>
+      <Table variant="simple" mb={6}>
+        <Tbody>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Shipping Required:
+            </Th>
+            <Td width="60%">
+              {data.shipping?.shippingRequired === "on" ? "Yes" : "No"}
             </Td>
           </Tr>
           <Tr>
             <Th color="blue.500" width="40%">
-              Is Annual Amex Volume Exceed Million Dollars:
+              Inventory Available:
             </Th>
             <Td width="60%">
-              {data.businessFinancials?.isAnnualAmexVolumeExceedMillionDollars
-                ? "Yes"
-                : "No"}
+              {data.shipping?.inventory === "on" ? "Yes" : "No"}
+            </Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Delivery Time (1-7 days):
+            </Th>
+            <Td width="60%">
+              {data.shipping?.deliveryTimePercentage.oneToSevenDays || "N/A"}%
+            </Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Delivery Time (30 days):
+            </Th>
+            <Td width="60%">
+              {data.shipping?.deliveryTimePercentage?.eightToFourteenDays ||
+                "N/A"}
+              %
             </Td>
           </Tr>
         </Tbody>
       </Table>
 
+      {/* Processing Methods */}
+      <Heading as="h3" size="md" mb={3}>
+        Processing Methods
+      </Heading>
+      <Table variant="simple" mb={6}>
+        <Tbody>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Device Terminal:
+            </Th>
+            <Td width="60%">
+              {data.processingMethods?.deviceTerminal || "N/A"}
+            </Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              MOTO:
+            </Th>
+            <Td width="60%">{data.processingMethods?.moTo || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Online:
+            </Th>
+            <Td width="60%">{data.processingMethods?.online || "N/A"}</Td>
+          </Tr>
+        </Tbody>
+      </Table>
+
+      <Divider my={6} />
+
+      {/* Business Financials */}
+      <Heading as="h3" size="md" mb={3}>
+        Business Financials
+      </Heading>
+      <Table variant="simple" mb={6}>
+        <Tbody>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Custom Field 1:
+            </Th>
+            <Td width="60%">{data?.customField1 || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Custom Field 2:
+            </Th>
+            <Td width="60%">{data?.customField2 || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Custom Field 3:
+            </Th>
+            <Td width="60%">{data?.customField3 || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Highest Ticket Price Projection:
+            </Th>
+            <Td width="60%">{data?.highestTicketPriceProjection || "N/A"}</Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Annual Amex Volume $1M:
+            </Th>
+            <Td width="60%">
+              {data?.isAnnualAmexVolumeExceedMillionDollars ? "Yes" : "No"}
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
+
+      {/* Monthly Volume Projection */}
+      <Heading as="h4" size="sm" mb={2}>
+        Monthly Volume Projection
+      </Heading>
+      <Table variant="simple" mb={6}>
+        <Tbody>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              American Express:
+            </Th>
+            <Td width="60%">
+              {data.monthlyVolumeProjection?.americanExpress || "N/A"}
+            </Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Discover:
+            </Th>
+            <Td width="60%">
+              {data.monthlyVolumeProjection?.discover ||
+                "N/A"}
+            </Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Local Debit Card:
+            </Th>
+            <Td width="60%">
+              {data.monthlyVolumeProjection
+                ?.localDebitCard || "N/A"}
+            </Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              MasterCard:
+            </Th>
+            <Td width="60%">
+              {data.monthlyVolumeProjection?.mastercard ||
+                "N/A"}
+            </Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Visa:
+            </Th>
+            <Td width="60%">
+              {data.monthlyVolumeProjection?.visa || "N/A"}
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
+
+      {/* Volume Projection */}
+      <Heading as="h4" size="sm" mb={2}>
+        Volume Projection
+      </Heading>
+      <Table variant="simple" mb={6}>
+        <Tbody>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              American Express:
+            </Th>
+            <Td width="60%">
+              {data.volumeProjection?.americanExpress ||
+                "N/A"}
+            </Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Discover:
+            </Th>
+            <Td width="60%">
+              {data.volumeProjection?.discover || "N/A"}
+            </Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Local Debit Card:
+            </Th>
+            <Td width="60%">
+              {data.volumeProjection?.localDebitCard ||
+                "N/A"}
+            </Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              MasterCard:
+            </Th>
+            <Td width="60%">
+              {data.volumeProjection?.mastercard || "N/A"}
+            </Td>
+          </Tr>
+          <Tr>
+            <Th color="blue.500" width="40%">
+              Visa:
+            </Th>
+            <Td width="60%">
+              {data.volumeProjection?.visa || "N/A"}
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
       <Divider my={6} />
 
       {/* Confirmation and Validation */}

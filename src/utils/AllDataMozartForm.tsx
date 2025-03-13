@@ -7,22 +7,6 @@ type Address = {
   zip: string;
 };
 
-type Owner = {
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  stateID: string;
-  ssn: string;
-  percentOwnership: number;
-  title: string;
-  birthday: string;
-  email: string;
-  address: Address;
-  city: string;
-  zip: string;
-  phone: string;
-};
-
 type ContactDetails = {
   contactType: string;
   firstName: string;
@@ -34,68 +18,115 @@ type ContactDetails = {
   address: Address;
 };
 
-// type BankingDetails = {
-//   accountNumber: string;
-//   accountType: string;
-//   accountHolderName: string;
-//   entityType: string;
-//   routingNumber: string;
-//   bankName: string;
-//   plaidAccessToken: string;
-//   billingAddress: Address;
-//   documentsVoidCheck: string;
-//   documentsCustomDocument1: string;
-//   documentsCustomDocument2: string;
-//   documentsCustomDocument3: string;
-// };
-
-type BusinessFinancials = {
-  avgTicketPriceProjection: string;
-  highestTicketPriceProjection: string;
-  isAnnualAmexVolumeExceedMillionDollars: boolean;
+type Owner = {
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+  stateID?: string;
+  ssn?: string;
+  percentOwnership: number;
+  title?: string;
+  birthday: string;
+  email: string;
+  address: Address;
+  phone?: string;
+  citizenship?: string;
+  controlProng?: boolean;
+  customField1?: string;
+  customField2?: string;
+  customField3?: string;
+  dateOfBirth?: string;
+  driversLicenceCountry?: string;
+  driversLicenceNumber?: string;
+  driversLicenceState?: string;
+  giin?: string;
+  homePhone?: string;
+  id?: string;
+  idNumber?: string;
+  mobilePhone?: string;
+  ownershipDate?: string;
+  ownershipPercentage: number;
+  position?: string;
 };
 
-// type Address = {
-//   street: string;
-//   apartment: string;
-//   city: string;
-//   country: string;
-//   stateCode: string;
-//   zip: string;
-// };
+type BusinessFinancials = {
+  customField1: string;
+  customField2: string;
+  customField3: string;
+  highestTicketPriceProjection: string;
+  isAnnualAmexVolumeExceedMillionDollars: boolean;
+  monthlyVolumeProjection: {
+    americanExpress: string;
+    discover: string;
+    localDebitCard: string;
+    mastercard: string;
+    visa: string;
+  };
+  volumeProjection: {
+    americanExpress: string;
+    discover: string;
+    localDebitCard: string;
+    mastercard: string;
+    visa: string;
+  };
+  avgTicketPriceProjection: string;
+};
 
-// type Owner = {
-//   firstName: string;
-//   middleName: string;
-//   lastName: string;
-//   stateID: string;
-//   ssn: string;
-//   percentOwnership: number;
-//   title: string;
-//   birthday: string;
-//   email: string;
-//   address: Address;
-//   city: string;
-//   zip: string;
-//   phone: string;
-// };
+// Business Profile**
+type BusinessProfile = {
+  category: string;
+  descriptionOfGoods: string;
+  industry: string;
+  mccCode: string;
+  merchantBillingType: string;
+  merchantPricingModel: string;
+  gstNumber: string;
+  privacyPolicyUrl: string;
+  returnsPolicyUrl: string;
+  tcPolicyUrl: string;
+};
 
-// type ContactDetails = {
-//   contactType: string;
-//   firstName: string;
-//   lastName: string;
-//   legalName: string;
-//   email: string;
-//   mobilePhone: string;
-//   homePhone: string;
-//   address: Address;
-// };
+// PCI Compliance
+type PCICompliance = {
+  dataCompromised: string; // Viene como "on" o vacío
+  isEnabled: string; // Viene como "on" o vacío
+  pciLevel: string;
+};
 
-// type BusinessFinancials = {
-//   avgTicketPriceProjection: string;
-//   highestTicketPriceProjection: string;
-//   isAnnualAmexVolumeExceedMillionDollars: boolean;
-// };
+// Processing Methods
+type ProcessingMethods = {
+  deviceTerminal: string;
+  moTo: string;
+  online: string;
+};
+
+//Shipping
+type Shipping = {
+  shippingRequired: string; // "on" o vacío
+  inventory?: string; // "on" o vacío
+  deliveryTimePercentage: {
+    oneToSevenDays: string;
+    eightToFourteenDays: string;
+    fifteenToThirtyDays: string;
+    moreThanThirtyDays: string;
+  };
+};
+
+type MonthlyVolumeProjection = {
+  americanExpress: string;
+  discover: string;
+  localDebitCard: string;
+  mastercard: string;
+  visa: string;
+};
+
+type VolumeProjection = {
+  americanExpress: string;
+  discover: string;
+  localDebitCard: string;
+  mastercard: string;
+  visa: string;
+};
 
 type AllDataMozartForm = {
   businessName: string;
@@ -123,6 +154,8 @@ type AllDataMozartForm = {
   businessEmailAddressForNotices: string;
   businessNumberOfLocations: number;
   businessNumberOfOutlets: number;
+
+  // Información Corporativa
   corpLegalFedTaxId: string;
   corpLegalName: string;
   corpLegalAddress: string;
@@ -132,12 +165,23 @@ type AllDataMozartForm = {
   corpLegalPhone: string;
   corpLegalEmail: string;
   yearsInBusiness: number;
+
+  // Detalles Adicionales
   aditionalDetailsLocations: number;
   aditionalDetailsWebsite: string;
   aditionalDetailsMailing: string;
+
+  // Datos Financieros
   businessFinancials: BusinessFinancials;
-  contactDetails: ContactDetails[];
-  ownerDetails: Owner[];
+
+  // Ahora Business Profile es un objeto
+  businessProfile: BusinessProfile;
+
+  // Contactos y Dueños
+  contacts: ContactDetails[];
+  owners: Owner[];
+
+  // Información Bancaria
   bankingBankAccountAccountNumber: string;
   bankingBankAccountAccountType: string;
   bankingBankAccountAccountHolderName: string;
@@ -146,10 +190,36 @@ type AllDataMozartForm = {
   bankingBankAccountBankName: string;
   bankingPlaidAccessToken: string;
   bankingBillingAddressStreet: string;
+
+  // Documentos
   documentsVoidCheck: string;
   documentsCustomDocument1: string;
   documentsCustomDocument2: string;
   documentsCustomDocument3: string;
+
+  category: string;
+  descriptionOfGoods: string;
+  industry: string;
+  mccCode: string;
+  merchantBillingType: string;
+  merchantPricingModel: string;
+  gstNumber: string;
+  privacyPolicyUrl: string;
+  returnsPolicyUrl: string;
+  tcPolicyUrl: string;
+
+  // PCI, Métodos de Procesamiento y Envío
+  pciCompliance: PCICompliance;
+  processingMethods: ProcessingMethods;
+  shipping: Shipping;
+
+  customField1: string;
+  customField2: string;
+  customField3: string;
+  highestTicketPriceProjection: string;
+  isAnnualAmexVolumeExceedMillionDollars: string; // 🔄 Llega como "on" o vacío
+  monthlyVolumeProjection: MonthlyVolumeProjection;
+  volumeProjection: VolumeProjection;
 };
 
 export default AllDataMozartForm;
