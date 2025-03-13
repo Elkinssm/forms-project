@@ -22,7 +22,7 @@ import {
   FormProvider,
   useFieldArray,
 } from "react-hook-form";
-import { FormControl, FormLabel, Input, useTheme } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
@@ -54,9 +54,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
   formData = formDataContact,
   validationSchema = contactSchema,
   formRef,
-  formDataAll,
 }) => {
-  const theme = useTheme();
   const methods = useForm<ContactDataForm>({
     resolver: zodResolver(validationSchema),
     defaultValues: formData,
@@ -64,11 +62,9 @@ const ContactForm: React.FC<ContactFormProps> = ({
   });
 
   const {
-    register,
     control,
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors },
     trigger,
   } = methods;
@@ -77,16 +73,6 @@ const ContactForm: React.FC<ContactFormProps> = ({
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
   };
-
-  const handleDebug = () => {
-    const values = getValues();
-    console.log(values);
-  };
-
-  /** variables acordeon */
-
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalError, setModalError] = useState<string | null>(null);
 
   const { fields, append, remove } = useFieldArray({
     control,

@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const [formDataAll, setFormDataAll] = useState<FormData>({});
   const [direction, setDirection] = useState<"next" | "back">("next");
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
-  const [isSummary, setIsSummary] = useState<boolean>(false);
+  const [, setIsSummary] = useState<boolean>(false);
 
   const totalSteps = React.Children.count(children);
   const formRef = useRef<HTMLFormElement>(null);

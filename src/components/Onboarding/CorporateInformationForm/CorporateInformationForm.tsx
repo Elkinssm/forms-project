@@ -10,7 +10,6 @@ import {
   RadioGroup,
   Stack,
   Radio,
-  Button,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -66,18 +65,12 @@ const CorporateInformationForm: React.FC<CorporateInfomationFormProps> = ({
   const {
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors },
   } = methods;
 
   const onSubmit: SubmitHandler<BusinessDataForm> = (data) => {
     if (onDataChange) onDataChange(data);
     if (onNext) onNext();
-  };
-
-  const handleDebug = () => {
-    const values = getValues();
-    console.log(values);
   };
 
   return (

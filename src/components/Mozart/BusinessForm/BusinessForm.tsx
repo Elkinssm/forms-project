@@ -1,7 +1,7 @@
 import { Box, Button, VisuallyHidden, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { FormControl, FormLabel, Input, useTheme } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { businessSchema } from "./businessSchema";
@@ -30,9 +30,7 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
   formData = formDataBusiness,
   validationSchema = businessSchema,
   formRef,
-  formDataAll,
 }) => {
-  const theme = useTheme();
   const methods = useForm<BusinessDataForm>({
     resolver: zodResolver(validationSchema),
     defaultValues: formData,
@@ -40,7 +38,6 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
 
   const {
     handleSubmit,
-    setValue,
     getValues,
     formState: { errors },
   } = methods;

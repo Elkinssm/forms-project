@@ -31,10 +31,7 @@ interface BusinessFinancialsFormProps {
 }
 
 const BusinessFinancialsForm: React.FC<BusinessFinancialsFormProps> = ({
-  title,
-  description,
   onNext,
-  onBack,
   onDataChange,
   formData = businessFinancialsData,
   formRef,

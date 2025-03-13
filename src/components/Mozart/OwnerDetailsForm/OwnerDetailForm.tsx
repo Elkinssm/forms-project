@@ -25,13 +25,15 @@ import {
   FormProvider,
   useFieldArray,
   SubmitHandler,
+  FieldError,
 } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ownerDetailsSchema } from "./ownerDetailsSchema";
 import { ownerDetailsData } from "../OwnerDetailsForm/ownerDetailData";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
 import * as yup from "yup";
-import AllDataMozartForm from "/src/utils/AllDataMozartForm";
+import AllDataMozartForm from "../../../utils/AllDataMozartForm";
+import AddressInput from "../../FormComponents/AddressInput";
 
 // Definimos un esquema que engloba un array de owners
 const schema = yup.object({
@@ -276,7 +278,7 @@ const OwnerDetailsForm: React.FC<OwnerDetailsFormProps> = ({
                     </FormControl>
                   </Box>
 
-                  {/* --- Address --- */}
+                  {/* --- Address ---
                   <Box mb={4}>
                     <FormControl
                       isInvalid={!!errors.owners?.[index]?.address?.street}
@@ -384,7 +386,16 @@ const OwnerDetailsForm: React.FC<OwnerDetailsFormProps> = ({
                         error={errors.owners?.[index]?.address?.zip?.message}
                       />
                     </FormControl>
-                  </Box>
+                  </Box> */}
+                  {/* --- Address --- */}
+                  <AddressInput
+                    name={`owners.${index}.address`}
+                    label="Address"
+                    placeholder="Enter address"
+                    error={
+                      errors.owners?.[index]?.address as FieldError | undefined
+                    }
+                  />
 
                   {/* --- Dates & Ownership --- */}
                   <Box mb={4}>

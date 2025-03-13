@@ -8,14 +8,14 @@ type Address = {
 };
 
 type ContactDetails = {
-  contactType: string;
-  firstName: string;
-  lastName: string;
-  legalName: string;
-  email: string;
-  mobilePhone: string;
-  homePhone: string;
-  address: Address;
+  contactDetailsContactType: string;
+  contactDetailsFirstName: string;
+  contactDetailsLastName: string;
+  contactDetailsLegalName: string;
+  contactDetailsEmail: string;
+  contactDetailsMobilePhone: string;
+  contactDetailsHomePhone: string;
+  contactDetailsAddress: Address;
 };
 
 type Owner = {

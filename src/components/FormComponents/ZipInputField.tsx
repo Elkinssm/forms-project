@@ -1,10 +1,6 @@
 import React from "react";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
-import {
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from "react-hook-form";
+import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 import ErrorMessage from "./ErrorMessage";
 
 interface ZipInputProps<T extends FieldValues> {
@@ -13,7 +9,7 @@ interface ZipInputProps<T extends FieldValues> {
   placeholder?: string;
   isReadOnly?: boolean;
   value?: string;
-  errors: any;
+  errors: Record<string, unknown>; // 👈 Corrección aquí
   register: UseFormRegister<T>;
 }
 
@@ -27,36 +23,27 @@ const ZipInput = <T extends FieldValues>({
   register,
 }: ZipInputProps<T>) => {
   const handleZipChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 5) {
-      value = value.slice(0, 5) + "-" + value.slice(5);
+    let zipValue = e.target.value.replace(/\D/g, "");
+    if (zipValue.length > 5) {
+      zipValue = zipValue.slice(0, 5) + "-" + zipValue.slice(5);
     }
-    e.target.value = value;
+    e.target.value = zipValue;
   };
 
-  type ErrorObject = {
-    [key: string]: any;
-  };
-
-  function getValue(obj: ErrorObject, path: string): any {
-    return path.split('.').reduce((acc, part) => {
-      if (acc && acc[part] !== undefined) {
-        return acc[part];
+  /**
+   * Función para obtener valores anidados en `errors`
+   */
+  function getValue(obj: Record<string, unknown>, path: string): unknown {
+    return path.split(".").reduce<unknown>((acc, part) => {
+      if (typeof acc === "object" && acc !== null && part in acc) {
+        return (acc as Record<string, unknown>)[part];
       }
       return undefined;
     }, obj);
   }
-  
-  // useEffect(() => {
-  //   console.log("errors", errors);
-  //   console.log("id", id);
-    
-  //   console.log("igetValued", getValue(errors,id));
-  // });
-  
 
   return (
-    <FormControl mb={4} isInvalid={!!errors}>
+    <FormControl mb={4} isInvalid={!!getValue(errors, id)}>
       <FormLabel htmlFor={id}>{label}</FormLabel>
       <Input
         maxLength={10}
@@ -67,7 +54,9 @@ const ZipInput = <T extends FieldValues>({
         {...register(id as Path<T>, { onChange: handleZipChange })}
         isReadOnly={isReadOnly}
       />
-      <ErrorMessage error={getValue(errors,id)?.message as string} />
+      <ErrorMessage
+        error={(getValue(errors, id) as { message?: string })?.message}
+      />
     </FormControl>
   );
 };

@@ -11,7 +11,7 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
-import { useFormContext, FieldError, set } from "react-hook-form";
+import { useFormContext, FieldError } from "react-hook-form";
 import ErrorMessage from "./ErrorMessage";
 import useAddressGoogle from "../../hooks/address/useAddressGoogle";
 import { Address, AddressComponent } from "../../interfaces/Address";
@@ -33,10 +33,9 @@ const AddressInput: React.FC<AddressInputProps> = ({
   const { fetchAddress } = useAddressGoogle();
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Address[]>([]);
-  const [isAddressValid, setIsAddressValid] = useState(false);
+  const [isAddressValid, setIsAddressValid] = useState(false); // Corregido aquí
   const labelRef = useRef<HTMLLabelElement>(null);
 
-  const street = watch(`${name}.street`);
   const city = watch(`${name}.city`);
   const stateCode = watch(`${name}.stateCode`);
   const zip = watch(`${name}.zip`);
@@ -150,13 +149,13 @@ const AddressInput: React.FC<AddressInputProps> = ({
           id={name}
           type="text"
           placeholder={placeholder}
+          borderColor={isAddressValid ? "green.500" : "red.500"} // Cambia el color si es válido
           {...register(`${name}.street`, {
             onChange: (e) => {
               setQuery(e.target.value);
               setIsAddressValid(false);
             },
           })}
-          onBlur={() => setSuggestions([])}
         />
       </InputGroup>
       <ErrorMessage error={error?.message} />

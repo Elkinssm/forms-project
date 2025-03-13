@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import AllDataMozartForm from "../../../utils/AllDataMozartForm";
 import { ViewIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { transformNestedData } from "/src/utils/transformNestedData";
+import { transformNestedData } from "../../../utils/transformNestedData";
 
 interface SendConfirmProps {
   title: string;
@@ -25,7 +25,7 @@ interface SendConfirmProps {
 const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
   const buttonSize = "md";
   const data = transformNestedData<AllDataMozartForm>(formDataAll || {});
-  const contacts = Array.isArray(data.contacts) ? data.contacts : [];
+  const contacts = Object.values(data.contacts || {});
   const ownersObject = data.owners || {};
   const owners = Object.values(ownersObject);
 
@@ -357,11 +357,7 @@ const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
                   Address:
                 </Th>
                 <Td width="60%">
-                  {contact?.contactDetailsAddress?.street ?? "N/A"},{" "}
-                  {contact?.contactDetailsAddress?.apartment ?? "N/A"},{" "}
-                  {contact?.contactDetailsAddress?.city ?? "N/A"},{" "}
-                  {contact?.contactDetailsAddress?.stateCode ?? "N/A"},{" "}
-                  {contact?.contactDetailsAddress?.zip ?? "N/A"}
+                  {contact?.contactDetailsAddress?.street ?? "N/A"}
                 </Td>
               </Tr>
             </Tbody>
@@ -452,9 +448,7 @@ const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
                 <Th color="blue.500" width="40%">
                   Control Prong:
                 </Th>
-                <Td width="60%">
-                  {owner.controlProng === "on" ? "Yes" : "No"}
-                </Td>
+                <Td width="60%">{owner.controlProng ? "Yes" : "No"}</Td>
               </Tr>
               <Tr>
                 <Th color="blue.500" width="40%">
@@ -745,8 +739,7 @@ const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
               Discover:
             </Th>
             <Td width="60%">
-              {data.monthlyVolumeProjection?.discover ||
-                "N/A"}
+              {data.monthlyVolumeProjection?.discover || "N/A"}
             </Td>
           </Tr>
           <Tr>
@@ -754,8 +747,7 @@ const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
               Local Debit Card:
             </Th>
             <Td width="60%">
-              {data.monthlyVolumeProjection
-                ?.localDebitCard || "N/A"}
+              {data.monthlyVolumeProjection?.localDebitCard || "N/A"}
             </Td>
           </Tr>
           <Tr>
@@ -763,17 +755,14 @@ const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
               MasterCard:
             </Th>
             <Td width="60%">
-              {data.monthlyVolumeProjection?.mastercard ||
-                "N/A"}
+              {data.monthlyVolumeProjection?.mastercard || "N/A"}
             </Td>
           </Tr>
           <Tr>
             <Th color="blue.500" width="40%">
               Visa:
             </Th>
-            <Td width="60%">
-              {data.monthlyVolumeProjection?.visa || "N/A"}
-            </Td>
+            <Td width="60%">{data.monthlyVolumeProjection?.visa || "N/A"}</Td>
           </Tr>
         </Tbody>
       </Table>
@@ -789,42 +778,34 @@ const SendConfirm: React.FC<SendConfirmProps> = ({ title, formDataAll }) => {
               American Express:
             </Th>
             <Td width="60%">
-              {data.volumeProjection?.americanExpress ||
-                "N/A"}
+              {data.volumeProjection?.americanExpress || "N/A"}
             </Td>
           </Tr>
           <Tr>
             <Th color="blue.500" width="40%">
               Discover:
             </Th>
-            <Td width="60%">
-              {data.volumeProjection?.discover || "N/A"}
-            </Td>
+            <Td width="60%">{data.volumeProjection?.discover || "N/A"}</Td>
           </Tr>
           <Tr>
             <Th color="blue.500" width="40%">
               Local Debit Card:
             </Th>
             <Td width="60%">
-              {data.volumeProjection?.localDebitCard ||
-                "N/A"}
+              {data.volumeProjection?.localDebitCard || "N/A"}
             </Td>
           </Tr>
           <Tr>
             <Th color="blue.500" width="40%">
               MasterCard:
             </Th>
-            <Td width="60%">
-              {data.volumeProjection?.mastercard || "N/A"}
-            </Td>
+            <Td width="60%">{data.volumeProjection?.mastercard || "N/A"}</Td>
           </Tr>
           <Tr>
             <Th color="blue.500" width="40%">
               Visa:
             </Th>
-            <Td width="60%">
-              {data.volumeProjection?.visa || "N/A"}
-            </Td>
+            <Td width="60%">{data.volumeProjection?.visa || "N/A"}</Td>
           </Tr>
         </Tbody>
       </Table>

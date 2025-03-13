@@ -1,7 +1,7 @@
 import { Box, Button, VisuallyHidden, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { FormControl, FormLabel, Input, useTheme } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import ErrorMessage from "../../FormComponents/ErrorMessage";
@@ -31,7 +31,6 @@ const BusinessForm: React.FC<BankingFormProps> = ({
   validationSchema = bankingSchema,
   formRef,
 }) => {
-  const theme = useTheme();
   const methods = useForm<BankingDataForm>({
     resolver: zodResolver(validationSchema),
     defaultValues: formData,
@@ -39,8 +38,6 @@ const BusinessForm: React.FC<BankingFormProps> = ({
 
   const {
     handleSubmit,
-    setValue,
-    getValues,
     formState: { errors },
   } = methods;
 
@@ -49,13 +46,7 @@ const BusinessForm: React.FC<BankingFormProps> = ({
     if (onNext) onNext();
   };
 
-  const handleDebug = () => {
-    const values = getValues();
-    console.log(values);
-  };
-
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const id = e.target.id;
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();

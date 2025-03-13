@@ -14,7 +14,7 @@ import {
 import { businessProfileSchema } from "./businessProfileSchema";
 import { businessProfileData } from "../BusinessProfileForm/businessProfileData";
 import ErrorMessage from "../../FormComponents/ErrorMessage";
-import AllDataMozartForm from "/src/utils/AllDataMozartForm";
+import AllDataMozartForm from "../../../utils/AllDataMozartForm";
 
 type BusinessProfileFormValues = yup.InferType<typeof businessProfileSchema>;
 
@@ -48,7 +48,6 @@ const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
   } = methods;
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const id = e.target.id;
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
