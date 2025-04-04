@@ -152,19 +152,22 @@ const BusinessForm: React.FC<BusinessFormProps> = ({
             />
             <ErrorMessage error={errors.businessIncorporationDate?.message} />
           </FormControl>
-          <AddressInput
-            name="businessBusinessAddress"
-            label="Business Adrress"
-            placeholder="Enter your business address"
-            error={errors.businessBusinessAddress?.street}
-          />
-          <AddressInput
-            name="businessCorporateAddress"
-            label="Business Adrress"
-            placeholder="Enter your corporate address"
-            error={errors.businessCorporateAddress?.street}
-          />
+          <Box gridColumn={{ base: "span 1", md: "span 2" }}>
+            <AddressInput
+              name="businessBusinessAddress"
+              label="Business Adrress"
+              placeholder="Enter your business address"
+              error={errors.businessBusinessAddress?.street}
+            />
 
+            <Box gridColumn={{ base: "span 1", md: "span 2" }}></Box>
+            <AddressInput
+              name="businessCorporateAddress"
+              label="Business Adrress"
+              placeholder="Enter your corporate address"
+              error={errors.businessCorporateAddress?.street}
+            />
+          </Box>
           {/* Boton para poder ver los campos en el clg comentar o descomentar */}
           {/* <Button onClick={handleDebug} colorScheme="blue" mb={4}>
             Debug
