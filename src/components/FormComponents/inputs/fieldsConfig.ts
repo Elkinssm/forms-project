@@ -1,15 +1,19 @@
+export interface ValidationRules {
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  rule?: string;
+  minDate?: Date;
+  maxDate?: Date;
+}
+
 export interface FieldConfig {
   name: string;
   label: string;
   placeholder?: string;
   helpText?: string;
-  colSpan?: number;
-  validation: {
-    required?: boolean;
-    minLength?: number;
-    maxLength?: number;
-    rule?: string;
-  };
+  colSpan?: number; 
+  validation: ValidationRules;
 }
 
 export const fields: FieldConfig[] = [
@@ -23,7 +27,7 @@ export const fields: FieldConfig[] = [
       required: true,
       minLength: 3,
       maxLength: 50,
-      rule: "^[a-zA-Z ]+$", 
+      rule: "^[a-zA-Z ]+$", // Solo letras y espacios
     },
   },
   {
@@ -34,6 +38,18 @@ export const fields: FieldConfig[] = [
     colSpan: 2,
     validation: {
       required: true,
+    },
+  },
+  {
+    name: "start_date",
+    label: "Start Date",
+    placeholder: "Select a start date",
+    helpText: "Choose the start date for your business.",
+    colSpan: 1,
+    validation: {
+      required: true,
+      minDate: new Date("2023-01-01"),
+      maxDate: new Date("2025-12-31"),
     },
   },
 ];

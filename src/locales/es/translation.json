@@ -10,5 +10,12 @@
   "Submit": "Enviar",
   "help": "Ayuda",
   "La longitud mínima es de {{count}} caracteres.": "La longitud mínima es de {{count}} caracteres.",
-  "La longitud máxima es de {{count}} caracteres.": "La longitud máxima es de {{count}} caracteres."
+  "La longitud máxima es de {{count}} caracteres.": "La longitud máxima es de {{count}} caracteres.",
+  "La fecha no puede ser anterior a {{date}}.": "La fecha no puede ser anterior a {{date}}.",
+  "La fecha no puede ser posterior a {{date}}.": "La fecha no puede ser posterior a {{date}}.",
+  "Seleccione una fecha": "Seleccione una fecha",
+  "Fecha de inicio": "Fecha de inicio",
+  "Start Date": "Fecha de inicio",
+  "Select a start date": "Seleccione una fecha de inicio",
+  "Choose the start date for your business.": "Elija la fecha de inicio para su negocio."
 }

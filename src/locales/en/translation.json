@@ -10,5 +10,11 @@
   "Submit": "Submit",
   "help": "Help",
   "La longitud mínima es de {{count}} caracteres.": "Minimum length is {{count}} characters.",
-  "La longitud máxima es de {{count}} caracteres.": "Maximum length is {{count}} characters."
+  "La longitud máxima es de {{count}} caracteres.": "Maximum length is {{count}} characters.",
+  "La fecha no puede ser anterior a {{date}}.": "The date cannot be earlier than {{date}}.",
+  "La fecha no puede ser posterior a {{date}}.": "The date cannot be later than {{date}}.",
+  "Seleccione una fecha": "Select a date",
+  "Start Date": "Start Date",
+  "Select a start date": "Select a start date",
+  "Choose the start date for your business.": "Choose the start date for your business."
 }
