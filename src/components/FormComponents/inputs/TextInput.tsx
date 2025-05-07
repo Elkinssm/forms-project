@@ -19,7 +19,7 @@ interface TextInputProps {
   placeholder?: string;
   helpText?: string; // Texto de ayuda que se muestra en el tooltip
   colSpan?: number; // Define si ocupa 1 o 2 columnas
-  validation?: ValidationRules; 
+  validation?: ValidationRules;
 }
 
 const TextInput: React.FC<TextInputProps> = ({

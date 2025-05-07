@@ -1,0 +1,14 @@
+{
+  "Nombre": "Nombre",
+  "Business Address": "Dirección comercial",
+  "Enter your name": "Ingrese su nombre",
+  "Enter your business address": "Ingrese la dirección comercial",
+  "This is the name of your business.": "Este es el nombre de su empresa.",
+  "Provide the full address of your business.": "Proporcione la dirección completa de su empresa.",
+  "Este campo es obligatorio.": "Este campo es obligatorio.",
+  "Formato inválido.": "Formato inválido.",
+  "Submit": "Enviar",
+  "help": "Ayuda",
+  "La longitud mínima es de {{count}} caracteres.": "La longitud mínima es de {{count}} caracteres.",
+  "La longitud máxima es de {{count}} caracteres.": "La longitud máxima es de {{count}} caracteres."
+}

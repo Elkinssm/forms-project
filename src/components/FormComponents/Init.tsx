@@ -1,10 +1,11 @@
-import { SimpleGrid } from "@chakra-ui/react";
+import { Box, Button, SimpleGrid } from "@chakra-ui/react";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import TextInput from "./inputs/TextInput";
 import { generateYupSchema } from "../../utils/validationScheme";
 import * as yup from "yup";
 import { fields } from "./inputs/fieldsConfig";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 interface FormData {
   name_fp: string;
@@ -34,7 +35,7 @@ const Init = () => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <Box as="form" onSubmit={methods.handleSubmit(onSubmit)}>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
           {fields.map((field) => (
             <TextInput
@@ -48,8 +49,9 @@ const Init = () => {
             />
           ))}
         </SimpleGrid>
-        <button type="submit">Submit</button>
-      </form>
+        <Button type="submit">Submit</Button>
+      </Box>
+      <LanguageSwitcher />
     </FormProvider>
   );
 };

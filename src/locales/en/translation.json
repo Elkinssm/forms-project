@@ -1,0 +1,14 @@
+{
+  "Nombre": "Name",
+  "Business Address": "Business Address",
+  "Enter your name": "Enter your name",
+  "Enter your business address": "Enter your business address",
+  "This is the name of your business.": "This is the name of your business.",
+  "Provide the full address of your business.": "Provide the full address of your business.",
+  "Este campo es obligatorio.": "This field is required.",
+  "Formato inválido.": "Invalid format.",
+  "Submit": "Submit",
+  "help": "Help",
+  "La longitud mínima es de {{count}} caracteres.": "Minimum length is {{count}} characters.",
+  "La longitud máxima es de {{count}} caracteres.": "Maximum length is {{count}} characters."
+}
