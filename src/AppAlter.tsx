@@ -5,6 +5,7 @@ import theme from "./theme";
 import "./App.css";
 import Login from "./components/Login/Login";
 import MainApp from "./components/MainApp/MainApp";
+import Init from "./components/FormComponents/Init";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forms/*" element={<MainApp />} />
+            <Route path="/components" element={<Init />} />
           </Routes>
         </BrowserRouter>
       </Box>
