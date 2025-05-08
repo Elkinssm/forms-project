@@ -11,6 +11,11 @@ export interface ValidationRules {
   maxDate?: Date;
 }
 
+interface FileValidation extends ValidationRules {
+  maxSize?: number; // bytes
+  allowedTypes?: string[];
+}
+
 export const generateYupSchema = (
   validation: FieldConfig["validation"],
   t: TFunction
@@ -18,11 +23,9 @@ export const generateYupSchema = (
   | yup.StringSchema<string, yup.AnyObject>
   | yup.DateSchema<Date | null, yup.AnyObject> => {
   if (validation?.minDate || validation?.maxDate) {
-    // Validación para fechas
     return getDateValidationSchema(validation, t);
   }
 
-  // Validación para cadenas
   let schema = yup.string().defined();
 
   if (validation?.required) {
@@ -61,7 +64,7 @@ export const getDateValidationSchema = (
   validation: ValidationRules,
   t: TFunction
 ): yup.DateSchema<Date | null, yup.AnyObject> => {
-  let schema = yup.date().nullable().defined(); // Asegura que no sea undefined
+  let schema = yup.date().nullable().defined();
 
   if (validation?.required) {
     schema = schema.required(t("Este campo es obligatorio."));
@@ -82,6 +85,39 @@ export const getDateValidationSchema = (
       t("La fecha no puede ser posterior a {{date}}.", {
         date: validation.maxDate.toLocaleDateString(),
       })
+    );
+  }
+
+  return schema;
+};
+
+export const generateFileYupSchema = (
+  validation: FileValidation,
+  t: TFunction
+): yup.MixedSchema<File | null> => {
+  let schema = yup.mixed<File>().nullable().defined();
+
+  if (validation.required) {
+    schema = schema
+      .required(t("Este campo es obligatorio."))
+      .typeError(t("Este campo es obligatorio."));
+  }
+
+  if ("maxSize" in validation && typeof validation.maxSize === "number") {
+    const maxSize = validation.maxSize;
+    schema = schema.test(
+      "file-size",
+      t("El archivo supera el tamaño máximo permitido."),
+      (file) => !file || file.size <= maxSize
+    );
+  }
+
+  if ("allowedTypes" in validation && Array.isArray(validation.allowedTypes)) {
+    const allowedTypes = validation.allowedTypes;
+    schema = schema.test(
+      "file-type",
+      t("Tipo de archivo no permitido."),
+      (file) => !file || allowedTypes.includes(file.type)
     );
   }
 
