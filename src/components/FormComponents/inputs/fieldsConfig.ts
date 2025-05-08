@@ -62,10 +62,10 @@ export const fields: FieldConfig[] = [
   },
   {
     name: "file",
-    label: "Archivo",
+    label: "upload_file_label", // Clave de traducción
     type: "file",
-    placeholder: "Selecciona un archivo PDF",
-    helpText: "Debe ser un archivo PDF de máximo 2MB.",
+    placeholder: "upload_file_placeholder", // Clave de traducción
+    helpText: "upload_file_helpText", // Clave de traducción
     colSpan: 2,
     validation: {
       required: true,

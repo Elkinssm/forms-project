@@ -16,5 +16,8 @@
   "Seleccione una fecha": "Select a date",
   "Start Date": "Start Date",
   "Select a start date": "Select a start date",
-  "Choose the start date for your business.": "Choose the start date for your business."
+  "Choose the start date for your business.": "Choose the start date for your business.",
+  "upload_file_label": "Upload file",
+  "upload_file_placeholder": "Select a PDF file",
+  "upload_file_helpText": "It must be a PDF file up to 2MB in size."
 }

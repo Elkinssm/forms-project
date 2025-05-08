@@ -17,5 +17,8 @@
   "Fecha de inicio": "Fecha de inicio",
   "Start Date": "Fecha de inicio",
   "Select a start date": "Seleccione una fecha de inicio",
-  "Choose the start date for your business.": "Elija la fecha de inicio para su negocio."
+  "Choose the start date for your business.": "Elija la fecha de inicio para su negocio.",
+  "upload_file_label": "Archivo",
+  "upload_file_placeholder": "Selecciona un archivo PDF",
+  "upload_file_helpText": "Debe ser un archivo PDF de máximo 2MB."
 }
