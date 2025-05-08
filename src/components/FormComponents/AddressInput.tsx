@@ -149,7 +149,8 @@ const AddressInput: React.FC<AddressInputProps> = ({
           id={name}
           type="text"
           placeholder={placeholder}
-          borderColor={isAddressValid ? "green.500" : "red.500"} // Cambia el color si es válido
+          borderColor={isAddressValid ? "green.500" : "gray.300"}
+          // borderColor={isAddressValid ? "green.500" : "red.500"} // Cambia el color si es válido
           {...register(`${name}.street`, {
             onChange: (e) => {
               setQuery(e.target.value);
